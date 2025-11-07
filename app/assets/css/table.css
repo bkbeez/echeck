@@ -1,0 +1,230 @@
+.table-filter .filter-search {
+    padding: 5px 14px 0 14px;
+}
+.table-filter .filter-search .row>div {
+    padding-left: 2px;
+    padding-right: 2px;
+}
+.table-filter .filter-search .filter-pageby {
+    text-align: left;
+}
+.table-filter .filter-search .filter-pageby>select {
+    width: 100px;
+    display: inline-block;
+}
+.table-filter .filter-search .row>div.filter-keyword button {
+    width: 50px;
+    padding-left:0;
+    padding-right:0;
+}
+.table-filter .filter-search .row>div.filter-keyword label {
+    font-weight: normal;
+}
+.table-filter .filter-result table {
+    margin:0;
+    width: 100%;
+    counter-reset: line;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+.table-filter .filter-result table tr th {
+    background-color: #edeff4;
+}
+.table-filter .filter-result table tr th {
+    padding: 7px 1px 7px 5px;
+    vertical-align: top;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.table-filter .filter-result table tr td {
+    padding: 7px 1px 1px 5px;
+    vertical-align: top;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.table-filter .filter-result table tr td font {
+    font-weight: normal;
+}
+.table-filter .filter-result table tr td .fs-i {
+    font-style: italic;
+}
+.table-filter .filter-result .no {
+    width: 50px;
+    padding-left:1px;
+    padding-right:1px;
+    text-align: center;
+}
+.table-filter .filter-result table tr td .row-no {
+    display: none;
+}
+.table-filter .filter-result .actions {
+    width: 45px;
+    padding: 3px 0 0 0;
+    text-align: left;
+    overflow: unset !important;
+    white-space: unset !important;
+}
+.table-filter .filter-result .actions.act-2 {
+    width: 95px;
+}
+.table-filter .filter-result .actions.act-3 {
+    width: 140px;
+}
+.table-filter .filter-result .actions .btn-box {
+    display: inline-block;
+}
+.table-filter .filter-result .actions .btn-box .b-tip {
+    padding:1px 0;
+    color: #747ed1;
+    font-size:10px;
+    line-height: 12px;
+    margin-top: -4px;
+    display: block;
+    text-align: center;
+    font-weight: normal;
+    visibility: hidden;
+    background: #eaeaf9;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;    
+}
+.table-filter .filter-result .actions .btn-box.blue .b-tip {
+    color: white;
+    background: #3f78e0;
+}
+.table-filter .filter-result .actions .btn-box.warning .b-tip {
+    color: #fab758;
+    background: #fef3e4;
+}
+.table-filter .filter-result .actions .btn-box.delete .b-tip {
+    color: #e2626b;
+    background: #fae6e7;
+}
+.table-filter .filter-result .actions .btn-box.disabled .b-tip {
+    color: #999;
+    background: #dcddde;
+}
+.table-filter .filter-result .actions .btn-box:hover .b-tip {
+    visibility:visible;
+}
+.table-filter .filter-result table tr td.actions {
+    text-align: right;
+}
+.table-filter .filter-display {
+    line-height: 32px;
+    text-align: center;
+    font-weight: normal;
+}
+.filter-display>.badge {
+    font-size: 14px;
+    font-weight: normal;
+}
+.table-filter .filter-pagination {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 5px;
+}
+.table-filter .filter-pagination .row>div {
+    float:none;
+    padding-left:1px;
+    padding-right:1px;
+}
+.table-filter .filter-pagination .row>div>button {
+    width: 100px;
+    padding-left:0;
+    padding-right:0;
+}
+.table-filter .filter-pagination .row>div>button>span {
+    font-weight: normal;
+}
+.table-filter .filter-pagination .row>div>button.btn-white {
+    color:#999;
+    cursor: default;
+}
+.table-filter .filter-pagination .row>div.filter-prev {
+    width:25%;
+    text-align:left;
+}
+.table-filter .filter-pagination .row>div.filter-next {
+    width:25%;
+    text-align:right;
+}
+.table-filter .filter-pagination .row>div.filter-page {
+    width:50%;
+    text-align:center;
+}
+.table-filter .filter-pagination .row>div.filter-page .page-on {
+    width: 75px;
+    padding-left: 0;
+    text-align: right;
+    display: inline-block;
+}
+.table-filter .filter-pagination .row>div.filter-page .page-total>span {
+    padding: 14px 10px;
+    border-radius: 0.4rem;
+    -moz-border-radius: 0.4rem;
+    -webkit-border-radius: 0.4rem;
+    background-color: #edeff4;
+}
+.table-filter .filter-pagination .row>div.filter-page .page-label,
+.table-filter .filter-pagination .row>div.filter-page .page-total {
+    display: inline-block;
+}
+@media only all and (max-width: 991px) {
+    .table-filter .filter-result .actions .btn-box {
+        margin-top: -4px;
+    }
+    .table-filter .filter-result .actions .btn-box:first-child {
+        margin-top: 0;
+    }
+}
+@media only all and (max-width: 575px) {
+    .table-filter .filter-search {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .table-filter .filter-search .row>div {
+        float:none;
+        padding-left:1px;
+        padding-right:1px;
+    }
+    .table-filter .filter-search .row>div.filter-pageby {
+        width: 25%;
+    }
+    .table-filter .filter-search .row>div.filter-keyword {
+        width: 75%;
+    }
+}
+@media only all and (max-width: 500px) {
+    .table-filter .filter-pagination .row>div>button,
+    .table-filter .filter-search .row>div.filter-keyword button {
+        width: 50px;
+    }
+    .table-filter .filter-pagination .row>div>button>span,
+    .table-filter .filter-pagination .row>div.filter-page .page-label,
+    .table-filter .filter-pagination .row>div.filter-page .page-total,
+    .table-filter .filter-search .row>div.filter-keyword button>span {
+        display: none;
+    }
+}
+@media only all and (max-width: 465px) {
+    .table-filter .filter-search .filter-pageby>select {
+        width: 100%;
+        padding-left: 5px;
+        display: inline-block;
+    }
+    .table-filter .filter-result .no {
+        display: none;
+    }
+    .table-filter .filter-result table tr td {
+        padding-right: 0;
+    }
+    .table-filter .filter-result table tr td span {
+        padding-left: 10px;
+    }
+    .table-filter .filter-result table tr td .row-no {
+        display: inline-block;
+    }
+}
