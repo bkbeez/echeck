@@ -1,5 +1,41 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
+    // ตรวจสอบการล็อกอิน (optional)
+    // Auth::check('/login');
+    
+    // ดึง user_id จาก session (ถ้ามีการล็อกอิน) หรือใช้ค่าดีฟอลต์
+    $user_id = '';
+    if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
+        $user_id = isset($_SESSION['login']['user']['email']) ? $_SESSION['login']['user']['email'] : 
+    (isset($_SESSION['login']['user']['id']) ? $_SESSION['login']['user']['id'] : '');
+    }
+
+    // แสดงข้อความ success/error จาก session
+    $success = '';
+    $error = '';
+    
+    if (isset($_SESSION['event_create_success'])) {
+        $success = $_SESSION['event_create_success'];
+        unset($_SESSION['event_create_success']);
+    }
+    if (isset($_SESSION['event_update_success'])) {
+        $success = $_SESSION['event_update_success'];
+        unset($_SESSION['event_update_success']);
+    }
+    if (isset($_SESSION['event_delete_success'])) {
+        $success = $_SESSION['event_delete_success'];
+        unset($_SESSION['event_delete_success']);
+    }
+    if (isset($_SESSION['event_delete_error'])) {
+        $error = $_SESSION['event_delete_error'];
+        unset($_SESSION['event_delete_error']);
+    }
+    
+    // ตรวจสอบว่ามีการลบในหน้า index.php หรือไม่ (backward compatibility)
+    if (isset($_GET['delete'])) {
+        header('Location: delete.php?delete=' . intval($_GET['delete']));
+        exit();
+    }
 
     if (!function_exists('formatEventDate')) {
         function formatEventDate(?string $date): string
@@ -23,10 +59,25 @@
         }
     }
 
-    $events = DB::query(
-        "SELECT * FROM `events` ORDER BY `start_date` DESC, `id` DESC"
-    );
-    if (!is_array($events)) {
+    // ใช้ Event model เพื่อดึงรายการกิจกรรม
+    // ถ้ามีการล็อกอิน ให้ใช้ listForUser() เพื่อดึงเฉพาะกิจกรรมที่ user สามารถเข้าถึงได้
+    // ถ้าไม่มี ให้ดึงทั้งหมด
+    try {
+        if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
+            // ใช้ listForUser() เพื่อดึงกิจกรรมที่ user เป็นเจ้าของหรือถูกแชร์ให้
+            $events = Event::listForUser($user_id);
+        } else {
+            // ถ้าไม่มี login ให้ดึงทั้งหมด (สำหรับผู้ดูแลระบบ)
+            $events = DB::query(
+                "SELECT * FROM `events` ORDER BY `start_date` DESC, `id` DESC"
+            );
+        }
+        
+        if (!is_array($events)) {
+            $events = [];
+        }
+    } catch (Exception $e) {
+        $error = 'เกิดข้อผิดพลาดในการดึงข้อมูลกิจกรรม: ' . $e->getMessage();
         $events = [];
     }
 ?>
@@ -180,6 +231,21 @@
                 </div>
             </div>
         </div>
+        
+        <?php if ($success): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i><?= htmlspecialchars($success) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($error): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i><?= htmlspecialchars($error) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
         <div class="card content-card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -226,7 +292,7 @@
                                         <a href="share.php?id=<?= $row['id'] ?>" class="btn btn-outline-secondary btn-sm">
                                             <i class="bi bi-share-fill"></i>แชร์
                                         </a>
-                                        <a href="?delete=<?= $row['id'] ?>" class="btn btn-outline-danger btn-sm"
+                                        <a href="delete.php?delete=<?= $row['id'] ?>" class="btn btn-outline-danger btn-sm"
                                             onclick="return confirm('ยืนยันการลบกิจกรรมนี้?')">
                                             <i class="bi bi-trash-fill"></i>ลบ
                                         </a>

@@ -33,10 +33,10 @@ class Event extends DB
                     `end_date` = :end_date,
                     `participant_type` = :participant_type,
                     `status` = :status
-                WHERE `id` = :event_id AND `user_id` = :user_id
+                WHERE `id` = :events_id AND `user_id` = :user_id
                 LIMIT 1;";
         $parameters = array_merge($data, [
-            'event_id'    => $eventId,
+            'events_id'    => $eventId,
             'user_id' => $userid,
         ]);
 
@@ -51,9 +51,9 @@ class Event extends DB
      */
     public static function deleteEvent(int $eventId, string $userid)
     {
-        $sql = "DELETE FROM `events` WHERE `id` = :event_id AND `user_id` = :user_id LIMIT 1;";
+        $sql = "DELETE FROM `events` WHERE `id` = :events_id AND `user_id` = :user_id LIMIT 1;";
         return DB::delete($sql, [
-            'event_id'    => $eventId,
+            'events_id'    => $eventId,
             'user_id' => $userid,
         ]);
     }
@@ -68,10 +68,10 @@ class Event extends DB
     {
         $sql = "SELECT *
                 FROM `events`
-                WHERE `id` = :event_id AND `user_id` = :user_id
+                WHERE `id` = :events_id AND `user_id` = :user_id
                 LIMIT 1;";
         return DB::one($sql, [
-            'event_id'    => $eventId,
+            'events_id'    => $eventId,
             'user_id' => $userid,
         ]);
     }
@@ -86,13 +86,13 @@ class Event extends DB
     {
         $sql = "SELECT DISTINCT e.*
                 FROM `events` e
-                LEFT JOIN `event_shares` es
-                    ON es.`event_id` = e.`id`
-                WHERE e.`id` = :event_id
+                LEFT JOIN `events_share` es
+                    ON es.`events_id` = e.`id`
+                WHERE e.`id` = :events_id
                     AND (e.`user_id` = :id OR es.`shared_id` = :id)
                 LIMIT 1;";
         return DB::one($sql, [
-            'event_id' => $eventId,
+            'events_id' => $eventId,
             'id'    => $id,
         ]);
     }
@@ -115,7 +115,7 @@ class Event extends DB
         $shared = DB::query(
             "SELECT e.*, 0 AS is_user
                 FROM `events` e
-                INNER JOIN `event_shares` es ON es.`event_id` = e.`id`
+                INNER JOIN `events_share` es ON es.`events_id` = e.`id`
                 WHERE es.`shared_id` = :id
                 ORDER BY e.`start_date` DESC, e.`id` DESC;",
             ['id' => $id]
@@ -161,10 +161,10 @@ class Event extends DB
 
         return DB::query(
             "SELECT es.*
-                FROM `event_shares` es
-                WHERE es.`event_id` = :event_id
+                FROM `events_share` es
+                WHERE es.`events_id` = :events_id
                 ORDER BY es.`shared_id` ASC;",
-            ['event_id' => $eventId]
+            ['events_id' => $eventId]
         );
     }
 
@@ -184,11 +184,11 @@ class Event extends DB
             return false;
         }
 
-        $sql = "INSERT IGNORE INTO `event_shares` (`event_id`, `shared_id`)
-                VALUES (:event_id, :shared_id);";
+        $sql = "INSERT IGNORE INTO `events_share` (`events_id`, `shared_id`)
+                VALUES (:events_id, :shared_id);";
 
         return DB::create($sql, [
-            'event_id'     => $eventId,
+            'events_id'     => $eventId,
             'shared_id' => $sharedid,
         ]);
     }
@@ -206,13 +206,13 @@ class Event extends DB
             return false;
         }
 
-        $sql = "DELETE FROM `event_shares`
-                WHERE `id` = :share_id AND `event_id` = :event_id
+        $sql = "DELETE FROM `events_share`
+                WHERE `id` = :share_id AND `events_id` = :events_id
                 LIMIT 1;";
 
         return DB::delete($sql, [
             'share_id' => $shareId,
-            'event_id' => $eventId,
+            'events_id' => $eventId,
         ]);
     }
 
@@ -225,12 +225,12 @@ class Event extends DB
     public static function shareExists(int $eventId, string $sharedid)
     {
         $sql = "SELECT `id`
-                FROM `event_shares`
-                WHERE `event_id` = :event_id AND `shared_id` = :shared_id
+                FROM `events_share`
+                WHERE `events_id` = :events_id AND `shared_id` = :shared_id
                 LIMIT 1;";
 
         $share = DB::one($sql, [
-            'event_id'     => $eventId,
+            'events_id'     => $eventId,
             'shared_id' => $sharedid,
         ]);
 
