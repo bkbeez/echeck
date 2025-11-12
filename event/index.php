@@ -1,16 +1,13 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
-    // ตรวจสอบการล็อกอิน (optional)
-    // Auth::check('/login');
-    
-    // ดึง user_id จาก session (ถ้ามีการล็อกอิน) หรือใช้ค่าดีฟอลต์
+
+
     $user_id = '';
     if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
         $user_id = isset($_SESSION['login']['user']['email']) ? $_SESSION['login']['user']['email'] : 
     (isset($_SESSION['login']['user']['id']) ? $_SESSION['login']['user']['id'] : '');
     }
 
-    // แสดงข้อความ success/error จาก session
     $success = '';
     $error = '';
     
@@ -31,7 +28,7 @@
         unset($_SESSION['event_delete_error']);
     }
     
-    // ตรวจสอบว่ามีการลบในหน้า index.php หรือไม่ (backward compatibility)
+
     if (isset($_GET['delete'])) {
         header('Location: delete.php?delete=' . intval($_GET['delete']));
         exit();
@@ -59,15 +56,11 @@
         }
     }
 
-    // ใช้ Event model เพื่อดึงรายการกิจกรรม
-    // ถ้ามีการล็อกอิน ให้ใช้ listForUser() เพื่อดึงเฉพาะกิจกรรมที่ user สามารถเข้าถึงได้
-    // ถ้าไม่มี ให้ดึงทั้งหมด
+
     try {
         if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
-            // ใช้ listForUser() เพื่อดึงกิจกรรมที่ user เป็นเจ้าของหรือถูกแชร์ให้
             $events = Event::listForUser($user_id);
         } else {
-            // ถ้าไม่มี login ให้ดึงทั้งหมด (สำหรับผู้ดูแลระบบ)
             $events = DB::query(
                 "SELECT * FROM `events` ORDER BY `start_date` DESC, `id` DESC"
             );

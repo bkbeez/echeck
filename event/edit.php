@@ -13,7 +13,6 @@
     if ($eventId <= 0) {
         $error = 'ไม่พบข้อมูลกิจกรรม';
     } else {
-        // ดึง user_id จาก session (ถ้ามีการล็อกอิน) หรือใช้ค่าดีฟอลต์
         $user_id = '';
         if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
             $user_id = isset($_SESSION['login']['user']['email']) ? $_SESSION['login']['user']['email'] : 
@@ -66,7 +65,6 @@
                 $result = Event::updateEvent($eventId, $user_id, $eventData);
                 
                 if ($result) {
-                    // อัพเดทสำเร็จ
                     $_SESSION['event_update_success'] = 'อัพเดทกิจกรรมสำเร็จ';
                     header('Location: index.php');
                     exit();
@@ -78,7 +76,7 @@
             }
         }
         
-        // อัพเดทข้อมูล event สำหรับแสดงในฟอร์ม
+
         if ($error) {
             $event['events_name'] = $name;
             $event['start_date'] = $start_date;
