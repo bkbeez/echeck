@@ -5,7 +5,6 @@
     $success = '';
     $event = null;
     
-    // ดึง event ID จาก query parameter
     $eventId = isset($_GET['id']) ? intval($_GET['id']) : 0;
     
     if ($eventId <= 0) {
@@ -17,7 +16,7 @@
                         (isset($_SESSION['login']['user']['id']) ? $_SESSION['login']['user']['id'] : '');
         }
         
-        // ดึงข้อมูลกิจกรรมด้วย Event model
+
         $event = Event::getOwnedEvent($eventId, $user_id);
         
         if (!$event) {
