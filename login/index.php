@@ -67,7 +67,7 @@
                                         <div class="blockquote-details">
                                             <img class="rounded-circle w-12" src="<?=THEME_IMG?>/avatar.png">
                                             <div class="info">
-                                                <h5 class="mb-1">Demo User</h5>
+                                                <h5 class="mb-1">Login User</h5>
                                                 <div class="row gx-2">
                                                     <div class="col-md-6">
                                                         <div class="form-check mb-2">
