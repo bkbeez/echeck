@@ -103,49 +103,28 @@
             $row_no = (($start+1)+$no);
             $htmls .= '<tr class="'.$row['status'].'">';
                 $htmls .= '<td class="no" scope="row">'.$row_no.'</td>';
-                $htmls .= '<td class="date">'.Helper::date($row['date_create'], $lang).'</td>';
+                $htmls .= '<td class="date">'.Helper::datetimeDisplay($row['date_create'], $lang).'</td>';
                 $htmls .= '<td class="name">';
                     $htmls .= '<mark class="doc row-no">'.$row_no.'</mark>';
-                    $htmls .= '<font>'.Helper::stringTitleShort($row['fullname']).'</font>';
-                    /*$htmls.= '<span class="phone">';
-                        $htmls.= '<i class="uil uil-phone-volume"></i> '.$row['phone'];
-                        $htmls.= '<span class="email"><i class="uil uil-envelopes"></i> '.$row['email'].'</span>';
-                    $htmls.= '</span>';
-                    $htmls.= '<span class="institute-o"><i class="uil uil-university"></i> '.$institute.'</span>';
-                    $htmls.= '<span class="participant-o"><i class="uil uil-file-bookmark-alt"></i> '.$row['participant_'.$lang].'</span>';
-                    $htmls.= '<span class="date-o"><i class="uil uil-calendar-alt"></i> '.( ($lang=='en') ? 'Regist Date' : 'วันลงทะเบียน' ).' : '.Helper::date($row['regist_date'], $lang).'</span>';
-                    $htmls.= '<span class="amount-o"><i class="uil uil-receipt-alt"></i> ';
-                        $htmls.= ( ($lang=='en') ? 'Regist Fee' : 'ค่าลงทะเบียน' ).' : ';
-                        if( $row['regist_amount']>0 ){
-                            $htmls.= number_format($row['regist_amount'],2).'฿';
+                    $htmls.= '<span class="date-o"><i class="uil uil-calendar-alt"></i> '.Helper::datetimeDisplay($row['date_create'], $lang).'</span>';
+                    $htmls .= '<font><i class="uil uil-user-circle"></i> '.Helper::stringTitleShort($row['fullname']).'</font>';
+                    $htmls.= '<span class="email">';
+                        $htmls.= '<i class="uil uil-envelopes"></i> '.$row['email'];
+                        if($row['is_cmu']=='Y'){
+                            $htmls .= '<span class="cmu text-violet"><i class="uil uil-check-circle"></i> CMU</span>';
                         }else{
-                            $htmls .= '<u class="text-red"><b class="on-text-i">'.Lang::get('Free').'</b></u>';
+                            $htmls .= '<span class="cmu text-ash"><i class="uil uil-times-circle"></i> CMU</span>';
                         }
                     $htmls.= '</span>';
-                    $htmls .= ( $paystatus ? '<span class="status-o">'.$paystatus.'</span>' : null);*/
                 $htmls .= '</td>';
-                $htmls .= '<td class="institute">';
-                    /*$htmls .= '<font>'.$institute.'</font>';
-                    $htmls.= '<span class="participant"><i class="uil uil-file-bookmark-alt"></i> '.$row['participant_'.$lang].'</span>';
-                    $htmls.= '<span class="amount-o"><i class="uil uil-receipt-alt"></i> ';
-                        $htmls.= ( ($lang=='en') ? 'Regist Fee' : 'ค่าลงทะเบียน' ).' : ';
-                        if( $row['regist_amount']>0 ){
-                            $htmls.= number_format($row['regist_amount'],2).'฿';
-                        }else{
-                            $htmls .= '<u class="text-red"><b class="on-text-i">'.Lang::get('Free').'</b></u>';
-                        }
-                    $htmls.= '</span>';
-                    $htmls .= ( $paystatus ? '<span class="status-o">'.$paystatus.'</span>' : null);*/
-                $htmls .= '</td>';
-                $htmls .= '<td class="amount">';
-
+                $htmls .= '<td class="status">';
+                    $htmls .= '<font>'.$row['email'].'</font>';
+                    if($row['is_cmu']=='Y'){
+                        $htmls.= ' <mark class="cmu text-white bg-violet"><i class="uil uil-check-circle"></i>CMU</mark>';
+                    }
                 $htmls .= '</td>';
                 $htmls .= '<td class="actions">';
-                    //if( $row['payslip_status']=='W' ){
-                        //$htmls .= '<div class="btn-box warning"><button onclick="manage_events(\'check\', { \'meeting_id\':\''.$row['id'].'\', \'member_id\':\''.$row['member_id'].'\' });" type="button" class="btn btn-circle btn-warning"><i class="uil uil-file-edit-alt"></i></button><small class=b-tip>'.(($lang=='en')?'check':'ตรวจ').'</small></div>';
-                    //}else{
-                        //$htmls .= '<div class="btn-box disabled"><button onclick="manage_events(\'check\', { \'meeting_id\':\''.$row['id'].'\', \'member_id\':\''.$row['member_id'].'\' });" type="button" class="btn btn-circle btn-soft-dark"><i class="uil uil-file-edit-alt"></i></button><small class=b-tip>'.(($lang=='en')?'check':'ตรวจ').'</small></div>';
-                    //}
+                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'manage\', { \'meeting_id\':\''.$row['id'].'\' });" type="button" class="btn btn-circle btn-soft-primary"><i class="uil uil-edit-alt"></i></button><small class=b-tip>'.(($lang=='en')?'Edit':'แก้ไข').'</small></div>';
                     $htmls .= '<div class="btn-box"><button onclick="manage_events(\'display\', { \'meeting_id\':\''.$row['id'].'\' });" type="button" class="btn btn-circle btn-primary"><i class="uil uil-user"></i></button><small class=b-tip>'.Lang::get('Data').'</small></div>';
                 $htmls .= '</td>';
             $htmls .= '</tr>';
