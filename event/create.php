@@ -1,8 +1,5 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
-    // ตรวจสอบการล็อกอิน (optional - ถ้าต้องการให้มีการล็อกอินก่อนสร้างกิจกรรม)
-    // Auth::check('/login');
-    
     $error = '';
     $success = '';
     
@@ -41,8 +38,6 @@
                 $user_id = 'system@localhost';
             }
             
-            // สร้าง events_id ที่ unique
-            // ใช้ timestamp + random string เพื่อให้ unique
             $events_id = 'EVT-' . date('YmdHis') . '-' . substr(md5(uniqid(rand(), true)), 0, 8);
             
             // ตรวจสอบว่า events_id ซ้ำหรือไม่ (ป้องกัน duplicate)

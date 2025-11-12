@@ -1,8 +1,5 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
-    // ตรวจสอบการล็อกอิน (optional - ถ้าต้องการให้มีการล็อกอินก่อนลบกิจกรรม)
-    // Auth::check('/login');
-    
     // ดึง event ID จาก query parameter
     $eventId = isset($_GET['delete']) ? intval($_GET['delete']) : 0;
     

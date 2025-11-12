@@ -1,7 +1,5 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
-    // ตรวจสอบการล็อกอิน (optional - ถ้าต้องการให้มีการล็อกอินก่อนแก้ไขกิจกรรม)
-    // Auth::check('/login');
     
     $error = '';
     $success = '';
