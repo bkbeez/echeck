@@ -341,7 +341,7 @@ class App {
                                 $htmls .= '</li>';
                             }else{
                                 $htmls .= '<li class="nav-item d-none d-md-block">';
-                                    $htmls .= '<a href="'.APP_HOME.'/login" class="btn btn-sm btn-primary rounded-pill">Login</a>';
+                                    $htmls .= '<a href="'.APP_HOME.'/login/" class="btn btn-sm btn-primary rounded-pill">Login</a>';
                                 $htmls .= '</li>';
                             }
                             $htmls .= '<li class="nav-item d-lg-none">';
