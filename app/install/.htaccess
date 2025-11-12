@@ -1,8 +1,0 @@
-<IfModule mod_rewrite.c>
-    Options -Indexes
-</IfModule>
-<Files env.conf>
-    Order Allow,Deny
-    Deny from all
-</Files>
-
