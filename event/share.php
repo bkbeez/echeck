@@ -1,8 +1,5 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
-    // ตรวจสอบการล็อกอิน (optional - ถ้าต้องการให้มีการล็อกอินก่อนแชร์กิจกรรม)
-    // Auth::check('/login');
-    
     $error = '';
     $success = '';
     $event = null;
@@ -14,20 +11,17 @@
     if ($eventId <= 0) {
         $error = 'ไม่พบข้อมูลกิจกรรม';
     } else {
-        // ดึง user_id จาก session (ถ้ามีการล็อกอิน) หรือใช้ค่าดีฟอลต์
         $user_id = '';
         if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
             $user_id = isset($_SESSION['login']['user']['email']) ? $_SESSION['login']['user']['email'] : 
                         (isset($_SESSION['login']['user']['id']) ? $_SESSION['login']['user']['id'] : '');
         }
 
-        // ดึงข้อมูลกิจกรรมด้วย Event model
         $event = Event::getOwnedEvent($eventId, $user_id);
         
         if (!$event) {
             $error = 'ไม่พบกิจกรรมหรือคุณไม่มีสิทธิ์แชร์กิจกรรมนี้';
         } else {
-            // ดึงรายการแชร์ด้วย Event model
             $shares = Event::listShares($eventId, $user_id);
             if (!is_array($shares)) {
                 $shares = [];
