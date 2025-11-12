@@ -16,11 +16,10 @@ Check-in 's Faculty of Education, Chiang Mai University
 4. Create a file: ~/app/install/env.conf
 ```
 DB_DRIVER=mysql
-DB_HOST=
-DB_NAME=checkin
+DB_HOST=localhost
+DB_NAME=echeck
 DB_USER=
 DB_PASS=
-DB_PREFIX=edumis_
 MAIL_HOST=
 MAIL_POST=
 MAIL_USER=
