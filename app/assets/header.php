@@ -17,6 +17,8 @@
         <link rel="apple-touch-icon-precomposed" href="<?=APP_PATH?>/favicon.png" />
         <link rel="stylesheet" href="<?=THEME_CSS?>/plugins.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/style.css">
+        <link rel="stylesheet" href="<?=THEME_CSS?>/index.css">
+        <link rel="stylesheet" href="<?=THEME_CSS?>/table.css">
         <link rel="stylesheet" href="<?=THEME_JS?>/sweetalert/sweetalert2.min.css" />
         <script type="text/javascript" src="<?=THEME_JS?>/jquery-2.1.1.js"></script>
         <script type="text/javascript" src="<?=THEME_JS?>/jquery.form.min.js"></script>

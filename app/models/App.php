@@ -96,7 +96,7 @@ class App {
      *  @return htmls
      */ 
     static function menus($index=array()){
-        if( isset($index['page'])&& in_array($index['page'], array('backoffice','login','deny')) ){
+        if( isset($index['page'])&& in_array($index['page'], array('login','deny')) ){
             return null;
         }
         /*$htmls = '<header class="wrapper bg-soft-primary">';
