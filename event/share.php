@@ -5,7 +5,6 @@
     $event = null;
     $shares = [];
     
-    // ดึง event ID จาก query parameter
     $eventId = isset($_GET['id']) ? intval($_GET['id']) : 0;
     
     if ($eventId <= 0) {
