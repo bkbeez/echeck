@@ -18,6 +18,104 @@
     from { opacity: 0; }
     to   { opacity: 1; }
 }
+#mainsite-navbar .navbar-nav .nav-item .nav-link {
+    cursor: pointer;
+}
+#mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name {
+    font-family: 'Prompt Regular';
+    border-bottom:2px solid transparent;
+}
+#mainsite-navbar .navbar-nav .nav-item:hover .nav-link .nav-name,
+#mainsite-navbar .navbar-nav .nav-item.active .nav-link .nav-name {
+    color: #3f78e0;
+    border-bottom:2px solid #3f78e0;
+}
+#mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name .m-box-top {
+    width: 28px;
+    float: left;
+    font-size: 24px;
+    line-height: 24px;
+    text-align:center;
+}
+#mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name .m-box {
+    width: 40px;
+    float: left;
+    font-size: 28px;
+    line-height: 24px;
+    text-align:center;
+    padding-right: 5px;
+    margin-left: -10px;
+    display: none;
+}
+#mainsite-navbar .navbar-nav .nav-item .nav-link.nav-icon {
+    padding-left: 0;
+    padding-right: 0;
+}
+#mainsite-navbar .navbar-nav .nav-item .nav-link.nav-icon .nav-name {
+    font-size: 28px;
+    line-height: 22px;
+    padding: 4px 7px 0 7px;
+    border-bottom: none;
+}
+#mainsite-navbar .navbar-nav .nav-item:hover .nav-link.nav-icon .nav-name,
+#mainsite-navbar .navbar-nav .nav-item.active .nav-link.nav-icon .nav-name {
+    color: black;
+    background: white;
+    border-radius: 25px;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+}
+.navbar-stick #mainsite-navbar .navbar-nav .nav-item:hover .nav-link.nav-icon .nav-name,
+.navbar-stick #mainsite-navbar .navbar-nav .nav-item.active .nav-link.nav-icon .nav-name {
+    color: white;
+    background: #1950d8;
+}
+.navbar-stick #mainsite-navbar .navbar-nav .nav-item:hover .nav-link .nav-name,
+.navbar-stick #mainsite-navbar .navbar-nav .nav-item.active .nav-link .nav-name {
+    border-bottom:2px solid #1950d8;
+}
+.mainsite-dropdown .nav-item .nav-name {
+    border-bottom:2px solid transparent;
+}
+.mainsite-dropdown .nav-item:hover .nav-name {
+    border-bottom:2px solid #1950d8;
+}
+.mainsite-dropdown .nav-item .nav-name .m-box {
+    width: 30px;
+    float: left;
+    font-size: 20px;
+    line-height: 24px;
+    text-align:center;
+    padding-right: 2px;
+    margin-left: -20px;
+}
+.mainsite-dropdown-box font {
+    display: block;
+    text-align: center;
+}
+.mainsite-dropdown-box font .nav-name {
+    border-bottom:2px solid transparent;
+}
+.mainsite-dropdown-box font:hover .nav-name {
+    border-bottom:2px solid #1950d8;
+}
+.mainsite-dropdown-box font .m-box {
+    width: 30px;
+    float: left;
+    font-size: 20px;
+    line-height: 24px;
+    text-align:center;
+    padding-right: 2px;
+    display: none;
+}
+.mainsite-dropdown-box .i-box {
+    width:100%;
+    text-align: center;
+}
+.mainsite-dropdown-box .i-box>i {
+    font-size: 128px;
+    line-height: 128px;
+}
 .form-manage .form-select {
     color: #60697c;
     font-weight: normal;
@@ -199,6 +297,46 @@
     -webkit-border-bottom-left-radius: 0;
     -moz-border-radius-bottomleft: 0;
     border-bottom-left-radius: 0;
+}
+@media only all and (max-width: 991px) {
+    #mainsite-navbar .navbar-nav .nav-item .nav-link {
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+    }
+    #mainsite-navbar .navbar-nav .nav-item .nav-link.nav-icon,
+    #mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name .m-box-top {
+        display: none;
+    }
+    #mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name .m-box {
+        display: inline-block;
+        margin-left:0;
+    }
+    .mainsite-dropdown .nav-item>a {
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+    }
+    .mainsite-dropdown .nav-item .nav-name .m-box {
+        margin-left: 15px;
+    }
+    .mainsite-dropdown-box font {
+        text-align: left;
+        margin-left: 15px;
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+    }
+    .mainsite-dropdown-box font .m-box {
+        display: inline-block;
+    }
+    .mainsite-dropdown-box .i-box {
+        display: none;
+    }
+    .mainsite-dropdown-box font:hover .nav-name,
+    .mainsite-dropdown .nav-item:hover .nav-name {
+        border-bottom:2px solid white;
+    }
 }
 @media only all and (max-width: 768px) {
     .form-manage .form-check .form-check-label span.price {
