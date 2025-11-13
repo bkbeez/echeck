@@ -33,11 +33,6 @@
                             (isset($_SESSION['login']['user']['id']) ? $_SESSION['login']['user']['id'] : '');
             }
             
-            // ถ้าไม่มี user_id ให้ใช้ค่าดีฟอลต์ (สำหรับระบบที่ยังไม่มีการล็อกอิน)
-            if (empty($user_id)) {
-                $user_id = 'system@localhost';
-            }
-            
             $events_id = 'EVT-' . date('YmdHis') . '-' . substr(md5(uniqid(rand(), true)), 0, 8);
             
             // ตรวจสอบว่า events_id ซ้ำหรือไม่ (ป้องกัน duplicate)
