@@ -28,7 +28,7 @@
     border-collapse: collapse;
 }
 .table-filter .filter-result table tr th {
-    background-color: #edeff4;
+    background-color: #f1f5fd;
 }
 .table-filter .filter-result table tr th {
     padding: 7px 1px 7px 5px;
@@ -166,7 +166,7 @@
     border-radius: 0.4rem;
     -moz-border-radius: 0.4rem;
     -webkit-border-radius: 0.4rem;
-    background-color: #edeff4;
+    background-color: #f1f5fd;
 }
 .table-filter .filter-pagination .row>div.filter-page .page-label,
 .table-filter .filter-pagination .row>div.filter-page .page-total {
