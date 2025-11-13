@@ -93,6 +93,15 @@
                                             <label for="email"><?=Lang::get('Email')?></label>
                                         </div>
                                         <button type="submit" class="btn btn-lg btn-icon btn-icon-start btn-blue rounded-pill w-100"><i class="uil uil-user"></i> <?=Lang::get('Login')?></button>
+                                        <div class="text-center mb-3 mt-2">
+                                            <span class="text-muted"><?=Lang::get('Or sign in with')?></span>
+                                        </div>
+                                        <div class="Signin-google text-center mb-3">
+                                            <a href="<?=APP_PATH?>/login/signingoogle.php" class="btn btn-lg btn-icon btn-icon-start btn-blue rounded-pill w-100">
+                                                <i class="uil uil-google p-1"></i>
+                                                <?=Lang::get('Sign in with Google')?>
+                                            </a>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
