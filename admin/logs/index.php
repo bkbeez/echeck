@@ -1,1 +1,0 @@
-<?php if(!isset($index['page'])||$index['page']!='admin'){ header("location:".((isset($_SERVER['SERVER_PORT'])&&$_SERVER['SERVER_PORT']==443)?'https://':'http://').$_SERVER["HTTP_HOST"]); exit(); } ?>

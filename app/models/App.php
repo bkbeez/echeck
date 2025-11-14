@@ -171,17 +171,17 @@ class App {
                             if( isset($_SESSION['login'])&&Auth::admin() ){
                                 $htmls .= '<li class="nav-item'.((isset($index['page'])&&$index['page']=='admin') ? ' active':null).' dropdown">';
                                     $htmls .= '<a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown"><span class="nav-name"><div class="m-box-top"><i class="uil uil-create-dashboard"></i></div><div class="m-box"><i class="uil uil-create-dashboard"></i></div>'.Lang::get('Administrator').'</span></a>';
-                                    $htmls .= '<div class="dropdown-menu dropdown-lg">';
-                                        $htmls .= '<div class="mainsite-dropdown-box">';
-                                            $htmls .= '<ul class="list-unstyled">';
-                                                $htmls .= '<li>';
-                                                    $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?users">';
-                                                        $htmls .= '<font><div class="m-box"><i class="uil uil-users-alt"></i></div><span class="nav-name">'.( (App::lang()=='en') ? 'User Accounts' : 'จัดการบัญชีผู้ใช้' ).'</span></font>';
-                                                        $htmls .= '<div class="i-box"><i class="uil uil-users-alt"></i></div>';
-                                                    $htmls .= '</a>';
-                                                $htmls .= '</li>';
-                                            $htmls .= '</ul>';
-                                        $htmls .= '</div>';
+                                    $htmls .= '<ul class="dropdown-menu mainsite-dropdown">';
+                                        $htmls .= '<li class="nav-item">';
+                                            $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?users">';
+                                                $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-users-alt"></i></div>'.( (App::lang()=='en') ? 'Accounts' : 'บัญชีผู้ใช้ระบบ' ).'</span>';
+                                            $htmls .= '</a>';
+                                        $htmls .= '</li>';
+                                        $htmls .= '<li class="nav-item">';
+                                            $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?session">';
+                                                $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-monitor-heart-rate"></i></div>'.( (App::lang()=='en') ? 'Sessions' : 'ข้อมูลผู้ใช้ระบบ' ).'</span>';
+                                            $htmls .= '</a>';
+                                        $htmls .= '</li>';
                                     $htmls .= '</ul>';
                                 $htmls .= '</li>';
                             }

@@ -17,6 +17,8 @@
     $loadpage = null;
     if( isset($_GET['users']) ){
         $loadpage = 'users';
+    }else if( isset($_GET['session']) ){
+        $loadpage = 'session';
     }
 ?>
 <?php include(APP_HEADER);?>
