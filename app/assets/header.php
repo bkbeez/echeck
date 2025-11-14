@@ -14,6 +14,7 @@
         <link rel="icon shortcut" type="image/ico" href="<?=APP_PATH?>/favicon.ico" />
         <link rel="apple-touch-icon" sizes="76x76" href="<?=APP_PATH?>/favicon.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="<?=APP_PATH?>/favicon.png">
+        <link rel="apple-touch-icon" sizes="256x204" href="<?=APP_PATH?>/favicon.png">
         <link rel="apple-touch-icon-precomposed" href="<?=APP_PATH?>/favicon.png" />
         <link rel="stylesheet" href="<?=THEME_CSS?>/plugins.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/style.css">
