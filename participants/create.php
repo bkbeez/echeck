@@ -5,7 +5,7 @@
     
     $user_id = '';
     if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
-        $user_id = isset($_SESSION['login']['user']['email']) ? $_SESSION['login']['user']['email'] : 
+        $user_id = isset($_SESSION['login']['user']['email']) ? $_SESSION['login']['user']['email'] :
                     (isset($_SESSION['login']['user']['id']) ? $_SESSION['login']['user']['id'] : '');
     }
     
@@ -26,41 +26,51 @@
         $events = [];
     }
     
-    // จัดการ POST request
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // จัดการ GET request
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // Validate ข้อมูล
-        $events_id = isset($_POST['events_id']) ? trim($_POST['events_id']) : '';
-        $type = isset($_POST['type']) ? trim($_POST['type']) : '';
-        $prefix = isset($_POST['prefix']) ? trim($_POST['prefix']) : '';
-        $firstname = isset($_POST['firstname']) ? trim($_POST['firstname']) : '';
-        $lastname = isset($_POST['lastname']) ? trim($_POST['lastname']) : '';
-        $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-        $organization = isset($_POST['organization']) ? trim($_POST['organization']) : '';
-        $status = isset($_POST['status']) ? trim($_POST['status']) : 'รอเข้าร่วม';
-        $note = isset($_POST['note']) ? trim($_POST['note']) : '';
+        $events_id = isset($_GET['events_id']) ? trim($_GET['events_id']) : '';
+        $type = isset($_GET['type']) ? trim($_GET['type']) : '';
+        $prefix = isset($_GET['prefix']) ? trim($_GET['prefix']) : '';
+        $firstname = isset($_GET['firstname']) ? trim($_GET['firstname']) : '';
+        $lastname = isset($_GET['lastname']) ? trim($_GET['lastname']) : '';
+        $email = isset($_GET['email']) ? trim($_GET['email']) : '';
+        $organization = isset($_GET['organization']) ? trim($_GET['organization']) : '';
+        $status = isset($_GET['status']) ? trim($_GET['status']) : 'รอเข้าร่วม';
+        $note = isset($_GET['note']) ? trim($_GET['note']) : '';
         
         // ตรวจสอบข้อมูลที่จำเป็น
         if (empty($events_id)) {
             $error = 'กรุณาเลือกกิจกรรม';
-        } elseif (empty($firstname)) {
-            $error = 'กรุณากรอกชื่อ';
-        } elseif (empty($lastname)) {
-            $error = 'กรุณากรอกนามสกุล';
-        } elseif (empty($email)) {
-            $error = 'กรุณากรอกอีเมล';
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error = 'รูปแบบอีเมลไม่ถูกต้อง';
-        } elseif (!in_array($status, ['รอเข้าร่วม', 'เข้าร่วมแล้ว', 'ยกเลิก'])) {
-            $error = 'สถานะไม่ถูกต้อง';
         } else {
-            // สร้าง participant_id
-            $participant_id = 'PART-' . date('YmdHis') . '-' . substr(md5(uniqid(rand(), true)), 0, 8);
-            
-            // ตรวจสอบว่า participant_id ซ้ำหรือไม่
-            $existing = Participant::findByParticipantId($participant_id);
-            if ($existing) {
-                $participant_id = 'PART-' . date('YmdHis') . '-' . substr(md5(uniqid(rand(), true)), 0, 8);
+            // ตรวจสอบว่า events_id มีอยู่ใน events table หรือไม่
+            try {
+                $event = Event::findByid($events_id);
+                if (!$event) {
+                    $error = 'ไม่พบกิจกรรมที่เลือก กรุณาเลือกกิจกรรมใหม่';
+                }
+            } catch (Exception $e) {
+                $error = 'เกิดข้อผิดพลาดในการตรวจสอบกิจกรรม: ' . $e->getMessage();
             }
+        }
+        
+        if (empty($error)) {
+            if (empty($firstname)) {
+                $error = 'กรุณากรอกชื่อ';
+            } elseif (empty($lastname)) {
+                $error = 'กรุณากรอกนามสกุล';
+            } elseif (empty($email)) {
+                $error = 'กรุณากรอกอีเมล';
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error = 'รูปแบบอีเมลไม่ถูกต้อง';
+            } elseif (!in_array($status, ['รอเข้าร่วม', 'เข้าร่วมแล้ว', 'ยกเลิก'])) {
+                $error = 'สถานะไม่ถูกต้อง';
+            }
+        }
+        
+        if (empty($error)) {
+            // สร้าง participant_id อัตโนมัติ
+            $participant_id = 'PART-' . date('YmdHis') . '-' . substr(md5(uniqid(rand(), true)), 0, 8);
             
             // เตรียมข้อมูลสำหรับบันทึก
             $participantData = [
@@ -170,14 +180,14 @@
                     </div>
                 <?php endif; ?>
                 
-                <form method="POST" class="mt-3">
+                <form method="GET" class="mt-3">
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">เลือกกิจกรรม <span class="text-danger">*</span></label>
                             <select name="events_id" class="form-select" required>
                                 <option value="">-- กรุณาเลือกกิจกรรม --</option>
                                 <?php foreach ($events as $event): ?>
-                                    <option value="<?= htmlspecialchars($event['events_id']) ?>" <?= (isset($_POST['events_id']) && $_POST['events_id'] === $event['events_id']) ? 'selected' : '' ?>>
+                                    <option value="<?= htmlspecialchars($event['events_id']) ?>" <?= (isset($_GET['events_id']) && $_GET['events_id'] === $event['events_id']) ? 'selected' : '' ?>>
                                         <?= htmlspecialchars($event['events_name']) ?> (<?= htmlspecialchars($event['events_id']) ?>)
                                     </option>
                                 <?php endforeach; ?>
@@ -186,49 +196,49 @@
                         
                         <div class="col-md-6 mb-3">
                             <label class="form-label">ประเภทผู้เข้าร่วม</label>
-                            <input type="text" name="type" class="form-control" placeholder="เช่น บุคลากร, นักศึกษา, บุคคลภายนอก" value="<?= isset($_POST['type']) ? htmlspecialchars($_POST['type']) : '' ?>">
+                            <input type="text" name="type" class="form-control" placeholder="เช่น บุคลากร, นักศึกษา, บุคคลภายนอก" value="<?= isset($_GET['type']) ? htmlspecialchars($_GET['type']) : '' ?>">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-2 mb-3">
                             <label class="form-label">คำนำหน้า</label>
                             <select name="prefix" class="form-select">
-                                <option value="นาย" <?= (isset($_POST['prefix']) && $_POST['prefix'] === 'นาย') ? 'selected' : '' ?>>นาย</option>
-                                <option value="นางสาว" <?= (isset($_POST['prefix']) && $_POST['prefix'] === 'นางสาว') ? 'selected' : '' ?>>นางสาว</option>
-                                <option value="นาง" <?= (isset($_POST['prefix']) && $_POST['prefix'] === 'นาง') ? 'selected' : '' ?>>นาง</option>
+                                <option value="นาย" <?= (isset($_GET['prefix']) && $_GET['prefix'] === 'นาย') ? 'selected' : '' ?>>นาย</option>
+                                <option value="นางสาว" <?= (isset($_GET['prefix']) && $_GET['prefix'] === 'นางสาว') ? 'selected' : '' ?>>นางสาว</option>
+                                <option value="นาง" <?= (isset($_GET['prefix']) && $_GET['prefix'] === 'นาง') ? 'selected' : '' ?>>นาง</option>
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">ชื่อ <span class="text-danger">*</span></label>
-                            <input type="text" name="firstname" class="form-control" value="<?= isset($_POST['firstname']) ? htmlspecialchars($_POST['firstname']) : '' ?>" required>
+                            <input type="text" name="firstname" class="form-control" value="<?= isset($_GET['firstname']) ? htmlspecialchars($_GET['firstname']) : '' ?>" required>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label">นามสกุล <span class="text-danger">*</span></label>
-                            <input type="text" name="lastname" class="form-control" value="<?= isset($_POST['lastname']) ? htmlspecialchars($_POST['lastname']) : '' ?>" required>
+                            <input type="text" name="lastname" class="form-control" value="<?= isset($_GET['lastname']) ? htmlspecialchars($_GET['lastname']) : '' ?>" required>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">อีเมล <span class="text-danger">*</span></label>
-                        <input type="email" name="email" class="form-control" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : '' ?>" required>
+                        <input type="email" name="email" class="form-control" value="<?= isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '' ?>" required>
                     </div>
                     
                     <div class="mb-3">
                         <label class="form-label">สังกัด</label>
-                        <input type="text" name="organization" class="form-control" value="<?= isset($_POST['organization']) ? htmlspecialchars($_POST['organization']) : '' ?>">
+                        <input type="text" name="organization" class="form-control" value="<?= isset($_GET['organization']) ? htmlspecialchars($_GET['organization']) : '' ?>">
                     </div>
                     
                     <div class="mb-3">
                         <label class="form-label">สถานะ</label>
                         <select name="status" class="form-select">
-                            <option value="รอเข้าร่วม" <?= (isset($_POST['status']) && $_POST['status'] === 'รอเข้าร่วม') ? 'selected' : '' ?>>รอเข้าร่วม</option>
-                            <option value="เข้าร่วมแล้ว" <?= (isset($_POST['status']) && $_POST['status'] === 'เข้าร่วมแล้ว') ? 'selected' : '' ?>>เข้าร่วมแล้ว</option>
-                            <option value="ยกเลิก" <?= (isset($_POST['status']) && $_POST['status'] === 'ยกเลิก') ? 'selected' : '' ?>>ยกเลิก</option>
+                            <option value="รอเข้าร่วม" <?= (isset($_GET['status']) && $_GET['status'] === 'รอเข้าร่วม') ? 'selected' : '' ?>>รอเข้าร่วม</option>
+                            <option value="เข้าร่วมแล้ว" <?= (isset($_GET['status']) && $_GET['status'] === 'เข้าร่วมแล้ว') ? 'selected' : '' ?>>เข้าร่วมแล้ว</option>
+                            <option value="ยกเลิก" <?= (isset($_GET['status']) && $_GET['status'] === 'ยกเลิก') ? 'selected' : '' ?>>ยกเลิก</option>
                         </select>
                     </div>
                     
                     <div class="mb-3">
                         <label class="form-label">หมายเหตุ</label>
-                        <textarea name="note" class="form-control" rows="3"><?= isset($_POST['note']) ? htmlspecialchars($_POST['note']) : '' ?></textarea>
+                        <textarea name="note" class="form-control" rows="3"><?= isset($_GET['note']) ? htmlspecialchars($_GET['note']) : '' ?></textarea>
                     </div>
                     
                     <div class="d-flex gap-2 mt-4">

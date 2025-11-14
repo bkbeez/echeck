@@ -45,6 +45,7 @@
     // จัดการ POST request สำหรับอัพเดทข้อมูล
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && $participant) {
         // Validate ข้อมูล
+        $participant_id = isset($_POST['participant_id']) ? trim($_POST['participant_id']) : '';
         $events_id = isset($_POST['events_id']) ? trim($_POST['events_id']) : '';
         $type = isset($_POST['type']) ? trim($_POST['type']) : '';
         $prefix = isset($_POST['prefix']) ? trim($_POST['prefix']) : '';
@@ -71,6 +72,7 @@
         } else {
             // เตรียมข้อมูลสำหรับอัพเดท
             $participantData = [
+                'participant_id' => Helper::stringSave($participant_id),
                 'events_id' => Helper::stringSave($events_id),
                 'type' => Helper::stringSave($type),
                 'prefix' => Helper::stringSave($prefix),
@@ -91,7 +93,7 @@
                     header('Location: index.php');
                     exit();
                 } else {
-                    $error = 'ไม่สามารถอัพเดทข้อมูลได้ กรุณาลองใหม่อีกครั้ง';
+                    $error = 'ไม่สามารถอัพเดทข้อมูลได้ อาจจะไม่มีข้อมูลนี้อยู่แล้ว หรือเกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง';
                 }
             } catch (Exception $e) {
                 $error = 'เกิดข้อผิดพลาด: ' . $e->getMessage();
@@ -194,9 +196,15 @@
                     <input type="hidden" name="id" value="<?= htmlspecialchars($participant['id']) ?>">
                     
                     <div class="mb-3">
-                        <label class="form-label">รหัสรายการ</label>
-                        <input type="text" class="form-control" value="<?= htmlspecialchars($participant['participant_id'] ?? '-') ?>" disabled>
-                        <small class="text-muted">รหัสรายการไม่สามารถแก้ไขได้</small>
+                        <label class="form-label">รหัสรายการ (ID)</label>
+                        <input type="text" class="form-control" value="<?= htmlspecialchars($participant['id'] ?? '-') ?>" disabled>
+                        <small class="text-muted">ID ไม่สามารถแก้ไขได้</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">รหัสผู้เข้าร่วม (Participant ID)</label>
+                        <input type="text" name="participant_id" class="form-control" value="<?= htmlspecialchars($participant['participant_id'] ?? '') ?>" placeholder="เช่น PART-20240101120000-abc12345">
+                        <small class="text-muted">สามารถแก้ไขได้</small>
                     </div>
                     
                     <div class="mb-3">

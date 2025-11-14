@@ -4,12 +4,12 @@
 // แต่ตอนนี้เราใช้ create.php และ edit.php แทนแล้ว
 // เก็บไฟล์นี้ไว้เพื่อความเข้ากันได้กับโค้ดเดิม
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $action = isset($_POST['action']) ? $_POST['action'] : 'create';
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    $action = isset($_GET['action']) ? $_GET['action'] : 'create';
     
     if ($action === 'update') {
         // อัพเดทข้อมูล
-        $participantId = isset($_POST['participant_id']) ? intval($_POST['participant_id']) : 0;
+        $participantId = isset($_GET['participant_id']) ? intval($_GET['participant_id']) : 0;
         
         if ($participantId <= 0) {
             $_SESSION['participant_update_error'] = 'ไม่พบข้อมูลผู้เข้าร่วม';
@@ -17,17 +17,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
         
-        $events_id = isset($_POST['events_id']) ? trim($_POST['events_id']) : '';
-        $type = isset($_POST['type']) ? trim($_POST['type']) : '';
-        $prefix = isset($_POST['prefix']) ? trim($_POST['prefix']) : '';
-        $firstname = isset($_POST['firstname']) ? trim($_POST['firstname']) : '';
-        $lastname = isset($_POST['lastname']) ? trim($_POST['lastname']) : '';
-        $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-        $organization = isset($_POST['organization']) ? trim($_POST['organization']) : '';
-        $status = isset($_POST['status']) ? trim($_POST['status']) : 'รอเข้าร่วม';
-        $note = isset($_POST['note']) ? trim($_POST['note']) : '';
+        $participant_id = isset($_GET['participant_id']) ? trim($_GET['participant_id']) : '';
+        $events_id = isset($_GET['events_id']) ? trim($_GET['events_id']) : '';
+        $type = isset($_GET['type']) ? trim($_GET['type']) : '';
+        $prefix = isset($_GET['prefix']) ? trim($_GET['prefix']) : '';
+        $firstname = isset($_GET['firstname']) ? trim($_GET['firstname']) : '';
+        $lastname = isset($_GET['lastname']) ? trim($_GET['lastname']) : '';
+        $email = isset($_GET['email']) ? trim($_GET['email']) : '';
+        $organization = isset($_GET['organization']) ? trim($_GET['organization']) : '';
+        $status = isset($_GET['status']) ? trim($_GET['status']) : 'รอเข้าร่วม';
+        $note = isset($_GET['note']) ? trim($_GET['note']) : '';
         
         $participantData = [
+            'participant_id' => Helper::stringSave($participant_id),
             'events_id' => Helper::stringSave($events_id),
             'type' => Helper::stringSave($type),
             'prefix' => Helper::stringSave($prefix),
@@ -51,20 +53,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         // สร้างใหม่
-        $events_id = isset($_POST['events_id']) ? trim($_POST['events_id']) : '';
-        $type = isset($_POST['type']) ? trim($_POST['type']) : '';
-        $prefix = isset($_POST['prefix']) ? trim($_POST['prefix']) : '';
-        $firstname = isset($_POST['firstname']) ? trim($_POST['firstname']) : '';
-        $lastname = isset($_POST['lastname']) ? trim($_POST['lastname']) : '';
-        $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-        $organization = isset($_POST['organization']) ? trim($_POST['organization']) : '';
-        $status = isset($_POST['status']) ? trim($_POST['status']) : 'รอเข้าร่วม';
-        $note = isset($_POST['note']) ? trim($_POST['note']) : '';
+        $events_id = isset($_GET['events_id']) ? trim($_GET['events_id']) : '';
+        $type = isset($_GET['type']) ? trim($_GET['type']) : '';
+        $prefix = isset($_GET['prefix']) ? trim($_GET['prefix']) : '';
+        $firstname = isset($_GET['firstname']) ? trim($_GET['firstname']) : '';
+        $lastname = isset($_GET['lastname']) ? trim($_GET['lastname']) : '';
+        $email = isset($_GET['email']) ? trim($_GET['email']) : '';
+        $organization = isset($_GET['organization']) ? trim($_GET['organization']) : '';
+        $status = isset($_GET['status']) ? trim($_GET['status']) : 'รอเข้าร่วม';
+        $note = isset($_GET['note']) ? trim($_GET['note']) : '';
         
-        $participant_id = 'PART-' . date('YmdHis') . '-' . substr(md5(uniqid(rand(), true)), 0, 8);
-        
+        // สร้าง participant_id อัตโนมัติ (จะถูกสร้างใน model ถ้าไม่มี)
         $participantData = [
-            'participant_id' => $participant_id,
+            'participant_id' => '', // จะถูก generate อัตโนมัติใน model
             'events_id' => Helper::stringSave($events_id),
             'type' => Helper::stringSave($type),
             'prefix' => Helper::stringSave($prefix),

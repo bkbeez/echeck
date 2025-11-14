@@ -108,10 +108,11 @@ class DB {
             $statement = $connect->prepare($sql);
             // Execute
             if( count($parameters)>0 ){
-                $statement->execute($parameters);
+                $success = $statement->execute($parameters);
             }else{
-                $result = $statement->execute();
+                $success = $statement->execute();
             }
+            
             $result = $connect->lastInsertId();
         } catch(PDOException $e) {
             if( isset($init["ignore_error"]) ){
@@ -184,7 +185,7 @@ class DB {
         $dbname = isset($init["dbname"]) ? $init["dbname"] : $self->dbname;
         $username = isset($init["username"]) ? $init["username"] : $self->username;
         $password = isset($init["password"]) ? $init["password"] : $self->password;
-        $result = null;
+        $result = false;
         $connect = null;
         try {
             $connect = new PDO("$driver:host=$host;dbname=$dbname", $username, $password);
@@ -196,9 +197,12 @@ class DB {
             $statement = $connect->prepare($sql);
             // Execute
             if( count($parameters)>0 ){
-                $result = $statement->execute($parameters);
+                $statement->execute($parameters);
             }else{
                 $result = $statement->execute();
+            }
+            if($statement->rowCount()>0){
+                $result = true;
             }
         } catch(PDOException $e) {
             if( isset($init["ignore_error"]) ){

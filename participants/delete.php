@@ -22,13 +22,17 @@
     try {
         $result = Participant::deleteParticipant($participantId);
         
-        if ($result) {
+        if ($result === true) {
             $_SESSION['participant_delete_success'] = 'ลบรายชื่อผู้เข้าร่วมสำเร็จ';
         } else {
-            $_SESSION['participant_delete_error'] = 'ไม่สามารถลบรายชื่อได้ กรุณาลองใหม่อีกครั้ง';
+            $_SESSION['participant_delete_error'] = 'ไม่สามารถลบรายชื่อได้ อาจจะไม่มีข้อมูลนี้อยู่แล้ว หรือเกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง';
         }
     } catch (Exception $e) {
         $_SESSION['participant_delete_error'] = 'เกิดข้อผิดพลาด: ' . $e->getMessage();
+        error_log('Participant delete error: ' . $e->getMessage());
+    } catch (PDOException $e) {
+        $_SESSION['participant_delete_error'] = 'เกิดข้อผิดพลาดฐานข้อมูล: ' . $e->getMessage();
+        error_log('Participant delete PDO error: ' . $e->getMessage());
     }
     
     // Redirect ไปยังหน้า index
