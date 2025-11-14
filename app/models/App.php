@@ -129,7 +129,7 @@ class App {
                         $htmls .= '</div>';
                         $htmls .= '<div id="mainsite-navbar" class="offcanvas-body ms-lg-auto d-flex flex-column h-100">';
                             $htmls .= '<ul class="navbar-nav">';
-                            foreach( (new App())->applications as $key => $value ){
+                            /*foreach( (new App())->applications as $key => $value ){
                                 if( isset($value['dropdown']) ){
                                     $htmls .= '<li class="nav-item'.((isset($index['page'])&&$index['page']==$key) ? ' active':null).' dropdown">';
                                         $htmls .= '<a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown"><span class="nav-name"><div class="m-box-top"><i class="'.$value['icon'].'"></i></div><div class="m-box"><i class="'.$value['icon'].'"></i></div>'.$value[App::lang()].'</span></a>';
@@ -167,7 +167,7 @@ class App {
                                         $htmls .= '<a href="'.$value['link'].'" class="nav-link"><span class="nav-name"><div class="m-box-top"><i class="'.$value['icon'].'"></i></div><div class="m-box"><i class="'.$value['icon'].'"></i></div>'.$value[App::lang()].'</span></a>';
                                     $htmls .= '</li>';
                                 }
-                            }
+                            }*/
                             if( isset($_SESSION['login'])&&Auth::admin() ){
                                 $htmls .= '<li class="nav-item'.((isset($index['page'])&&$index['page']=='admin') ? ' active':null).' dropdown">';
                                     $htmls .= '<a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown"><span class="nav-name"><div class="m-box-top"><i class="uil uil-create-dashboard"></i></div><div class="m-box"><i class="uil uil-create-dashboard"></i></div>'.Lang::get('Administrator').'</span></a>';
