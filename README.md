@@ -8,7 +8,7 @@ Check-in 's Faculty of Education, Chiang Mai University
 <IfModule mod_rewrite.c>
     Options -Indexes
 </IfModule>
-<Files env.conf> 
+<Files env.conf>
     Order Allow,Deny
     Deny from all
 </Files>
