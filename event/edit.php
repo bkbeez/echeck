@@ -1,5 +1,38 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
+    // Helper function to normalize date format
+    if (!function_exists('normalizeDate')) {
+        function normalizeDate($date) {
+            if (empty($date)) {
+                return false;
+            }
+            
+            // If already in Y-m-d format, return as is
+            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+                return $date;
+            }
+            
+            // Try to parse dd/mm/yyyy format (day/month/year)
+            if (preg_match('/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/', $date, $matches)) {
+                $day = str_pad($matches[1], 2, '0', STR_PAD_LEFT);
+                $month = str_pad($matches[2], 2, '0', STR_PAD_LEFT);
+                $year = $matches[3];
+                
+                // Validate date
+                if (checkdate($month, $day, $year)) {
+                    return "$year-$month-$day";
+                }
+            }
+            
+            // Try to parse with strtotime
+            $timestamp = strtotime($date);
+            if ($timestamp !== false) {
+                return date('Y-m-d', $timestamp);
+            }
+            
+            return false;
+        }
+    }
     
     $error = '';
     $success = '';
@@ -40,19 +73,26 @@
             $error = 'กรุณาเลือกวันที่เริ่มต้น';
         } elseif (empty($end_date)) {
             $error = 'กรุณาเลือกวันที่สิ้นสุด';
-        } elseif ($start_date > $end_date) {
-            $error = 'วันที่เริ่มต้นต้องไม่เกินวันที่สิ้นสุด';
-        } elseif (!in_array($participant_type, ['ALL', 'LIST'])) {
-            $error = 'ประเภทผู้เข้าร่วมไม่ถูกต้อง';
-        } elseif (!in_array($status, [0, 1, 2, 3])) {
-            $error = 'สถานะไม่ถูกต้อง';
         } else {
+            // Convert date format from dd/mm/yyyy to Y-m-d if needed
+            $normalized_start = normalizeDate($start_date);
+            $normalized_end = normalizeDate($end_date);
+            
+            if (!$normalized_start || !$normalized_end) {
+                $error = 'รูปแบบวันที่ไม่ถูกต้อง กรุณาใช้รูปแบบ dd/mm/yyyy หรือ yyyy-mm-dd';
+            } elseif ($normalized_start > $normalized_end) {
+                $error = 'วันที่เริ่มต้นต้องไม่เกินวันที่สิ้นสุด';
+            } elseif (!in_array($participant_type, ['ALL', 'LIST'])) {
+                $error = 'ประเภทผู้เข้าร่วมไม่ถูกต้อง';
+            } elseif (!in_array($status, [0, 1, 2, 3])) {
+                $error = 'สถานะไม่ถูกต้อง';
+            } else {
             // เตรียมข้อมูลสำหรับอัพเดท
             $eventData = [
                 'events_id' => $event['events_id'], // ใช้ events_id เดิม
                 'events_name' => Helper::stringSave($name),
-                'start_date' => $start_date,
-                'end_date' => $end_date,
+                'start_date' => $normalized_start,
+                'end_date' => $normalized_end,
                 'participant_type' => $participant_type,
                 'status' => $status
             ];
@@ -71,13 +111,13 @@
             } catch (Exception $e) {
                 $error = 'เกิดข้อผิดพลาด: ' . $e->getMessage();
             }
+            }
         }
-        
 
         if ($error) {
             $event['events_name'] = $name;
-            $event['start_date'] = $start_date;
-            $event['end_date'] = $end_date;
+            $event['start_date'] = isset($normalized_start) ? $normalized_start : $start_date;
+            $event['end_date'] = isset($normalized_end) ? $normalized_end : $end_date;
             $event['participant_type'] = $participant_type;
             $event['status'] = $status;
         }
@@ -178,11 +218,17 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">วันที่เริ่มต้น <span class="text-danger">*</span></label>
-                            <input type="date" name="start_date" class="form-control" value="<?= htmlspecialchars($event['start_date']) ?>" required>
+                            <div class="position-relative">
+                                <input type="text" name="start_date" id="start_date" class="form-control" placeholder="dd/mm/yyyy" value="<?= htmlspecialchars($event['start_date']) ?>" required autocomplete="off">
+                                <i class="bi bi-calendar position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #6c757d;"></i>
+                            </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">วันที่สิ้นสุด <span class="text-danger">*</span></label>
-                            <input type="date" name="end_date" class="form-control" value="<?= htmlspecialchars($event['end_date']) ?>" required>
+                            <div class="position-relative">
+                                <input type="text" name="end_date" id="end_date" class="form-control" placeholder="dd/mm/yyyy" value="<?= htmlspecialchars($event['end_date']) ?>" required autocomplete="off">
+                                <i class="bi bi-calendar position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #6c757d;"></i>
+                            </div>
                         </div>
                     </div>
                     
@@ -226,5 +272,151 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script>
+        // Helper function to format date for display
+        function formatDateForDisplay(dateStr) {
+            if (!dateStr) return '';
+            // If already in Y-m-d format, convert to d/m/Y
+            if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+                const parts = dateStr.split('-');
+                return parts[2] + '/' + parts[1] + '/' + parts[0];
+            }
+            return dateStr;
+        }
+
+        // Initialize date pickers
+        let startDatePicker, endDatePicker;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const startInput = document.getElementById('start_date');
+            const endInput = document.getElementById('end_date');
+            
+            // Format initial values for display
+            if (startInput.value) {
+                startInput.value = formatDateForDisplay(startInput.value);
+            }
+            if (endInput.value) {
+                endInput.value = formatDateForDisplay(endInput.value);
+            }
+            
+            startDatePicker = flatpickr("#start_date", {
+                dateFormat: "d/m/Y",
+                altInput: false,
+                placeholder: "dd/mm/yyyy",
+                allowInput: true,
+                parseDate: function(datestr, format) {
+                    // Try to parse d/m/Y format (day/month/year)
+                    const parts = datestr.split('/');
+                    if (parts.length === 3) {
+                        const day = parseInt(parts[0], 10);
+                        const month = parseInt(parts[1], 10);
+                        const year = parseInt(parts[2], 10);
+                        if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900) {
+                            return new Date(year, month - 1, day);
+                        }
+                    }
+                    return null;
+                },
+                onChange: function(selectedDates, dateStr, instance) {
+                    // Update hidden value to Y-m-d format
+                    if (selectedDates.length > 0) {
+                        const formatted = selectedDates[0].toISOString().split('T')[0];
+                        instance.input.setAttribute('data-date-value', formatted);
+                        if (endDatePicker) {
+                            endDatePicker.set('minDate', selectedDates[0]);
+                        }
+                    }
+                }
+            });
+
+            endDatePicker = flatpickr("#end_date", {
+                dateFormat: "d/m/Y",
+                altInput: false,
+                placeholder: "dd/mm/yyyy",
+                allowInput: true,
+                parseDate: function(datestr, format) {
+                    // Try to parse d/m/Y format (day/month/year)
+                    const parts = datestr.split('/');
+                    if (parts.length === 3) {
+                        const day = parseInt(parts[0], 10);
+                        const month = parseInt(parts[1], 10);
+                        const year = parseInt(parts[2], 10);
+                        if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900) {
+                            return new Date(year, month - 1, day);
+                        }
+                    }
+                    return null;
+                },
+                onChange: function(selectedDates, dateStr, instance) {
+                    // Update hidden value to Y-m-d format
+                    if (selectedDates.length > 0) {
+                        const formatted = selectedDates[0].toISOString().split('T')[0];
+                        instance.input.setAttribute('data-date-value', formatted);
+                    }
+                }
+            });
+            
+            if (startDatePicker.selectedDates.length > 0) {
+                endDatePicker.set('minDate', startDatePicker.selectedDates[0]);
+            }
+        });
+
+        // Form validation and conversion
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const startInput = document.getElementById('start_date');
+            const endInput = document.getElementById('end_date');
+            
+            // Convert display format to Y-m-d for submission
+            if (startInput.value) {
+                const startValue = startInput.getAttribute('data-date-value');
+                if (startValue) {
+                    startInput.value = startValue;
+                } else if (startDatePicker && startDatePicker.selectedDates.length > 0) {
+                    startInput.value = startDatePicker.selectedDates[0].toISOString().split('T')[0];
+                } else {
+                    // Try to parse d/m/Y format (day/month/year)
+                    const parts = startInput.value.split('/');
+                    if (parts.length === 3) {
+                        startInput.value = parts[2] + '-' + parts[1].padStart(2, '0') + '-' + parts[0].padStart(2, '0');
+                    }
+                }
+            }
+            
+            if (endInput.value) {
+                const endValue = endInput.getAttribute('data-date-value');
+                if (endValue) {
+                    endInput.value = endValue;
+                } else if (endDatePicker && endDatePicker.selectedDates.length > 0) {
+                    endInput.value = endDatePicker.selectedDates[0].toISOString().split('T')[0];
+                } else {
+                    // Try to parse d/m/Y format (day/month/year)
+                    const parts = endInput.value.split('/');
+                    if (parts.length === 3) {
+                        endInput.value = parts[2] + '-' + parts[1].padStart(2, '0') + '-' + parts[0].padStart(2, '0');
+                    }
+                }
+            }
+            
+            // Validate dates
+            if (startInput.value && endInput.value) {
+                const start = new Date(startInput.value);
+                const end = new Date(endInput.value);
+                
+                if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                    e.preventDefault();
+                    alert('รูปแบบวันที่ไม่ถูกต้อง กรุณาใช้รูปแบบ dd/mm/yyyy');
+                    return false;
+                }
+                
+                if (start > end) {
+                    e.preventDefault();
+                    alert('วันที่เริ่มต้นต้องไม่เกินวันที่สิ้นสุด');
+                    return false;
+                }
+            }
+        });
+    </script>
 </body>
 </html>

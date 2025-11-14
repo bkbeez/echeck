@@ -17,7 +17,6 @@
         }
     }
     
-    // ดึงรายการกิจกรรมทั้งหมด
     $user_id = '';
     if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
         $user_id = isset($_SESSION['login']['user']['email']) ? $_SESSION['login']['user']['email'] : 
