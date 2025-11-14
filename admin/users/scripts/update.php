@@ -32,11 +32,11 @@
     $datas .= "=:surname";
     $parameters['surname'] = ( (isset($_POST['surname'])&&$_POST['surname']) ? Helper::stringSave($_POST['surname']) : null );
     if( (isset($check['title'])&&$check['title']!=$parameters['title'])||(isset($check['name'])&&$check['name']!=$parameters['name'])||(isset($check['surname'])&&$check['surname']!=$parameters['surname']) ){
-        $logi += 1;
-        $log .= ", (,NOW(),:email,:title_".$logi.",:remark_".$logi.",:user_by)";
+        $log .= ", (NOW(),:email,:title_".$logi.",:remark_".$logi.",:user_by)";
         $logs['title_'.$logi]  = 'Change Name';
-        $logs['remark_'.$logi] = trim($check['title'].$check['name'].' '.$check['surname']);
+        $logs['remark_'.$logi]  = trim($check['title'].$check['name'].' '.$check['surname']);
         $logs['remark_'.$logi] .= ' &rang; '.trim($parameters['title'].$parameters['name'].' '.$parameters['surname']);
+        $logi++;
     }
     if( DB::update("UPDATE `member` SET $datas WHERE id=:id AND email=:email;", $parameters) ){
         if( $logi>0 ){

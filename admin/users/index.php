@@ -86,8 +86,8 @@
                             <div class="mc-field-group input-group form-floating mb-1">
                                 <input id="keyword" name="keyword" type="text" value="<?=((isset($filter['keyword'])&&$filter['keyword'])?$filter['keyword']:null)?>" class="form-control" placeholder="...">
                                 <label for="keyword"><?=Lang::get('Keyword')?></label>
-                                <button type="submit" class="btn btn-soft-ash btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
-                                <button type="button" class="btn btn-soft-primary btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-sliders-v-alt"></i></button>
+                                <button type="submit" class="btn btn-soft-primary btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
+                                <button type="button" class="btn btn-primary btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-sliders-v-alt"></i></button>
                             </div>
                         </div>
                     </div>
@@ -153,7 +153,7 @@
         }else if(action=='delete'){
             swal({
                 'title':'<b class="text-red" style="font-size:100px;"><i class="uil uil-trash-alt"></i></b>',
-                'html' :'<?=( (App::lang()=='en') ? 'Confirm to delete ' : 'ยืนยันลบ ' )?><span class="underline text-red red">'+params.email+'</span> ?',
+                'html' :'<?=( (App::lang()=='en') ? 'Confirm to delete ' : 'ยืนยันลบ ' )?><span class="underline red">'+params.email+'</span> ?',
                 'showCloseButton': false,
                 'showConfirmButton': true,
                 'showCancelButton': true,
