@@ -43,7 +43,6 @@
     
     // จัดการ POST request สำหรับอัพเดทข้อมูล
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && $participant) {
-        // Validate ข้อมูล
         $participant_id = isset($_POST['participant_id']) ? trim($_POST['participant_id']) : '';
         $events_id = isset($_POST['events_id']) ? trim($_POST['events_id']) : '';
         $type = isset($_POST['type']) ? trim($_POST['type']) : '';
@@ -55,7 +54,6 @@
         $status = isset($_POST['status']) ? trim($_POST['status']) : 'รอเข้าร่วม';
         $note = isset($_POST['note']) ? trim($_POST['note']) : '';
         
-        // ตรวจสอบข้อมูลที่จำเป็น
         if (empty($events_id)) {
             $error = 'กรุณาเลือกกิจกรรม';
         } elseif (empty($firstname)) {

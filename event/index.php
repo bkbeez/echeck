@@ -265,7 +265,6 @@
                                 <td class="text-start ps-4 fw-semibold text-primary-emphasis">#<?= $row['id'] ?></td>
                                 <td class="text-start">
                                     <div class="fw-semibold text-dark"><?= htmlspecialchars($row['events_name'] ?? '-') ?></div>
-                                    <small class="text-muted">อัปเดตล่าสุด <?= $updatedAt ? date('d M Y', strtotime($updatedAt)) : '-' ?></small>
                                 </td>
                                 <td><?= formatEventDate($row['start_date'] ?? null) ?></td>
                                 <td><?= formatEventDate($row['end_date'] ?? null) ?></td>

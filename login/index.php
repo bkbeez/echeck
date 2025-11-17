@@ -92,6 +92,11 @@
                                             <input name="email" value="" type="email" class="form-control" placeholder="..." id="email">
                                             <label for="email"><?=Lang::get('Email')?></label>
                                         </div>
+                                        <div class="form-floating mt-2 mb-2 on-member" style="display:none;">
+                                            <input name="password" value="" type="password" class="form-control" placeholder="..." id="password">
+                                            <label for="password"><?=Lang::get('Password')?></label>
+                                        </div>
+
                                         <button type="submit" class="btn btn-lg btn-icon btn-icon-start btn-blue rounded-pill w-100"><i class="uil uil-user"></i> <?=Lang::get('Login')?></button>
                                         <div class="text-center mb-3 mt-2">
                                             <span class="text-muted"><?=Lang::get('Or sign in with')?></span>
