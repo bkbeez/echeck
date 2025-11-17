@@ -146,6 +146,9 @@
             border: none;
             box-shadow: 0 16px 45px rgba(15, 23, 42, 0.1);
         }
+        .content-card .card-body {
+            padding-top: 2.5rem;
+        }
         .form-label {
             font-weight: 600;
             color: #475569;
@@ -175,22 +178,22 @@
         </div>
         
         <div class="card content-card">
-            <div class="card-body p-4">
+            <div class="card-body p-4 pt-5">
                 <?php if ($error): ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i><?= htmlspecialchars($error) ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php endif; ?>
                 
                 <?php if ($success): ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
                         <i class="bi bi-check-circle-fill me-2"></i><?= htmlspecialchars($success) ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 <?php endif; ?>
                 
-                <form method="GET" class="mt-3">
+                <form method="GET" class="mt-4">
                     <div class="mb-3">
                         <label class="form-label">ชื่อกิจกรรม <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" value="<?= isset($_GET['name']) ? htmlspecialchars($_GET['name']) : '' ?>" required>

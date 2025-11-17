@@ -27,6 +27,10 @@
         $error = $_SESSION['event_delete_error'];
         unset($_SESSION['event_delete_error']);
     }
+    // รับ error จาก GET parameter (เช่น จาก report redirect)
+    if (isset($_GET['error']) && !empty($_GET['error'])) {
+        $error = urldecode($_GET['error']);
+    }
     
 
     if (isset($_GET['delete'])) {
@@ -217,7 +221,10 @@
                 <div>
                     <h1 class="display-6 mb-2">หน้าจัดรายการกิจกรรมทั้งหมด</h1>
                 </div>
-                <div class="text-lg-end">
+                <div class="text-lg-end d-flex gap-2 flex-wrap">
+                    <a href="../dashboard/" class="btn btn-create shadow-sm">
+                        <i class="bi bi-graph-up-arrow me-2"></i>Dashboard
+                    </a>
                     <a href="create.php" class="btn btn-create shadow-sm">
                         <i class="bi bi-plus-circle-fill me-2"></i>เพิ่มกิจกรรมใหม่
                     </a>
@@ -233,13 +240,13 @@
         <?php endif; ?>
         
         <?php if ($error): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
                 <i class="bi bi-exclamation-triangle-fill me-2"></i><?= htmlspecialchars($error) ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
         
-        <div class="card content-card">
+        <div class="card content-card mt-3">
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table align-middle mb-0">
@@ -283,6 +290,9 @@
                                         </a>
                                         <a href="share.php?id=<?= $row['id'] ?>" class="btn btn-outline-secondary btn-sm">
                                             <i class="bi bi-share-fill"></i>แชร์
+                                        </a>
+                                        <a href="../report/event_summary_report.php?id=<?= urlencode($row['events_id']) ?>" class="btn btn-outline-info btn-sm">
+                                            <i class="bi bi-file-earmark-text-fill"></i>รายงาน
                                         </a>
                                         <a href="delete.php?delete=<?= $row['id'] ?>" class="btn btn-outline-danger btn-sm"
                                             onclick="return confirm('ยืนยันการลบกิจกรรมนี้?')">

@@ -57,14 +57,14 @@
         }
     }
     
-    // จัดการ POST request สำหรับอัพเดทข้อมูล
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $event) {
+    // จัดการ GET request สำหรับอัพเดทข้อมูล
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && $event) {
         // Validate ข้อมูล
-        $name = isset($_POST['name']) ? trim($_POST['name']) : '';
-        $start_date = isset($_POST['start_date']) ? trim($_POST['start_date']) : '';
-        $end_date = isset($_POST['end_date']) ? trim($_POST['end_date']) : '';
-        $participant_type = isset($_POST['participant_type']) ? trim($_POST['participant_type']) : 'ALL';
-        $status = isset($_POST['status']) ? intval($_POST['status']) : 0;
+        $name = isset($_GET['name']) ? trim($_GET['name']) : '';
+        $start_date = isset($_GET['start_date']) ? trim($_GET['start_date']) : '';
+        $end_date = isset($_GET['end_date']) ? trim($_GET['end_date']) : '';
+        $participant_type = isset($_GET['participant_type']) ? trim($_GET['participant_type']) : 'ALL';
+        $status = isset($_GET['status']) ? intval($_GET['status']) : 0;
         
         // ตรวจสอบข้อมูลที่จำเป็น
         if (empty($name)) {
@@ -201,7 +201,7 @@
                 <?php endif; ?>
                 
                 <?php if ($event): ?>
-                <form method="POST" class="mt-3">
+                <form method="GET" class="mt-3">
                     <input type="hidden" name="id" value="<?= htmlspecialchars($event['id']) ?>">
                     
                     <div class="mb-3">
