@@ -79,9 +79,10 @@
     }
 ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="<?=App::lang()?>">
 <head>
     <meta charset="UTF-8">
+    <meta name="keywords" content="<?=APP_CODE?>,EDU CMU">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -215,6 +216,11 @@
     </style>
 </head>
 <body>
+    <div class="page-loader"></div>
+        <div class="content-wrapper on-font-primary">
+        <!-- Body -->
+            <?=App::menus($index)?>
+            
     <div class="container py-5 position-relative">
         <div class="page-header mb-5">
             <div class="d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-4">
@@ -320,5 +326,7 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
 </html>
+

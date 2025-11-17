@@ -1,3 +1,4 @@
+<?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php 
     include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php');
     

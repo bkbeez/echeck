@@ -120,7 +120,7 @@
     }
 ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="<?=App::lang()?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -170,6 +170,10 @@
     </style>
 </head>
 <body>
+    <div class="page-loader"></div>
+        <div class="content-wrapper on-font-primary">
+        <!-- Body -->
+            <?=App::menus($index)?>
 
     <div class="container py-5">
         <div class="page-header mb-5">
@@ -396,3 +400,4 @@
     </script>
 </body>
 </html>
+<?=App::footer($index)?>
