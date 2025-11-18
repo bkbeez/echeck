@@ -11,10 +11,10 @@
               <img src="favicon.png" alt="logo_edu_cmu">
             </div>
             <h1 class="display-1 mb-5 mx-md-10 mx-lg-0">ลงทะเบียนกิจกรรม <br /><span class="typer text-primary text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,มหาวิทยาลัยเชียงใหม่"></span><span class="cursor text-primary" data-owner="typer"></span></h1>
-            <p class="lead fs-lg mb-7">Achieve your saving goals. Have all your recurring and one time expenses and incomes in one place.</p>
+            <p class="lead fs-lg mb-7"> ลงทะเบียนกิจกรรมสำหรับบุคคลภายนอกและภายใน เลือกสามารถดูและเข้าร่วมกิจกรรมที่ท่านสนใจได้ </p>
             <div class="d-flex justify-content-center justify-content-lg-start" data-cues="slideInDown" data-group="page-title-buttons" data-delay="900">
-              <span><a class="btn btn-lg btn-primary rounded me-2">Get Started</a></span>
-              <span><a class="btn btn-lg btn-green rounded">Free Trial</a></span>
+              <span><a href="event" class="btn btn-lg btn-primary rounded me-2"> หน้ารายการกิจกรรม </a></span>
+              <span><a href="participants" class="btn btn-lg btn-green rounded"> หน้ารายชื่อผู้เข้าร่วมกิจกรรม </a></span>
             </div>
           </div>
           <!-- /column -->
