@@ -7,7 +7,10 @@
       <div class="container pt-10 pb-12 pt-md-14 pb-md-17">
         <div class="row gx-lg-8 gx-xl-12 gy-10 align-items-center">
           <div class="col-md-10 offset-md-1 offset-lg-0 col-lg-5 mt-lg-n2 text-center text-lg-start order-2 order-lg-0" data-cues="slideInDown" data-group="page-title" data-delay="600">
-            <h1 class="display-1 mb-5 mx-md-10 mx-lg-0">Sandbox is effortless and powerful with <br /><span class="typer text-primary text-nowrap" data-delay="100" data-words="easy usage,fast transactions,secure payments"></span><span class="cursor text-primary" data-owner="typer"></span></h1>
+            <div class="display-1 mb-5 mx-10 mx-lg-0">
+              <img src="favicon.png" alt="logo_edu_cmu">
+            </div>
+            <h1 class="display-1 mb-5 mx-md-10 mx-lg-0">ลงทะเบียนกิจกรรม <br /><span class="typer text-primary text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,มหาวิทยาลัยเชียงใหม่"></span><span class="cursor text-primary" data-owner="typer"></span></h1>
             <p class="lead fs-lg mb-7">Achieve your saving goals. Have all your recurring and one time expenses and incomes in one place.</p>
             <div class="d-flex justify-content-center justify-content-lg-start" data-cues="slideInDown" data-group="page-title-buttons" data-delay="900">
               <span><a class="btn btn-lg btn-primary rounded me-2">Get Started</a></span>

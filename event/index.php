@@ -189,6 +189,15 @@
         .table tbody td {
             vertical-align: middle;
         }
+        .table tbody td:nth-child(2) {
+            min-width: 395px;
+            max-width: 500px;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+        .table thead th:nth-child(2) {
+            min-width: 350px;
+        }
         .action-buttons .btn {
             border-radius: 999px;
             font-weight: 600;
@@ -220,7 +229,7 @@
         <div class="content-wrapper on-font-primary">
         <!-- Body -->
             <?=App::menus($index)?>
-            
+
     <div class="container py-5 position-relative">
         <div class="page-header mb-5">
             <div class="d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-4">
@@ -329,4 +338,6 @@
     
 </body>
 </html>
-
+<!-- Body -->
+        </div>
+        <?=App::footer($index)?>

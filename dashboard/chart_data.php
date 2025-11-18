@@ -1,6 +1,5 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
-<?php 
-    include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php');
+<?php
     
     $user_id = '';
     if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {

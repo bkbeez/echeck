@@ -232,7 +232,7 @@
             </div>
         <?php endif; ?>
         
-        <div class="card content-card">
+        <div class="card content-card mt-3">
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table align-middle mb-0">
@@ -309,5 +309,8 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Body -->
+    </div>
+        <?=App::footer($index)?>
 </body>
 </html>

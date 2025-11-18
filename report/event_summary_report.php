@@ -403,6 +403,9 @@
         });
     </script>
     <?php endif; ?>
+    <!-- Body -->
+        </div>
+        <?=App::footer($index)?>
 </body>
 </html>
 

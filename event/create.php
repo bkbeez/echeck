@@ -148,6 +148,7 @@
         }
         .content-card .card-body {
             padding-top: 2.5rem;
+            
         }
         .form-label {
             font-weight: 600;
@@ -181,7 +182,7 @@
             <p class="mb-0 opacity-75">กรอกข้อมูลกิจกรรมที่ต้องการสร้าง</p>
         </div>
         
-        <div class="card content-card">
+        <div class="card content-card mt-3">
             <div class="card-body p-4 pt-5">
                 <?php if ($error): ?>
                     <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
