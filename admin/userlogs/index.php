@@ -1,7 +1,7 @@
 <?php if(!isset($index['page'])||$index['page']!='admin'){ header("location:".((isset($_SERVER['SERVER_PORT'])&&$_SERVER['SERVER_PORT']==443)?'https://':'http://').$_SERVER["HTTP_HOST"]); exit(); } ?>
 <?php
-    $formby = $form.'/users';
-    $filter_as = strtolower($index['page'].'_users_as');
+    $formby = $form.'/userlogs';
+    $filter_as = strtolower($index['page'].'_userlogs_as');
     $filter = ( isset($_SESSION['login']['filter'][$filter_as]) ? $_SESSION['login']['filter'][$filter_as] : null );
 ?>
 <style type="text/css">
@@ -9,8 +9,8 @@
     .table-filter .filter-result {
         background: white;
     }
-    .table-filter .filter-result .mail {
-        width: 25%;
+    .table-filter .filter-result .date {
+        width: 165px;
     }
     .table-filter .filter-result .name {
         width: 25%;
@@ -25,16 +25,12 @@
         white-space: nowrap;
         text-overflow: ellipsis;
     }
-    .table-filter .filter-result .name>.mail-o,
-    .table-filter .filter-result .name>.name-o,
+    .table-filter .filter-result .name>font>i,
     .table-filter .filter-result .name>.date-o,
     .table-filter .filter-result .name>.remark-o {
         display: none;
     }
     @media only all and (max-width: 991px) {
-        .table-filter .filter-result .mail {
-            width: 35%;
-        }
         .table-filter .filter-result .name {
             width: auto;
         }
@@ -43,24 +39,20 @@
         }
         .table-filter .filter-result .name>.remark-o {
             display: block;
-        }
-        .table-filter .filter-result .actions.act-2 {
-            width: 45px;
-        }
-        .table-filter .filter-result .actions .btn-box.delete {
-            margin-top: -4px;
+            overflow: initial;
+            white-space: pre-wrap;
+            text-overflow: ellipsis;
         }
     }
     @media only all and (max-width: 768px) {
-        .table-filter .filter-result .mail,
-        .table-filter .filter-result .name>font {
+        .table-filter .filter-result .date {
             display: none;
         }
-        .table-filter .filter-result .name>.name-o {
-            display: block;
-        }
-        .table-filter .filter-result .name>.mail-o {
+        .table-filter .filter-result .name>font>i {
             display: inline;
+        }
+        .table-filter .filter-result .name>.date-o {
+            display: block;
         }
     }
 </style>
@@ -92,12 +84,17 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <select name="condition[is_cmu]" class="form-select mb-1">
-                                <option value="ALL"<?=((!isset($filter['condition']['is_cmu'])||$filter['condition']['is_cmu']=='ALL')?' selected':null)?>>All Accounts</option>
-                                <option value="Y"<?=((isset($filter['condition']['is_cmu'])&&$filter['condition']['is_cmu']=='Y')?' selected':null)?>>CMU Accounts</option>
-                                <option value="N"<?=((isset($filter['condition']['is_cmu'])&&$filter['condition']['is_cmu']=='N')?' selected':null)?>>Other Accounts</option>
-                            </select>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-floating mb-1">
+                                <input name="condition[start_date]" value="<?=((isset($filter['condition']['start_date'])&&$filter['condition']['start_date'])?$filter['condition']['start_date']:null)?>" type="datetime-local" class="form-control" placeholder="...">
+                                <label><?=Lang::get('DateStart')?></label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-floating mb-1">
+                                <input name="condition[end_date]" value="<?=((isset($filter['condition']['end_date'])&&$filter['condition']['end_date'])?$filter['condition']['end_date']:null)?>" type="datetime-local" class="form-control" placeholder="...">
+                                <label><?=Lang::get('DateEnd')?></label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -109,11 +106,9 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col" class="no">#</th>
-                                <th scope="col" class="mail"><?=Lang::get('Email')?></th>
+                                <th scope="col" class="date"><?=Lang::get('Datetime')?></th>
                                 <th scope="col" class="name"><?=( (App::lang()=='en') ? 'User' : 'ผู้ใช้งาน' )?></th>
                                 <th scope="col" class="remark">&nbsp;</th>
-                                <th scope="col" class="actions act-2">&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -140,94 +135,8 @@
 </section>
 <div id="ManageDialog" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="false" aria-modal="true"></div>
 <script type="text/javascript">
-    function manage_events(action, params){
-        if(action=='edit'){
-            params['form_as'] = '<?=$formby?>';
-            $("#ManageDialog").load("<?=$formby?>/filter/edit.php", params, function(response, status, xhr){
-                if(status=="error"){
-                    $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
-                }else{
-                    $("#ManageDialog").modal('show');
-                }
-            });
-        }else if(action=='delete'){
-            swal({
-                'title':'<b class="text-red" style="font-size:100px;"><i class="uil uil-trash-alt"></i></b>',
-                'html' :'<?=( (App::lang()=='en') ? 'Confirm to delete ' : 'ยืนยันลบ ' )?><span class="underline red">'+params.email+'</span> ?',
-                'showCloseButton': false,
-                'showConfirmButton': true,
-                'showCancelButton': true,
-                'focusConfirm': false,
-                'allowEscapeKey': false,
-                'allowOutsideClick': false,
-                'confirmButtonClass': 'btn btn-icon btn-icon-start btn-success rounded-pill',
-                'confirmButtonText':'<font class="fs-16"><i class="uil uil-check-circle"></i> <?=Lang::get('Yes')?></font>',
-                'cancelButtonClass': 'btn btn-icon btn-icon-start btn-outline-danger rounded-pill',
-                'cancelButtonText':'<font class="fs-16"><i class="uil uil-times-circle"></i> <?=Lang::get('No')?></font>',
-                'buttonsStyling': false
-            }).then(
-                function () {
-                    $.ajax({
-                        url : "<?=$formby?>/scripts/delete.php",
-                        type: 'POST',
-                        data: params,
-                        dataType: "json",
-                        beforeSend: function( xhr ) {
-                            runStart();
-                        }
-                    }).done(function(data) {
-                        runStop();
-                        if(data.status=='success'){
-                            swal({
-                                'type': data.status,
-                                'title': data.title,
-                                'html': data.text,
-                                'showConfirmButton': false,
-                                'timer': 1500
-                            }).then(
-                                function () {},
-                                function (dismiss) {
-                                    if (dismiss === 'timer') {
-                                        $("form[name='filter'] button[type='submit']").click();
-                                    }
-                                }
-                            );
-                        }else{
-                            swal({
-                                'type' : data.status,
-                                'title': data.title,
-                                'html' : data.text,
-                                'showCloseButton': false,
-                                'showCancelButton': false,
-                                'focusConfirm': false,
-                                'allowEscapeKey': false,
-                                'allowOutsideClick': false,
-                                'confirmButtonClass': 'btn btn-outline-danger',
-                                'confirmButtonText':'<span><?=Lang::get('Understand')?></span>',
-                                'buttonsStyling': false
-                            }).then(
-                                function () {
-                                    swal.close();
-                                },
-                                function (dismiss) {
-                                    if (dismiss === 'cancel') {
-                                        swal.close();
-                                    }
-                                }
-                            );
-                        }
-                    });
-                },
-                function (dismiss) {
-                    if (dismiss === 'cancel') {
-                        swal.close();
-                    }
-                }
-            );
-        }
-    }
     $(document).ready(function(){
-        $("form[name='filter'] .filter-search select").change(function(){
+        $("form[name='filter'] .filter-search input[type='datetime-local']").change(function(){
             $("form[name='filter'] button[type='submit']").click();
         });
         $("form[name='filter'] .filter-search .btn-clear").click(function(){

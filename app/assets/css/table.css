@@ -209,22 +209,3 @@
         display: none;
     }
 }
-@media only all and (max-width: 465px) {
-    .table-filter .filter-search .filter-pageby>select {
-        width: 100%;
-        padding-left: 5px;
-        display: inline-block;
-    }
-    .table-filter .filter-result .no {
-        display: none;
-    }
-    .table-filter .filter-result table tr td {
-        padding-right: 0;
-    }
-    .table-filter .filter-result table tr td>span {
-        padding-left: 10px;
-    }
-    .table-filter .filter-result table tr td .row-no {
-        display: inline-block;
-    }
-}

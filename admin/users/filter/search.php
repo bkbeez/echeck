@@ -25,37 +25,24 @@
         $condition .= " )";
     }
     $_SESSION['login']['filter'][$filter_as]['condition'] = array();
-    /*if( isset($_POST['condition']) ){
+    if( isset($_POST['condition']) ){
         foreach($_POST['condition'] as $key => $value ){
             if($value){
-                if($key=="institute"){
+                if($key=="is_cmu"){
                     $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
-                    if($value=='OTHER'){
-                        $condition .= " AND meeting_participant.institute_id IS NULL";
-                    }else if($value!='ALL'){
-                        $parameters['institute_id'] = $value;
-                        $condition .= " AND meeting_participant.institute_id=:institute_id";
+                    if($value=='Y'){
+                        $condition .= " AND member.is_cmu='Y'";
+                    }else if($value=='N'){
+                        $condition .= " AND member.is_cmu='N'";
                     }
-                }else if($key=="participant"){
+                }else{
                     $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
-                    if($value=='AAPN'){
-                        $condition .= " AND meeting_participant.participant_id='AAPN'";
-                    }else if($value=='AAPI'){
-                        $condition .= " AND meeting_participant.participant_id='AAPI'";
-                    }
-                }else if($key=="status"){
-                    $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
-                    if($value=='NOTP'){
-                        $condition .= " AND meeting_participant.regist_amount>0 AND meeting_participant.payslip_status IS NULL";
-                    }else if($value=='WAIT'){
-                        $condition .= " AND meeting_participant.regist_amount>0 AND meeting_participant.payslip_status='W'";
-                    }else if($value=='BACK'){
-                        $condition .= " AND meeting_participant.regist_amount>0 AND meeting_participant.payslip_status='R'";
-                    }
+                    $parameters[$key] = $value;
+                    $condition .= " AND member.".$key."=:".$key;
                 }
             }
         }
-    }*/
+    }
     // Total and Pages
     $sql = "SELECT COUNT(member.id) AS total
             FROM member
