@@ -19,7 +19,6 @@
                 $participant = Participant::findByParticipantId($participant_id);
                 
                 if ($participant) {
-                    // ตรวจสอบว่ามีการเช็คอินแล้วหรือยัง
                     if ($participant['status'] === 'เข้าร่วมแล้ว') {
                         $error = 'ผู้เข้าร่วมนี้ได้เช็คอินแล้วเมื่อ ' . ($participant['joined_at'] ? date('d/m/Y H:i', strtotime($participant['joined_at'])) : '');
                     } else {

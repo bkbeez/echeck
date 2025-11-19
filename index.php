@@ -11,10 +11,14 @@
               <img src="favicon.png" alt="logo_edu_cmu">
             </div>
             <h1 class="display-1 mb-5 mx-md-10 mx-lg-0">ลงทะเบียนกิจกรรม <br /><span class="typer text-primary text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,มหาวิทยาลัยเชียงใหม่"></span><span class="cursor text-primary" data-owner="typer"></span></h1>
-            <p class="lead fs-lg mb-7"> ลงทะเบียนกิจกรรมสำหรับบุคคลภายนอกและภายใน เลือกสามารถดูและเข้าร่วมกิจกรรมที่ท่านสนใจได้ </p>
+            <p class="lead fs-lg mb-7"> ลงทะเบียนกิจกรรมสำหรับบุคคลภายนอกและภายใน สามารถเลือกดูและเข้าร่วมกิจกรรมที่ท่านสนใจได้ </p>
             <div class="d-flex justify-content-center justify-content-lg-start" data-cues="slideInDown" data-group="page-title-buttons" data-delay="900">
-              <span><a href="event" class="btn btn-lg btn-primary rounded me-2"> หน้ารายการกิจกรรม </a></span>
-              <span><a href="participants" class="btn btn-lg btn-green rounded"> หน้ารายชื่อผู้เข้าร่วมกิจกรรม </a></span>
+              <span><a href="event" class="btn btn-lg btn-primary rounded me-2"> รายการกิจกรรม </a></span>
+              <span><a href="participants" class="btn btn-lg btn-green rounded me-2"> รายชื่อผู้เข้าร่วมกิจกรรม </a></span>
+
+            </div>
+            <div class="d-flex justify-content-center justify-content-lg-start mt-2" data-cues="slideInDown" data-group="page-title-buttons" data-delay="900">
+              <span><a href="staff" class="btn btn-lg btn-primary rounded me-2"> ลงทะเบียนเข้าร่วมสำหรับเจ้าหน้าที่ (Staff) </a></span>
             </div>
           </div>
           <!-- /column -->
