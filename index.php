@@ -14,7 +14,7 @@
             <p class="lead fs-lg mb-7"> ลงทะเบียนกิจกรรมสำหรับบุคคลภายนอกและภายใน สามารถเลือกดูและเข้าร่วมกิจกรรมที่ท่านสนใจได้ </p>
             <div class="d-flex justify-content-center justify-content-lg-start" data-cues="slideInDown" data-group="page-title-buttons" data-delay="900">
               <span><a href="event" class="btn btn-lg btn-primary rounded me-2"> รายการกิจกรรม </a></span>
-              <span><a href="participants" class="btn btn-lg btn-green rounded me-2"> รายชื่อผู้เข้าร่วมกิจกรรม </a></span>
+              <span><a href="participants" class="btn btn-lg btn-primary rounded me-2"> รายชื่อผู้เข้าร่วมกิจกรรม </a></span>
 
             </div>
             <div class="d-flex justify-content-center justify-content-lg-start mt-2" data-cues="slideInDown" data-group="page-title-buttons" data-delay="900">
