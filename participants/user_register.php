@@ -63,8 +63,8 @@
             try {
                 $existingParticipant = DB::one(
                     "SELECT * FROM `participants` 
-                     WHERE `events_id` = :events_id AND `email` = :email 
-                     LIMIT 1",
+                        WHERE `events_id` = :events_id AND `email` = :email 
+                        LIMIT 1",
                     [
                         'events_id' => $events_id,
                         'email' => $email
