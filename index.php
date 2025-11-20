@@ -18,7 +18,7 @@
 
             </div>
             <div class="d-flex justify-content-center justify-content-lg-start mt-2" data-cues="slideInDown" data-group="page-title-buttons" data-delay="900">
-              <span><a href="staff" class="btn btn-lg btn-primary rounded me-2"> ลงทะเบียนเข้าร่วมสำหรับเจ้าหน้าที่ (Staff) </a></span>
+              <span><a href="participants/staff_register.php" class="btn btn-lg btn-primary rounded me-2"> ลงทะเบียนเข้าร่วมสำหรับเจ้าหน้าที่ (Staff) </a></span>
             </div>
           </div>
           <!-- /column -->

@@ -299,7 +299,6 @@
                             <div class="mb-3">
                                 <label class="form-label">อีเมล <span class="text-danger">*</span></label>
                                 <input type="email" name="email" class="form-control" value="<?= isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '' ?>" required placeholder="example@email.com">
-                                <small class="text-muted">กรุณากรอกอีเมลที่สามารถติดต่อได้</small>
                             </div>
                             
                             <div class="mb-3">

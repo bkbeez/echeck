@@ -208,7 +208,7 @@
         <div class="page-header mb-5">
             <div class="d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-4">
                 <div>
-                    <h1 class="display-6 mb-2">หน้าจัดรายชื่อผู้เข้าร่วมกิจกรรมทั้งหมด</h1>
+                    <h1 class="display-6 mb-2">รายชื่อผู้เข้าร่วมกิจกรรมทั้งหมด</h1>
                 </div>
                 <div class="text-lg-end">
                     <a href="create.php" class="btn btn-create shadow-sm">

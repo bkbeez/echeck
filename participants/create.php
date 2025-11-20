@@ -192,7 +192,7 @@
                                 <option value="">-- กรุณาเลือกกิจกรรม --</option>
                                 <?php foreach ($events as $event): ?>
                                     <option value="<?= htmlspecialchars($event['events_id']) ?>" <?= (isset($_GET['events_id']) && $_GET['events_id'] === $event['events_id']) ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($event['events_name']) ?> (<?= htmlspecialchars($event['events_id']) ?>)
+                                        <?= htmlspecialchars($event['events_name']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>

@@ -340,7 +340,6 @@
                             <div class="mb-3">
                                 <label class="form-label">อีเมล <span class="text-danger">*</span></label>
                                 <input type="email" name="email" class="form-control" value="<?= isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '' ?>" required placeholder="example@email.com">
-                                <small class="text-muted">กรุณากรอกอีเมลที่สามารถติดต่อได้</small>
                             </div>
                             
                             <div class="mb-3">
@@ -355,7 +354,6 @@
                                     <option value="เข้าร่วมแล้ว" <?= (isset($_GET['status']) && $_GET['status'] === 'เข้าร่วมแล้ว') ? 'selected' : '' ?>>เข้าร่วมแล้ว</option>
                                     <option value="ยกเลิก" <?= (isset($_GET['status']) && $_GET['status'] === 'ยกเลิก') ? 'selected' : '' ?>>ยกเลิก</option>
                                 </select>
-                                <small class="text-muted">เจ้าหน้าที่สามารถกำหนดสถานะได้</small>
                             </div>
                             
                             <div class="mb-3">
