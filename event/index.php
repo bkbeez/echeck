@@ -206,6 +206,74 @@
         .action-buttons .btn i {
             margin-right: 0.35rem;
         }
+        .dropdown-toggle {
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-size: 1.25rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .dropdown-toggle:hover {
+            background-color: #f1f5f9;
+            color: #0d6efd;
+        }
+        .dropdown-toggle::after {
+            display: none;
+        }
+        .dropdown-menu {
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem;
+            min-width: 200px;
+        }
+        .dropdown-item {
+            border-radius: 0.5rem;
+            padding: 0.65rem 1rem;
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .dropdown-item:last-child {
+            margin-bottom: 0;
+        }
+        .dropdown-item:hover {
+            background-color: #f8fafc;
+        }
+        .dropdown-item i {
+            width: 1.25rem;
+            text-align: center;
+        }
+        .dropdown-item.text-success:hover {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #059669;
+        }
+        .dropdown-item.text-primary:hover {
+            background-color: rgba(13, 110, 253, 0.1);
+            color: #0d6efd;
+        }
+        .dropdown-item.text-secondary:hover {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+        }
+        .dropdown-item.text-info:hover {
+            background-color: rgba(13, 202, 240, 0.1);
+            color: #0dcaf0;
+        }
+        .dropdown-item.text-danger:hover {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
         .empty-state {
             padding: 3rem 1rem;
             text-align: center;
@@ -267,12 +335,12 @@
                     <table class="table align-middle mb-0">
                         <thead>
                             <tr class="text-uppercase small fw-semibold text-muted text-center">
-                                <th scope="col" class="text-start ps-4">รหัสกิจกรรม</th>
-                                <th scope="col" class="text-start">ชื่อกิจกรรม</th>
-                                <th scope="col">วันที่เริ่มต้น</th>
-                                <th scope="col">วันที่สิ้นสุด</th>
-                                <th scope="col">ประเภทผู้เข้าร่วม</th>
-                                <th scope="col">สถานะ</th>
+                                <th scope="col" class="text-center ps-4">รหัสกิจกรรม</th>
+                                <th scope="col" class="text-center">ชื่อกิจกรรม</th>
+                                <th scope="col" class="text-center">วันที่เริ่มต้น</th>
+                                <th scope="col" class="text-center">วันที่สิ้นสุด</th>
+                                <th scope="col" class="text-center">ประเภทผู้เข้าร่วม</th>
+                                <th scope="col" class="text-center">สถานะ</th>
                                 <th scope="col" class="text-center pe-4">การจัดการ</th>
                             </tr>
                         </thead>
@@ -299,20 +367,43 @@
                                     <span class="badge-status <?= $statusClass ?>"><?= $statusLabel ?></span>
                                 </td>
                                 <td>
-                                    <div class="d-flex justify-content-center flex-wrap gap-2 action-buttons">
-                                        <a href="edit.php?id=<?= $row['id'] ?>" class="btn btn-outline-primary btn-sm">
-                                            <i class="bi bi-pencil-fill"></i>แก้ไข
-                                        </a>
-                                        <a href="share.php?id=<?= $row['id'] ?>" class="btn btn-outline-secondary btn-sm">
-                                            <i class="bi bi-share-fill"></i>แชร์
-                                        </a>
-                                        <a href="../report/event_summary_report.php?id=<?= urlencode($row['events_id']) ?>" class="btn btn-outline-info btn-sm">
-                                            <i class="bi bi-file-earmark-text-fill"></i>รายงาน
-                                        </a>
-                                        <a href="delete.php?delete=<?= $row['id'] ?>" class="btn btn-outline-danger btn-sm"
-                                            onclick="return confirm('ยืนยันการลบกิจกรรมนี้?')">
-                                            <i class="bi bi-trash-fill"></i>ลบ
-                                        </a>
+                                    <div class="dropdown d-flex justify-content-center">
+                                        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li>
+                                                <a class="dropdown-item text-success" href="../checkin/index.php?id=<?= $row['id']?>">
+                                                    <i class="bi bi-file-earmark-text-fill"></i>
+                                                    <span>ลงทะเบียนเช็คอิน</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-primary" href="edit.php?id=<?= $row['id'] ?>">
+                                                    <i class="bi bi-pencil-fill"></i>
+                                                    <span>แก้ไข</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-secondary" href="share.php?id=<?= $row['id'] ?>">
+                                                    <i class="bi bi-share-fill"></i>
+                                                    <span>แชร์</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-info" href="../report/event_summary_report.php?id=<?= urlencode($row['events_id']) ?>">
+                                                    <i class="bi bi-file-earmark-text-fill"></i>
+                                                    <span>รายงาน</span>
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item text-danger" href="delete.php?delete=<?= $row['id'] ?>" onclick="return confirm('ยืนยันการลบกิจกรรมนี้?')">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                    <span>ลบ</span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </td>
                             </tr>
