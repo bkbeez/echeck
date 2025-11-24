@@ -253,10 +253,10 @@
             <h4 class="mb-3"><?= htmlspecialchars($event['events_name'] ?? 'ไม่ระบุชื่อกิจกรรม') ?></h4>
             <div class="row">
                 <div class="col-md-6">
-                    <p class="text-muted mb-1"><i class="bi bi-calendar-event me-2"></i><strong>วันที่เริ่ม:</strong> <?= isset($event['start_date']) && $event['start_date'] ? date('d/m/Y', strtotime($event['start_date'])) : '-' ?></p>
+                    <p class="text-muted mb-1"><i class="bi bi-calendar-event me-2"></i><strong>วันที่เริ่ม:</strong> <?= isset($event['start_date']) && $event['start_date'] && $event['start_date'] !== '0000-00-00' ? Helper::dateDisplay($event['start_date'], 'th') : '-' ?></p>
                 </div>
                 <div class="col-md-6">
-                    <p class="text-muted mb-0"><i class="bi bi-calendar-x me-2"></i><strong>วันที่สิ้นสุด:</strong> <?= isset($event['end_date']) && $event['end_date'] ? date('d/m/Y', strtotime($event['end_date'])) : '-' ?></p>
+                    <p class="text-muted mb-0"><i class="bi bi-calendar-x me-2"></i><strong>วันที่สิ้นสุด:</strong> <?= isset($event['end_date']) && $event['end_date'] && $event['end_date'] !== '0000-00-00' ? Helper::dateDisplay($event['end_date'], 'th') : '-' ?></p>
                 </div>
             </div>
         </div>
@@ -334,7 +334,7 @@
                                             <span class="badge rounded-pill bg-secondary px-3 py-2">ยังไม่เช็คอิน</span>
                                         <?php endif ?>
                                     </td>
-                                    <td><?= isset($p['joined_at']) && $p['joined_at'] ? date('d/m/Y H:i', strtotime($p['joined_at'])) : '-' ?></td>
+                                    <td><?= isset($p['joined_at']) && $p['joined_at'] && $p['joined_at'] !== '0000-00-00 00:00:00' ? Helper::datetimeDisplay($p['joined_at'], 'th') : '-' ?></td>
                                 </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>

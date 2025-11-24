@@ -641,8 +641,8 @@ class Helper {
     static function stringTitleShort($string)
     {
         return str_replace(array( 'Professor Dr.', 'Professor', 'Associate Professor Dr.', 'Associate Professor', 'Assistant Professor Dr.', 'Assistant Professor', 'Lecturer Dr.', 'Lecturer', 'ผู้ช่วยศาสตราจารย์ ดร.', 'ผู้ช่วยศาสตราจารย์', 'รองศาสตราจารย์ ดร.', 'รองศาสตราจารย์', 'ศาสตราจารย์ ดร.', 'ศาสตราจารย์', 'อาจารย์ ดร.', 'อาจารย์', 'นางสาว' )
-                         , array( 'Prof. Dr.', 'Prof.', 'Assoc. Prof. Dr.', 'Assoc. Prof.', 'Asst. Prof. Dr.', 'Asst. Prof.', 'Lect. Dr.', 'Lect.', 'ผศ. ดร.', 'ผศ.', 'รศ. ดร.', 'รศ.', 'ศ. ดร.', 'ศ.', 'อ. ดร.', 'อ.', 'น.ส.' )
-                         , $string);  
+                        , array( 'Prof. Dr.', 'Prof.', 'Assoc. Prof. Dr.', 'Assoc. Prof.', 'Asst. Prof. Dr.', 'Asst. Prof.', 'Lect. Dr.', 'Lect.', 'ผศ. ดร.', 'ผศ.', 'รศ. ดร.', 'รศ.', 'ศ. ดร.', 'ศ.', 'อ. ดร.', 'อ.', 'น.ส.' )
+                        , $string);
     }
 
     /**

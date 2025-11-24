@@ -173,7 +173,7 @@
                             <div class="card-body">
                                 <p class="mb-1"><strong>ชื่อกิจกรรม:</strong> <?= htmlspecialchars($event['events_name']) ?></p>
                                 <p class="mb-1"><strong>รหัสกิจกรรม:</strong> <?= htmlspecialchars($event['events_id']) ?></p>
-                                <p class="mb-0"><strong>วันที่เริ่มต้น:</strong> <?= htmlspecialchars($event['start_date']) ?> <strong>วันที่สิ้นสุด:</strong> <?= htmlspecialchars($event['end_date']) ?></p>
+                                <p class="mb-0"><strong>วันที่เริ่มต้น:</strong> <?= !empty($event['start_date']) && $event['start_date'] !== '0000-00-00' ? Helper::dateDisplay($event['start_date'], 'th') : '-' ?> <strong>วันที่สิ้นสุด:</strong> <?= !empty($event['end_date']) && $event['end_date'] !== '0000-00-00' ? Helper::dateDisplay($event['end_date'], 'th') : '-' ?></p>
                             </div>
                         </div>
                     </div>

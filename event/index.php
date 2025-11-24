@@ -44,7 +44,7 @@
             if (empty($date) || $date === '0000-00-00') {
                 return '-';
             }
-            return date('d M Y', strtotime($date));
+            return Helper::dateDisplay($date, 'th');
         }
     }
 
