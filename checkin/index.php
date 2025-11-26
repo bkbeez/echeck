@@ -175,6 +175,23 @@
             margin-bottom: 1rem;
             opacity: 0.5;
         }
+        .btn-nav {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        .btn-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
         @media (max-width: 768px) {
             body {
                 padding: 1rem 0;
@@ -205,9 +222,19 @@
 </head>
 <body>
     <div class="main-container">
-        <div class="page-header">
-            <h1><i class="bi bi-qr-code-scan"></i> ระบบเช็คอินด้วย QR Code</h1>
+        <div class="page-header mt-10 mb-4">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                <h1 class="mb-0"><i class="bi bi-qr-code-scan"></i> ระบบเช็คอินด้วย QR Code</h1>
+                <div class="text-md-end">
+                    <a href="../event/" class="btn btn-nav shadow-sm">
+                        <i class="bi bi-arrow-left-circle me-2"></i>กลับไปรายการกิจกรรม
+                    </a>
+                </div>
+            </div>
         </div>
+        
+            
+        
 
         <div class="row g-4">
             <div class="col-lg-7">

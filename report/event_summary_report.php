@@ -231,11 +231,17 @@
                         <i class="bi bi-arrow-left-circle me-2"></i>กลับไปรายการกิจกรรม
                     </a>
                     <?php if ($total > 0): ?>
-                    <a href="export_excel.php?id=<?= urlencode($event_id) ?>" class="btn btn-export shadow-sm">
+                    <?php
+                    // สร้าง query string สำหรับ export
+                    $exportParams = ['id' => $event_id];
+                    if ($from !== '') $exportParams['from'] = $from;
+                    if ($to !== '') $exportParams['to'] = $to;
+                    if ($status !== '') $exportParams['status'] = $status;
+                    if ($search !== '') $exportParams['q'] = $search;
+                    $exportQuery = http_build_query($exportParams);
+                    ?>
+                    <a href="export_excel.php?<?= $exportQuery ?>" class="btn btn-export shadow-sm">
                         <i class="bi bi-file-earmark-excel me-2"></i>Export Excel
-                    </a>
-                    <a href="export_pdf.php?id=<?= urlencode($event_id) ?>" class="btn btn-export shadow-sm">
-                        <i class="bi bi-file-earmark-pdf me-2"></i>Export PDF
                     </a>
                     <?php endif; ?>
                 </div>
