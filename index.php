@@ -12,36 +12,68 @@
             </div>
             <h1 class="display-1 mb-5 mx-md-10 mx-lg-0">ลงทะเบียนกิจกรรม <br /><span class="typer text-primary text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,มหาวิทยาลัยเชียงใหม่"></span><span class="cursor text-primary" data-owner="typer"></span></h1>
             <p class="lead fs-lg mb-7"> ลงทะเบียนกิจกรรมสำหรับบุคคลภายนอกและภายใน สามารถเลือกดูและเข้าร่วมกิจกรรมที่ท่านสนใจได้ </p>
-            <div class="d-flex justify-content-center justify-content-lg-start" data-cues="slideInDown" data-group="page-title-buttons" data-delay="900">
-              <span><a href="event" class="btn btn-lg btn-primary rounded me-2"> รายการกิจกรรม </a></span>
-              <span><a href="participants" class="btn btn-lg btn-primary rounded me-2"> รายชื่อผู้เข้าร่วมกิจกรรม </a></span>
+          </div>
+          <!-- รูปภาพกิจกรรมของคณะศึกษาศาสตร์ -->
+          <div class="col-lg-5 offset-lg-1">
+            <div class="swiper-container dots-over shadow-lg" data-margin="5" data-nav="true" data-dots="true">
+              <div class="swiper">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide"><img src="./assets/img/photos/about21.jpg" srcset="./assets/img/photos/about21@2x.jpg 2x" class="rounded" alt="" /></div>
+                  <div class="swiper-slide"><img src="./assets/img/photos/about22.jpg" srcset="./assets/img/photos/about21@2x.jpg 2x" class="rounded" alt="" /></div>
+                  <div class="swiper-slide"><img src="./assets/img/photos/about23.jpg" srcset="./assets/img/photos/about23@2x.jpg 2x" class="rounded" alt="" /></div>
+                </div>
+                <!--/.swiper-wrapper -->
+              </div>
+              <!--/.swiper -->
+            </div>
+            <!-- /.swiper-container -->
+          </div>
+          <!---Menu--->
+            <div class="container py-5">
+              <div class="card shadow-sm p-5 ">
+                  <h2 class="mb-4 text-center">เมนูหลัก</h2>
+                  <div class="row g-4 text-center">
+                      <!-- จัดการกิจกรรม -->
+                      <div class="col-md-3">
+                          <a href="event/index.php" class="btn btn-soft-ash rounded-pill">
+                              <div class="menu-box text-center">
+                                  <i class="bi bi-people-fill menu-icon"></i>
+                                  <div class="menu-title"> จัดการกิจกรรม </div>
+                              </div>
+                          </a>
+                      </div>
 
-            </div>
-            <div class="d-flex justify-content-center justify-content-lg-start mt-2" data-cues="slideInDown" data-group="page-title-buttons" data-delay="900">
-              <span><a href="participants/staff_register.php" class="btn btn-lg btn-primary rounded me-2"> ลงทะเบียนเข้าร่วมสำหรับเจ้าหน้าที่ (Staff) </a></span>
-            </div>
-          </div>
-          <!-- /column -->
-          <div class="col-lg-7">
-            <div class="row">
-              <div class="col-3 offset-1 offset-lg-0 col-lg-4 d-flex flex-column" data-cues="zoomIn" data-group="col-start" data-delay="300">
-                <div class="ms-auto mt-auto"><img class="img-fluid rounded shadow-lg" src="<?=THEME_IMG?>/photos/sa20.jpg" srcset="<?=THEME_IMG?>/photos/sa20@2x.jpg 2x" alt="" /></div>
-                <div class="ms-auto mt-5 mb-10"><img class="img-fluid rounded shadow-lg" src="<?=THEME_IMG?>/photos/sa18.jpg" srcset="<?=THEME_IMG?>/photos/sa18@2x.jpg 2x" alt="" /></div>
+                      <!-- ลงทะเบียน Staff -->
+                      <div class="col-md-3">
+                          <a href="participants/staff_register.php" class="btn btn-soft-ash rounded-pill">
+                              <div class="menu-box text-center">
+                                  <i class="bi bi-clipboard-check menu-icon"></i>
+                                  <div class="menu-title">ลงทะเบียน Staff</div>
+                              </div>
+                          </a>
+                      </div>
+                      <!-- ลงทะเบียน User -->
+                      <div class="col-md-3">
+                          <a href="participants/user_register.php" class="btn btn-soft-ash rounded-pill">
+                              <div class="menu-box text-center">
+                                  <i class="bi bi-clipboard-data menu-icon"></i>
+                                  <div class="menu-title">ลงทะเบียน User</div>
+                              </div>
+                          </a>
+                      </div>
+
+                      <!-- รายชื่อผู้เข้าร่วม -->
+                      <div class="col-md-3">
+                          <a href="participants/index.php" class="btn btn-soft-ash rounded-pill">
+                              <div class="menu-box text-center">
+                                  <i class="bi bi-clipboard-data menu-icon"></i>
+                                  <div class="menu-title">รายชื่อผู้เข้าร่วม</div>
+                              </div>
+                          </a>
+                      </div>
+                  </div>
               </div>
-              <!-- /column -->
-              <div class="col-4 col-lg-5" data-cue="zoomIn">
-                <div><img class="w-100 img-fluid rounded shadow-lg" src="<?=THEME_IMG?>/photos/sa16.jpg" srcset="<?=THEME_IMG?>/photos/sa16@2x.jpg 2x" alt="" /></div>
-              </div>
-              <!-- /column -->
-              <div class="col-3 d-flex flex-column" data-cues="zoomIn" data-group="col-end" data-delay="300">
-                <div class="mt-auto"><img class="img-fluid rounded shadow-lg" src="<?=THEME_IMG?>/photos/sa21.jpg" srcset="<?=THEME_IMG?>/photos/sa21@2x.jpg 2x" alt="" /></div>
-                <div class="mt-5"><img class="img-fluid rounded shadow-lg" src="<?=THEME_IMG?>/photos/sa19.jpg" srcset="<?=THEME_IMG?>/photos/sa19@2x.jpg 2x" alt="" /></div>
-                <div class="mt-5 mb-10"><img class="img-fluid rounded shadow-lg" src="<?=THEME_IMG?>/photos/sa17.jpg" srcset="<?=THEME_IMG?>/photos/sa17@2x.jpg 2x" alt="" /></div>
-              </div>
-              <!-- /column -->
             </div>
-            <!-- /.row -->
-          </div>
           <!-- /column -->
         </div>
         <!-- /.row -->
@@ -49,86 +81,9 @@
       <!-- /.container -->
     </section>
 
+
+
     <section class="wrapper bg-light">
-      <div class="container py-14 py-md-17">
-        <!--/.row -->
-        <div class="row gy-6 align-items-center">
-          <div class="col-lg-4">
-            <h2 class="fs-15 text-uppercase text-muted mb-3">Our Pricing</h2>
-            <h3 class="display-4 mb-5">We offer great and premium prices.</h3>
-            <p class="mb-5">Enjoy a <a href="#" class="hover">free 30-day trial</a> and experience the full service. No credit card required!</p>
-            <a href="#" class="btn btn-primary rounded mt-2">See All Prices</a>
-          </div>
-          <!--/column -->
-          <div class="col-lg-7 offset-lg-1 pricing-wrapper">
-            <div class="pricing-switcher-wrapper switcher justify-content-start justify-content-lg-end">
-              <p class="mb-0 pe-3">Monthly</p>
-              <div class="pricing-switchers">
-                <div class="pricing-switcher pricing-switcher-active"></div>
-                <div class="pricing-switcher"></div>
-                <div class="switcher-button bg-primary"></div>
-              </div>
-              <p class="mb-0 ps-3">Yearly <span class="text-red">(Save 30%)</span></p>
-            </div>
-            <div class="row gy-6 mt-5">
-              <div class="col-md-6">
-                <div class="pricing card shadow-lg">
-                  <div class="card-body pb-12">
-                    <div class="prices text-dark">
-                      <div class="price price-show justify-content-start"><span class="price-currency">$</span><span class="price-value">19</span> <span class="price-duration">mo</span></div>
-                      <div class="price price-hide price-hidden justify-content-start"><span class="price-currency">$</span><span class="price-value">199</span> <span class="price-duration">yr</span></div>
-                    </div>
-                    <!--/.prices -->
-                    <h4 class="card-title mt-2">Premium Plan</h4>
-                    <ul class="icon-list bullet-bg bullet-soft-primary mt-7 mb-8">
-                      <li><i class="uil uil-check"></i><span><strong>5</strong> Projects </span></li>
-                      <li><i class="uil uil-check"></i><span><strong>100K</strong> API Access </span></li>
-                      <li><i class="uil uil-check"></i><span><strong>200MB</strong> Storage </span></li>
-                      <li><i class="uil uil-check"></i><span> Weekly <strong>Reports</strong></span></li>
-                      <li><i class="uil uil-times bullet-soft-red"></i><span> 7/24 <strong>Support</strong></span></li>
-                    </ul>
-                    <a href="#" class="btn btn-primary rounded">Choose Plan</a>
-                  </div>
-                  <!--/.card-body -->
-                </div>
-                <!--/.pricing -->
-              </div>
-              <!--/column -->
-              <div class="col-md-6 popular">
-                <div class="pricing card shadow-lg">
-                  <div class="card-body pb-12">
-                    <div class="prices text-dark">
-                      <div class="price price-show justify-content-start"><span class="price-currency">$</span><span class="price-value">49</span> <span class="price-duration">mo</span></div>
-                      <div class="price price-hide price-hidden justify-content-start"><span class="price-currency">$</span><span class="price-value">499</span> <span class="price-duration">yr</span></div>
-                    </div>
-                    <!--/.prices -->
-                    <h4 class="card-title mt-2">Corporate Plan</h4>
-                    <ul class="icon-list bullet-bg bullet-soft-primary mt-7 mb-8">
-                      <li><i class="uil uil-check"></i><span><strong>20</strong> Projects </span></li>
-                      <li><i class="uil uil-check"></i><span><strong>300K</strong> API Access </span></li>
-                      <li><i class="uil uil-check"></i><span><strong>500MB</strong> Storage </span></li>
-                      <li><i class="uil uil-check"></i><span> Weekly <strong>Reports</strong></span></li>
-                      <li><i class="uil uil-check"></i><span> 7/24 <strong>Support</strong></span></li>
-                    </ul>
-                    <a href="#" class="btn btn-primary rounded">Choose Plan</a>
-                  </div>
-                  <!--/.card-body -->
-                </div>
-                <!--/.pricing -->
-              </div>
-              <!--/column -->
-            </div>
-            <!--/.row -->
-          </div>
-          <!--/column -->
-        </div>
-        <!--/.row -->
-      </div>
-      <!-- /.container -->
-    </section>
-
-
-    <section class="wrapper bg-soft-primary">
       <div class="container py-14 py-md-17">
         <div class="row">
           <div class="col-lg-11 col-xxl-10 mx-auto text-center">

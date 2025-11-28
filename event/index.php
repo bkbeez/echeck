@@ -302,7 +302,7 @@
         <div class="page-header mb-5">
             <div class="d-flex flex-column flex-lg-row align-items-lg-end justify-content-between gap-4">
                 <div>
-                    <h1 class="display-6 mb-2">หน้าจัดรายการกิจกรรมทั้งหมด</h1>
+                    <h1 class="display-6 mb-2">หน้ารายการกิจกรรมทั้งหมด</h1>
                 </div>
                 <div class="text-lg-end d-flex gap-2 flex-wrap">
                     <a href="../dashboard/" class="btn btn-create shadow-sm">
