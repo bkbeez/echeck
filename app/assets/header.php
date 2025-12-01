@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="<?=THEME_CSS?>/style.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/index.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/table.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
         <link rel="stylesheet" href="<?=THEME_JS?>/sweetalert/sweetalert2.min.css" />
         <script type="text/javascript" src="<?=THEME_JS?>/jquery-2.1.1.js"></script>
         <script type="text/javascript" src="<?=THEME_JS?>/jquery.form.min.js"></script>

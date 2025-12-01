@@ -14,12 +14,14 @@
             <p class="lead fs-lg mb-7"> ลงทะเบียนกิจกรรมสำหรับบุคคลภายนอกและภายใน สามารถเลือกดูและเข้าร่วมกิจกรรมที่ท่านสนใจได้ </p>
           </div>
           <!-- รูปภาพกิจกรรมของคณะศึกษาศาสตร์ -->
-          <div class="col-lg-5 offset-lg-1">
+          <div class="col-lg-5 offset-lg-1 ">
             <div class="swiper-container dots-over shadow-lg" data-margin="5" data-nav="true" data-dots="true">
               <div class="swiper">
                 <div class="swiper-wrapper">
-                  <div class="swiper-slide"><img src="./assets/img/photos/about21.jpg" srcset="./assets/img/photos/about21@2x.jpg 2x" class="rounded" alt="" /></div>
-                  <div class="swiper-slide"><img src="./assets/img/photos/about22.jpg" srcset="./assets/img/photos/about21@2x.jpg 2x" class="rounded" alt="" /></div>
+                  <div class="swiper-slide"><img src="/public/img/586218702_1259550142867584_64333952542632195_n.jpg" srcset="/public/img/586218702_1259550142867584_64333952542632195_n.jpg 2x" class="rounded" alt="" /></div>
+                  <div class="swiper-slide"><img src="/public/img/587131147_1259549976200934_6032345642036134148_n.jpg" srcset="/public/img/587131147_1259549976200934_6032345642036134148_n.jpg 2x" class="rounded" alt="" /></div>
+                  <div class="swiper-slide"><img src="/public/img/587406621_1259534246202507_779494714266155295_n.jpg" srcset="/public/img/587406621_1259534246202507_779494714266155295_n.jpg 2x" class="rounded" alt="" /></div>
+                  <div class="swiper-slide"><img src="./assets/img/photos/about23.jpg" srcset="./assets/img/photos/about23@2x.jpg 2x" class="rounded" alt="" /></div>
                   <div class="swiper-slide"><img src="./assets/img/photos/about23.jpg" srcset="./assets/img/photos/about23@2x.jpg 2x" class="rounded" alt="" /></div>
                 </div>
                 <!--/.swiper-wrapper -->
@@ -28,49 +30,67 @@
             </div>
             <!-- /.swiper-container -->
           </div>
-          <!---Menu--->
-            <div class="container py-5">
+            <!---Menu--->
+            <div class="container py-12">
               <div class="card shadow-sm p-5 ">
                   <h2 class="mb-4 text-center">เมนูหลัก</h2>
                   <div class="row g-4 text-center">
+
                       <!-- จัดการกิจกรรม -->
                       <div class="col-md-3">
-                          <a href="event/index.php" class="btn btn-soft-ash rounded-pill">
+                        <div class="card">
+                          <div class="card-body">
+                            <a href="event/index.php" class="btn btn-soft-ash ">
                               <div class="menu-box text-center">
-                                  <i class="bi bi-people-fill menu-icon"></i>
-                                  <div class="menu-title"> จัดการกิจกรรม </div>
+                                <i class="bi bi-clipboard-data menu-icon"></i>
+                                <div class="menu-title"> จัดการกิจกรรม </div>
                               </div>
-                          </a>
+                            </a>
+                          </div>
+                        </div>
                       </div>
 
                       <!-- ลงทะเบียน Staff -->
                       <div class="col-md-3">
-                          <a href="participants/staff_register.php" class="btn btn-soft-ash rounded-pill">
+                        <div class="card" >
+                          <div class="card-body" >
+                            <a href="participants/staff_register.php" class="btn btn-soft-ash ">
                               <div class="menu-box text-center">
-                                  <i class="bi bi-clipboard-check menu-icon"></i>
-                                  <div class="menu-title">ลงทะเบียน Staff</div>
+                                <i class="bi bi-clipboard-check menu-icon"></i>
+                                <div class="menu-title">ลงทะเบียน Staff</div>
                               </div>
-                          </a>
+                            </a>
+                            </div>
+                          </div>
                       </div>
                       <!-- ลงทะเบียน User -->
                       <div class="col-md-3">
-                          <a href="participants/user_register.php" class="btn btn-soft-ash rounded-pill">
+                        <div class="card" >
+                          <div class="card-body">
+                            <a href="participants/user_register.php" class="btn btn-soft-ash ">
                               <div class="menu-box text-center">
-                                  <i class="bi bi-clipboard-data menu-icon"></i>
-                                  <div class="menu-title">ลงทะเบียน User</div>
+                                <i class="bi bi-clipboard-check menu-icon"></i>
+                                <div class="menu-title">ลงทะเบียน User</div>
                               </div>
-                          </a>
+                            </a>
+                            </div>
+                          </div>
                       </div>
 
                       <!-- รายชื่อผู้เข้าร่วม -->
                       <div class="col-md-3">
-                          <a href="participants/index.php" class="btn btn-soft-ash rounded-pill">
+                        <div class="card" >
+                          <div class="card-body" >
+                            <a href="participants/index.php" class="btn btn-soft-ash "  >
                               <div class="menu-box text-center">
-                                  <i class="bi bi-clipboard-data menu-icon"></i>
-                                  <div class="menu-title">รายชื่อผู้เข้าร่วม</div>
+                                <i class="bi bi-people-fill menu-icon"></i>
+                                <div class="menu-title">รายชื่อผู้เข้าร่วม</div>
                               </div>
-                          </a>
+                            </a>
+                          </div>
+                        </div>
                       </div>
+                    
                   </div>
               </div>
             </div>
@@ -87,8 +107,7 @@
       <div class="container py-14 py-md-17">
         <div class="row">
           <div class="col-lg-11 col-xxl-10 mx-auto text-center">
-            <h2 class="fs-15 text-uppercase text-muted mb-3">FAQ</h2>
-            <h3 class="display-4 mb-10 px-lg-12 px-xl-10 px-xxl-15">If you don't see an answer to your question, you can send us an email from our contact form.</h3>
+            <h3 class="display-4 mb-10 px-lg-12 px-xl-10 px-xxl-15"> วัตถุประสงค์ </h3>
           </div>
           <!--/column -->
         </div>
