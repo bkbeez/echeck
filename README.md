@@ -30,3 +30,4 @@ MAIL_NOREPLY=no-reply-edu@cmu.ac.th
 GOOGLE_APP_ID=
 GOOGLE_APP_SECRET=
 ```
+** For localhost only add line : IS_LOCAL=Y
