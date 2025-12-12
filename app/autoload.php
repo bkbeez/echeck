@@ -1,16 +1,7 @@
 <?php // Auto load Config, Library and Models
     ob_start();
     session_start();
-    if( in_array($_SERVER["HTTP_HOST"], array('127.0.0.1','localhost','checkin.edu.cmu')) ) {
-        // For Local
-        if( intval(phpversion())>=8 ){
-            error_reporting(E_ALL);
-            ini_set('display_errors',1);
-        }
-    }else{
-        // For Production
-        error_reporting(0);
-    }
+    error_reporting(0);
     // App
     define('APP_PATH', '');
     define('APP_ROOT', $_SERVER["DOCUMENT_ROOT"].APP_PATH);
@@ -41,6 +32,12 @@
                     define(trim($envs[0]), trim($envs[1]));
                 }
             }
+        }
+    }
+    if( (defined('IS_LOCAL')&&IS_LOCAL)||(in_array($_SERVER["HTTP_HOST"], array('127.0.0.1','localhost'))) ){
+        if( intval(phpversion())>=8 ){
+            error_reporting(E_ALL);
+            ini_set('display_errors',1);
         }
     }
     // Library

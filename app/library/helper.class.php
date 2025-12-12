@@ -11,7 +11,7 @@ class Helper {
      */
     static function isLocal()
     {
-        return in_array($_SERVER["HTTP_HOST"], array('127.0.0.1','localhost','checkin.edu.cmu'));
+        return ( ((defined('IS_LOCAL')&&IS_LOCAL)||(in_array($_SERVER["HTTP_HOST"], array('127.0.0.1','localhost')))) ? true : false ) ;
     }
 
     /**
