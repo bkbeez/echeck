@@ -18,7 +18,7 @@ Check-in 's Faculty of Education, Chiang Mai University
 DB_DRIVER=mysql
 DB_HOST=localhost
 DB_NAME=echeck
-DB_USER=
+DB_USER=root
 DB_PASS=
 MAIL_HOST=
 MAIL_POST=
