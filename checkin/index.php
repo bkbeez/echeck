@@ -1,18 +1,4 @@
-<?php
-// รับค่าจาก QR
-$event_id     = $_GET['event_id'] ?? '';
-$prefix       = $_GET['prefix'] ?? '';
-$firstname    = $_GET['firstname'] ?? '';
-$lastname     = $_GET['lastname'] ?? '';
-$organization = $_GET['organization'] ?? '';
-$email        = $_GET['email'] ?? '';
-$student_id   = $_GET['student_id'] ?? '';
 
-// ป้องกันการเปิดหน้าเปล่า
-if (!$event_id || !$student_id) {
-    die("ข้อมูลไม่ครบ ไม่สามารถเช็คอินได้");
-}
-?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
