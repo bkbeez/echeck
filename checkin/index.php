@@ -1,3 +1,18 @@
+<?php
+// รับค่าจาก QR
+$event_id     = $_GET['event_id'] ?? '';
+$prefix       = $_GET['prefix'] ?? '';
+$firstname    = $_GET['firstname'] ?? '';
+$lastname     = $_GET['lastname'] ?? '';
+$organization = $_GET['organization'] ?? '';
+$email        = $_GET['email'] ?? '';
+$student_id   = $_GET['student_id'] ?? '';
+
+// ป้องกันการเปิดหน้าเปล่า
+if (!$event_id || !$student_id) {
+    die("ข้อมูลไม่ครบ ไม่สามารถเช็คอินได้");
+}
+?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -6,6 +21,8 @@
     <title>สแกน QR เช็คอิน</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="../app/assets/js/jquery-2.1.1.js"></script>
+    <script src="../app/assets/js/qrcode/jquery.qrcode-0.12.0.min.js"></script>
     <script src="../app/assets/js/qrcode/html5-qrcode.min.js"></script>
     <style>
         body {
@@ -233,15 +250,15 @@
             </div>
         </div>
         
-            
-        
-
         <div class="row g-4">
             <div class="col-lg-7">
                 <div class="scanner-section">
                     <h2><i class="bi bi-camera-video"></i> สแกน QR Code</h2>
-                    <div id="reader" style="width:100%;max-width:600px;"></div>
+                    <div class="mt-3 text-center">
+                        <div id="qrcode"></div>
+                    </div>
                     <div id="result" class="mt-3"></div>
+                    
                 </div>
             </div>
             
@@ -408,6 +425,27 @@
         // ดึงข้อมูลครั้งแรกเมื่อโหลดหน้า
         fetchCheckinData();
     </script>
+    <script>
+        $(document).ready(function(){
+            $("#qrcode").empty().qrcode({"render": 'image',
+                                        "fill": '#0e2e96',
+                                        "ecLevel": 'H',
+                                        "text": 'https:://checkin.edu.cmu.ac.th/?events_id=EVT-20251212000001-ABCDEFG',
+                                        "size": 160,
+                                        "radius": 0,
+                                        "quiet": 1,
+                                        "mode": 2,
+                                        "mSize": 0.12,
+                                        "mPosX": 0.5,
+                                        "mPosY": 0.5,
+                                        "label": 'me',
+                                        "fontname": 'Prompt Regular',
+                                        "fontcolor": '#0e2e96',
+                                        "background": '#FFFFFF'
+            });
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

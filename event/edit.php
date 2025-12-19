@@ -38,9 +38,9 @@
     $success = '';
     $event = null;
     
-    $eventId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    $eventId = isset($_GET['id']) ? trim($_GET['id']) : '';
     
-    if ($eventId <= 0) {
+    if (empty($eventId)) {
         $error = 'ไม่พบข้อมูลกิจกรรม';
     } else {
         $user_id = '';
@@ -58,6 +58,23 @@
     }
     
     // จัดการ GET request สำหรับอัพเดทข้อมูล
+    // helper แปลงสถานะ enum ใน DB ให้เป็นตัวเลข 0-3 สำหรับ dropdown
+    if (!function_exists('eventStatusToInt')) {
+        function eventStatusToInt($status): int
+        {
+            $map = [
+                '0=ร่าง' => 0,
+                '1=เปิดการเข้าร่วม' => 1,
+                '2=ปิดการเข้าร่วม' => 2,
+                '3=ยกเลิก' => 3,
+            ];
+            if (is_numeric($status)) {
+                return (int)$status;
+            }
+            return $map[$status] ?? 0;
+        }
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === 'GET' && $event) {
         // Validate ข้อมูล
         $name = isset($_GET['name']) ? trim($_GET['name']) : '';
@@ -122,6 +139,9 @@
             $event['status'] = $status;
         }
     }
+
+    // ค่าที่ใช้สำหรับแสดง dropdown สถานะ
+    $eventStatusInt = isset($event['status']) ? eventStatusToInt($event['status']) : 0;
     
     // แสดงข้อความ success จาก session (ถ้ามี)
     if (isset($_SESSION['event_update_success'])) {
@@ -205,7 +225,7 @@
                 
                 <?php if ($event): ?>
                 <form method="GET" class="mt-3">
-                    <input type="hidden" name="id" value="<?= htmlspecialchars($event['id']) ?>">
+                    <input type="hidden" name="id" value="<?= htmlspecialchars($event['events_id']) ?>">
                     
                     <div class="mb-3">
                         <label class="form-label">รหัสกิจกรรม</label>
@@ -246,10 +266,10 @@
                     <div class="mb-3">
                         <label class="form-label">สถานะ</label>
                         <select name="status" class="form-select">
-                            <option value="0" <?= ($event['status'] == 0) ? 'selected' : '' ?>>ร่าง</option>
-                            <option value="1" <?= ($event['status'] == 1) ? 'selected' : '' ?>>เปิดการเข้าร่วม</option>
-                            <option value="2" <?= ($event['status'] == 2) ? 'selected' : '' ?>>ปิดการเข้าร่วม</option>
-                            <option value="3" <?= ($event['status'] == 3) ? 'selected' : '' ?>>ยกเลิก</option>
+                            <option value="0" <?= ($eventStatusInt === 0) ? 'selected' : '' ?>>ร่าง</option>
+                            <option value="1" <?= ($eventStatusInt === 1) ? 'selected' : '' ?>>เปิดการเข้าร่วม</option>
+                            <option value="2" <?= ($eventStatusInt === 2) ? 'selected' : '' ?>>ปิดการเข้าร่วม</option>
+                            <option value="3" <?= ($eventStatusInt === 3) ? 'selected' : '' ?>>ยกเลิก</option>
                         </select>
                     </div>
                     

@@ -1,4 +1,4 @@
-<?php 
+<?php
     header('content-type: application/json; charset=utf-8');
     
     // Load autoload
@@ -9,14 +9,22 @@
         echo json_encode(['ok' => false, 'error' => 'ไม่มีข้อมูลส่งมา']);
         exit;
     }
-    $participant_id = isset($input['participant_id']) ? trim($input['participant_id']) : null;
-    $events_id = isset($input['event_id']) ? trim($input['event_id']) : null;
+    // ดึงข้อมูลจาก input
+    $participant_id = trim($input['participant_id'] ?? '');
+    $events_id = trim($input['event_id'] ?? '');
 
-    if(!$participant_id) {
+    // ตรวจสอบข้อมูลที่จำเป็น
+    if(empty($participant_id)) {
         echo json_encode(['ok' => false, 'error' => 'ไม่มีรหัสผู้เข้าร่วมกิจกรรม']);
         exit;
     }
     
+    if(!empty($events_id) && !is_numeric($events_id)) {
+        echo json_encode(['ok' => false, 'error' => 'รหัสกิจกรรมไม่ถูกต้อง']);
+        exit;
+    }
+
+
     try {
         // ตรวจสอบว่าผู้เข้าร่วมกิจกรรมมีอยู่ในระบบหรือไม่
         $participant = Participant::findByParticipantId($participant_id);
@@ -58,8 +66,7 @@
         ]);
 
         if($result) {
-            $name = trim(($participant['prefix'] ?? '') . ' ' . ($participant['firstname'] ?? '') . ' ' . ($participant['lastname'] ?? ''));
-            $name = $name ?: $participant_id;
+                $name = trim(($participant['prefix'] ?? '') . ' ' . ($participant['firstname'] ?? '') . ' ' . ($participant['lastname'] ?? ''));
             echo json_encode(['ok' => true, 'participant_id' => $participant_id, 'name' => $name]);
         } else {
             echo json_encode(['ok' => false, 'error' => 'ไม่สามารถบันทึกการเช็คอินได้']);

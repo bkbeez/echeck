@@ -27,9 +27,7 @@
         if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
             $events = Event::listForUser($user_id);
         } else {
-            $events = DB::query(
-                "SELECT * FROM `events` ORDER BY `start_date` DESC, `id` DESC"
-            );
+            $events = Event::listOpenEvents();
         }
         if (!is_array($events)) {
             $events = [];

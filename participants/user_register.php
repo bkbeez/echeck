@@ -6,11 +6,7 @@
     
     // ดึงรายการกิจกรรมที่เปิดให้ลงทะเบียนได้ (status = 1)
     try {
-        $events = DB::query(
-            "SELECT * FROM `events` 
-                WHERE `status` = 1 
-                ORDER BY `start_date` DESC, `id` DESC"
-        );
+        $events = Event::listOpenEvents();
         if (!is_array($events)) {
             $events = [];
         }

@@ -20,7 +20,7 @@
             $events = Event::listForUser($user_id);
         } else {
             $events = DB::query(
-                "SELECT * FROM `events` ORDER BY `start_date` DESC, `id` DESC"
+                "SELECT * FROM `events` ORDER BY `start_date` DESC, `events_id` DESC"
             );
         }
         if (!is_array($events)) {

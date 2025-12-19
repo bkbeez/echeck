@@ -1,6 +1,8 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
 
+#https:://checkin.edu.cmu.ac.th/?events_id=EVENT_ID
+
 
     $user_id = '';
     if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
@@ -65,9 +67,7 @@
         if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
             $events = Event::listForUser($user_id);
         } else {
-            $events = DB::query(
-                "SELECT * FROM `events` ORDER BY `start_date` DESC, `id` DESC"
-            );
+            $events = Event::listOpenEvents();
         }
         
         if (!is_array($events)) {
@@ -144,31 +144,70 @@
         .content-card .card-body {
             padding: 0;
         }
+        .table {
+            margin-bottom: 0;
+        }
         .table thead th {
-            border-bottom: none;
+            border-bottom: 2px solid #e2e8f0;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             font-size: 0.75rem;
             color: #64748b;
             background-color: #f8fafc;
-            padding-top: 1.2rem;
-            padding-bottom: 1.2rem;
+            padding: 1.25rem 1rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .table thead th:first-child {
+            padding-left: 1.5rem;
+        }
+        .table thead th:last-child {
+            padding-right: 1.5rem;
         }
         .table tbody tr {
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            transition: all 0.15s ease;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .table tbody tr:last-child {
+            border-bottom: none;
         }
         .table tbody tr:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(13, 110, 253, 0.08);
             background-color: #f8fbff;
+            box-shadow: 0 2px 8px rgba(13, 110, 253, 0.05);
+        }
+        .table tbody td {
+            vertical-align: middle;
+            padding: 1.25rem 1rem;
+            color: #334155;
+        }
+        .table tbody td:first-child {
+            padding-left: 1.5rem;
+        }
+        .table tbody td:last-child {
+            padding-right: 1.5rem;
+        }
+        .table tbody td:nth-child(1) {
+            min-width: 250px;
+            max-width: 400px;
+        }
+        .table tbody td:nth-child(2),
+        .table tbody td:nth-child(3) {
+            white-space: nowrap;
+            min-width: 140px;
+        }
+        .table tbody td:nth-child(4),
+        .table tbody td:nth-child(5) {
+            white-space: nowrap;
+            min-width: 120px;
         }
         .badge-status {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             letter-spacing: 0.05em;
-            padding: 0.35rem 0.7rem;
+            padding: 0.4rem 0.85rem;
             border-radius: 999px;
             text-transform: uppercase;
             font-weight: 600;
+            display: inline-block;
         }
         .badge-draft {
             background: rgba(100, 116, 139, 0.15);
@@ -185,18 +224,6 @@
         .badge-cancelled {
             background: rgba(239, 68, 68, 0.15);
             color: #dc2626;
-        }
-        .table tbody td {
-            vertical-align: middle;
-        }
-        .table tbody td:nth-child(2) {
-            min-width: 395px;
-            max-width: 500px;
-            word-wrap: break-word;
-            white-space: normal;
-        }
-        .table thead th:nth-child(2) {
-            min-width: 350px;
         }
         .action-buttons .btn {
             border-radius: 999px;
@@ -334,14 +361,13 @@
                 <div class="table-responsive">
                     <table class="table align-middle mb-0">
                         <thead>
-                            <tr class="text-uppercase small fw-semibold text-muted text-center">
-                                <th scope="col" class="text-center ps-4">รหัสกิจกรรม</th>
-                                <th scope="col" class="text-center">ชื่อกิจกรรม</th>
+                            <tr>
+                                <th scope="col" class="text-start">ชื่อกิจกรรม</th>
                                 <th scope="col" class="text-center">วันที่เริ่มต้น</th>
                                 <th scope="col" class="text-center">วันที่สิ้นสุด</th>
                                 <th scope="col" class="text-center">ประเภทผู้เข้าร่วม</th>
                                 <th scope="col" class="text-center">สถานะ</th>
-                                <th scope="col" class="text-center pe-4">การจัดการ</th>
+                                <th scope="col" class="text-center" style="width: 80px;">การจัดการ</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -351,41 +377,44 @@
                                 $updatedAt = $row['updated_at'] ?? ($row['created_at'] ?? null);
                                 [$statusClass, $statusLabel] = statusBadgeClass((int)($row['status'] ?? 0));
                             ?>
-                            <tr class="text-center">
-                                <td class="text-start ps-4 fw-semibold text-primary-emphasis">#<?= $row['id'] ?></td>
+                            <tr>
                                 <td class="text-start">
-                                    <div class="fw-semibold text-dark"><?= htmlspecialchars($row['events_name'] ?? '-') ?></div>
+                                    <div class="fw-semibold text-dark" style="font-size: 0.95rem;"><?= htmlspecialchars($row['events_name'] ?? '-') ?></div>
                                 </td>
-                                <td><?= formatEventDate($row['start_date'] ?? null) ?></td>
-                                <td><?= formatEventDate($row['end_date'] ?? null) ?></td>
-                                <td>
-                                    <span class="badge rounded-pill bg-info-subtle text-info-emphasis px-3 py-2">
+                                <td class="text-center">
+                                    <span style="font-size: 0.9rem; color: #64748b;"><?= formatEventDate($row['start_date'] ?? null) ?></span>
+                                </td>
+                                <td class="text-center">
+                                    <span style="font-size: 0.9rem; color: #64748b;"><?= formatEventDate($row['end_date'] ?? null) ?></span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge rounded-pill bg-info-subtle text-info-emphasis px-3 py-2" style="font-size: 0.8rem;">
                                         <?= (($row['participant_type'] ?? '') === 'ALL') ? 'ทุกคน' : 'เฉพาะรายชื่อ' ?>
                                     </span>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <span class="badge-status <?= $statusClass ?>"><?= $statusLabel ?></span>
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <div class="dropdown d-flex justify-content-center">
-                                        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="เมนูการจัดการ">
                                             <i class="bi bi-three-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
                                             <li>
-                                                <a class="dropdown-item text-success" href="../checkin/index.php?id=<?= $row['id']?>">
+                                                <a class="dropdown-item text-success" href="../checkin/index.php?id=<?= urlencode($row['events_id'])?>">
                                                     <i class="bi bi-file-earmark-text-fill"></i>
                                                     <span>ลงทะเบียนเช็คอิน</span>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-primary" href="edit.php?id=<?= $row['id'] ?>">
+                                                <a class="dropdown-item text-primary" href="edit.php?id=<?= urlencode($row['events_id']) ?>">
                                                     <i class="bi bi-pencil-fill"></i>
                                                     <span>แก้ไข</span>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-secondary" href="share.php?id=<?= $row['id'] ?>">
+                                                <a class="dropdown-item text-secondary" href="share.php?id=<?= urlencode($row['events_id']) ?>">
                                                     <i class="bi bi-share-fill"></i>
                                                     <span>แชร์</span>
                                                 </a>
@@ -398,7 +427,7 @@
                                             </li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li>
-                                                <a class="dropdown-item text-danger" href="delete.php?delete=<?= $row['id'] ?>" onclick="return confirm('ยืนยันการลบกิจกรรมนี้?')">
+                                                <a class="dropdown-item text-danger" href="delete.php?delete=<?= urlencode($row['events_id']) ?>" onclick="return confirm('ยืนยันการลบกิจกรรมนี้?')">
                                                     <i class="bi bi-trash-fill"></i>
                                                     <span>ลบ</span>
                                                 </a>

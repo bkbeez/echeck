@@ -11,10 +11,32 @@ class Event extends DB
      */
     public static function createEvent(array $data)
     {
+        // เนื่องจาก database schema ไม่มี user_id column จึงไม่ใส่ user_id ใน INSERT
+        // เติมค่า default ให้ครบทุก placeholder เพื่อหลีกเลี่ยง PDO error HY093
+        $defaults = [
+            'participant_type' => 'ALL',
+            'status' => '0=ร่าง',
+        ];
+        $requiredKeys = ['events_id', 'events_name', 'start_date', 'end_date', 'participant_type', 'status'];
+        $params = array_merge($defaults, $data);
+        // เก็บเฉพาะ key ที่จำเป็นตาม placeholder
+        $params = array_intersect_key($params, array_flip($requiredKeys));
+
+        // map สถานะที่เป็นตัวเลข -> ค่า enum ใน schema
+        $statusMap = [
+            '0' => '0=ร่าง',
+            '1' => '1=เปิดการเข้าร่วม',
+            '2' => '2=ปิดการเข้าร่วม',
+            '3' => '3=ยกเลิก',
+        ];
+        if (isset($params['status'])) {
+            $params['status'] = $statusMap[(string)$params['status']] ?? '0=ร่าง';
+        }
+
         $sql = "INSERT INTO `events`
-                (`user_id`, `events_id`, `events_name`, `start_date`, `end_date`, `participant_type`, `status`)
-                VALUES (:user_id, :events_id, :events_name, :start_date, :end_date, :participant_type, :status);";
-        return DB::createLastInsertId($sql, $data);
+                (`events_id`, `events_name`, `start_date`, `end_date`, `participant_type`, `status`)
+                VALUES (:events_id, :events_name, :start_date, :end_date, :participant_type, :status);";
+        return DB::create($sql, $params);
     }
 
     /**
@@ -24,56 +46,81 @@ class Event extends DB
      * @param array $data
      * @return bool
      */
-    public static function updateEvent(int $eventId, string $userid, array $data)
+    public static function updateEvent(string $eventId, string $userid, array $data)
     {
+        // เนื่องจาก database schema ไม่มี user_id และ id column จึงใช้ events_id แทน
+        // เตรียม parameters โดยใช้ events_id จาก parameter และ merge กับ data
+        // map สถานะ (รับได้ทั้งตัวเลขและค่า enum ที่มีอยู่แล้ว)
+        $statusMap = [
+            '0' => '0=ร่าง',
+            '1' => '1=เปิดการเข้าร่วม',
+            '2' => '2=ปิดการเข้าร่วม',
+            '3' => '3=ยกเลิก',
+        ];
+        $rawStatus = $data['status'] ?? null;
+        if (isset($statusMap[(string)$rawStatus])) {
+            $normalizedStatus = $statusMap[(string)$rawStatus];
+        } elseif (in_array($rawStatus, $statusMap, true)) {
+            // กรณีส่งมาเป็นข้อความ enum อยู่แล้ว
+            $normalizedStatus = $rawStatus;
+        } else {
+            // ถ้าไม่ส่งมา หรือไม่ตรง map ให้คงค่าสถานะเดิม
+            $existing = self::findByid($eventId);
+            $normalizedStatus = $existing['status'] ?? '0=ร่าง';
+        }
+
+        $params = [
+            'events_id' => $eventId,
+            'events_name' => $data['events_name'] ?? '',
+            'start_date' => $data['start_date'] ?? '',
+            'end_date' => $data['end_date'] ?? '',
+            'participant_type' => $data['participant_type'] ?? 'ALL',
+            'status' => $normalizedStatus,
+        ];
+
         $sql = "UPDATE `events`
-                SET `events_id` = :events_id,
+                SET
                     `events_name` = :events_name,
                     `start_date` = :start_date,
                     `end_date` = :end_date,
                     `participant_type` = :participant_type,
                     `status` = :status
-                WHERE `id` = :events_id AND `user_id` = :user_id
+                WHERE `events_id` = :events_id
                 LIMIT 1;";
-        $parameters = array_merge($data, [
-            'events_id'    => $eventId,
-            'user_id' => $userid,
-        ]);
-
-        return DB::update($sql, $parameters);
+        return DB::update($sql, $params);
     }
 
     /**
      * Delete event (user only)
-     * @param int $eventId
+     * @param string $eventId
      * @param string $userid
      * @return bool
      */
-    public static function deleteEvent(int $eventId, string $userid)
+    public static function deleteEvent(string $eventId, string $userid)
     {
-        $sql = "DELETE FROM `events` WHERE `id` = :events_id AND `user_id` = :user_id LIMIT 1;";
+        // เนื่องจาก database schema ไม่มี user_id และ id column จึงใช้ events_id แทน
+        $sql = "DELETE FROM `events` WHERE `events_id` = :events_id LIMIT 1;";
         return DB::delete($sql, [
-            'events_id'    => $eventId,
-            'user_id' => $userid,
+            'events_id' => $eventId,
         ]);
     }
 
     /**
      * Fetch event for user
-     * @param int $eventId
+     * @param string $eventId
      * @param string $userid
      * @return array|null
      */
-    public static function getOwnedEvent(int $eventId, string $userid)
+    public static function getOwnedEvent(string $eventId, string $userid)
     {
+        // เนื่องจาก database schema ไม่มี user_id column จึงดึง event ตาม events_id เท่านั้น
         $sql = "SELECT *
                 FROM `events`
-                WHERE `id` = :events_id AND `user_id` = :user_id
+                WHERE `events_id` = :events_id
                 LIMIT 1;";
         return DB::one($sql, [
-            'events_id'    => $eventId,
-            'user_id' => $userid,
-        ]);
+            'events_id' => $eventId,
+        ], ['ignore_error' => true]);
     }
 
     /**
@@ -84,17 +131,15 @@ class Event extends DB
      */
     public static function getAccessibleEvent(int $eventId, string $id)
     {
-        $sql = "SELECT DISTINCT e.*
+        // เนื่องจาก database schema ไม่มี user_id และ events_share table
+        // จึงดึง event ตาม events_id เท่านั้น
+        $sql = "SELECT e.*
                 FROM `events` e
-                LEFT JOIN `events_share` es
-                    ON es.`events_id` = e.`id`
-                WHERE e.`id` = :events_id
-                    AND (e.`user_id` = :id OR es.`shared_id` = :id)
+                WHERE e.`events_id` = :events_id
                 LIMIT 1;";
         return DB::one($sql, [
             'events_id' => $eventId,
-            'id'    => $id,
-        ]);
+        ], ['ignore_error' => true]);
     }
 
     /**
@@ -104,46 +149,41 @@ class Event extends DB
      */
     public static function listForUser(string $id)
     {
-        $owned = DB::query(
-            "SELECT e.*, 1 AS is_user
+        // เนื่องจาก database schema ไม่มี user_id column ใน events table และไม่มี events_share table
+        // จึงดึง events ทั้งหมดและกำหนด is_user = 1 สำหรับทุก events
+        // ถ้าต้องการใช้ sharing feature ต้องเพิ่ม table และ column ที่จำเป็นใน database
+        $sql = "SELECT e.*, 1 AS is_user
                 FROM `events` e
-                WHERE e.`user_id` = :id
-                ORDER BY e.`start_date` DESC, e.`id` DESC;",
-            ['id' => $id]
-        );
-
-        $shared = DB::query(
-            "SELECT e.*, 0 AS is_user
-                FROM `events` e
-                INNER JOIN `events_share` es ON es.`events_id` = e.`id`
-                WHERE es.`shared_id` = :id
-                ORDER BY e.`start_date` DESC, e.`id` DESC;",
-            ['id' => $id]
-        );
-
-        $results = [];
-        if (is_array($owned)) {
-            foreach ($owned as $row) {
-                $results[$row['id']] = $row;
-            }
+                ORDER BY e.`start_date` DESC, e.`events_id` DESC;";
+        
+        $results = DB::query($sql, [], ['ignore_error' => true]);
+        
+        if (!is_array($results)) {
+            return [];
         }
-        if (is_array($shared)) {
-            foreach ($shared as $row) {
-                if (!isset($results[$row['id']])) {
-                    $results[$row['id']] = $row;
-                }
+
+        // แปลง array เป็น associative array โดยใช้ events_id เป็น key
+        $finalResults = [];
+        foreach ($results as $row) {
+            $eventId = $row['events_id'] ?? $row['id'] ?? null;
+            if ($eventId !== null) {
+                $finalResults[$eventId] = $row;
             }
         }
 
-        // Ensure consistent ordering (by start_date desc, id desc)
-        usort($results, static function ($left, $right) {
-            if ($left['start_date'] === $right['start_date']) {
-                return $right['id'] <=> $left['id'];
+        // เรียงลำดับอีกครั้งเพื่อให้แน่ใจว่าถูกต้อง
+        usort($finalResults, static function ($left, $right) {
+            $leftDate = $left['start_date'] ?? '';
+            $rightDate = $right['start_date'] ?? '';
+            if ($leftDate === $rightDate) {
+                $leftId = $left['events_id'] ?? $left['id'] ?? '';
+                $rightId = $right['events_id'] ?? $right['id'] ?? '';
+                return $rightId <=> $leftId;
             }
-            return strcmp($right['start_date'], $left['start_date']);
+            return strcmp($rightDate, $leftDate);
         });
 
-        return $results;
+        return $finalResults;
     }
 
     /**
@@ -154,18 +194,8 @@ class Event extends DB
      */
     public static function listShares(int $eventId, string $userid)
     {
-        $event = self::getOwnedEvent($eventId, $userid);
-        if (!$event) {
-            return [];
-        }
-
-        return DB::query(
-            "SELECT es.*
-                FROM `events_share` es
-                WHERE es.`events_id` = :events_id
-                ORDER BY es.`shared_id` ASC;",
-            ['events_id' => $eventId]
-        );
+        // เนื่องจาก database schema ไม่มี events_share table จึง return empty array
+        return [];
     }
 
     /**
@@ -177,20 +207,8 @@ class Event extends DB
      */
     public static function addShare(int $eventId, string $userid, string $sharedid)
     {
-        if (!self::getOwnedEvent($eventId, $userid)) {
-            return false;
-        }
-        if ($sharedid === $userid) {
-            return false;
-        }
-
-        $sql = "INSERT IGNORE INTO `events_share` (`events_id`, `shared_id`)
-                VALUES (:events_id, :shared_id);";
-
-        return DB::create($sql, [
-            'events_id'     => $eventId,
-            'shared_id' => $sharedid,
-        ]);
+        // เนื่องจาก database schema ไม่มี events_share table จึง return false
+        return false;
     }
 
     /**
@@ -202,18 +220,8 @@ class Event extends DB
      */
     public static function removeShare(int $shareId, int $eventId, string $userid)
     {
-        if (!self::getOwnedEvent($eventId, $userid)) {
-            return false;
-        }
-
-        $sql = "DELETE FROM `events_share`
-                WHERE `id` = :share_id AND `events_id` = :events_id
-                LIMIT 1;";
-
-        return DB::delete($sql, [
-            'share_id' => $shareId,
-            'events_id' => $eventId,
-        ]);
+        // เนื่องจาก database schema ไม่มี events_share table จึง return false
+        return false;
     }
 
     /**
@@ -224,17 +232,8 @@ class Event extends DB
      */
     public static function shareExists(int $eventId, string $sharedid)
     {
-        $sql = "SELECT `id`
-                FROM `events_share`
-                WHERE `events_id` = :events_id AND `shared_id` = :shared_id
-                LIMIT 1;";
-
-        $share = DB::one($sql, [
-            'events_id'     => $eventId,
-            'shared_id' => $sharedid,
-        ]);
-
-        return $share !== null;
+        // เนื่องจาก database schema ไม่มี events_share table จึง return false
+        return false;
     }
 
     /**
@@ -252,6 +251,27 @@ class Event extends DB
         return DB::one($sql, [
             'events_id' => $eventsid,
         ]);
+    }
+
+    /**
+     * List events that are open for participation
+     * @return array
+     */
+    public static function listOpenEvents()
+    {
+        $sql = "SELECT * FROM `events` 
+                WHERE `status` = :status 
+                ORDER BY `start_date` DESC, `events_id` DESC";
+        
+        $results = DB::query($sql, [
+            'status' => '1=เปิดการเข้าร่วม',
+        ], ['ignore_error' => true]);
+        
+        if (!is_array($results)) {
+            return [];
+        }
+        
+        return $results;
     }
 }
 

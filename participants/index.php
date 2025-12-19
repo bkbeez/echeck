@@ -253,7 +253,7 @@
                         <?php if (count($participants) > 0): ?>
                         <?php foreach ($participants as $row): ?>
                             <?php
-                                $joinedAt = $row['joined_at'] ?? null;
+                                $joinedAt = $row['create_at'] ?? null;
                                 [$statusClass, $statusLabel] = statusBadgeClass($row['status'] ?? 'รอเข้าร่วม');
                                 $fullName = trim(($row['prefix'] ?? '') . ' ' . ($row['firstname'] ?? '') . ' ' . ($row['lastname'] ?? ''));
                             ?>

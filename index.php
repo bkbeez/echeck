@@ -90,7 +90,7 @@
                           </div>
                         </div>
                       </div>
-                    
+                    <div id="qrcode"></div>
                   </div>
               </div>
             </div>
@@ -180,4 +180,24 @@
       </div>
       <!-- /.container -->
     </section>
+    <script>
+      $(document).ready(function(){
+          $("#qrcode").empty().qrcode({"render": 'image',
+                                      "fill": '#0e2e96',
+                                      "ecLevel": 'H',
+                                      "text": 'ทดสอบ',
+                                      "size": 160,
+                                      "radius": 0,
+                                      "quiet": 1,
+                                      "mode": 2,
+                                      "mSize": 0.12,
+                                      "mPosX": 0.5,
+                                      "mPosY": 0.5,
+                                      "label": 'me',
+                                      "fontname": 'Prompt Regular',
+                                      "fontcolor": '#0e2e96',
+                                      "background": '#FFFFFF'
+          });
+      });
+    </script>
 <?php include(APP_FOOTER); ?>

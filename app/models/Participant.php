@@ -111,7 +111,7 @@ class Participant extends DB
         $sql = "SELECT p.*, e.events_name
                 FROM `participants` p
                 LEFT JOIN `events` e ON e.events_id = p.events_id
-                ORDER BY p.`joined_at` DESC, p.`id` DESC;";
+                ORDER BY p.`create_at` DESC, p.`id` DESC;";
         return DB::query($sql);
     }
 
@@ -126,7 +126,7 @@ class Participant extends DB
                 FROM `participants` p
                 LEFT JOIN `events` e ON e.events_id = p.events_id
                 WHERE p.`events_id` = :events_id
-                ORDER BY p.`joined_at` DESC, p.`id` DESC;";
+                ORDER BY (p.`create_at` IS NULL), p.`create_at` DESC, p.`id` DESC;";
         return DB::query($sql, [
             'events_id' => $eventsId,
         ]);

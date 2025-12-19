@@ -96,9 +96,9 @@
             
             // ใช้ Event model เพื่อบันทึกข้อมูล
             try {
-                $eventId = Event::createEvent($eventData);
+                $ok = Event::createEvent($eventData);
                 
-                if ($eventId) {
+                if ($ok) {
                     // บันทึกสำเร็จ
                     $_SESSION['event_create_success'] = 'สร้างกิจกรรมสำเร็จ';
                     header('Location: index.php');

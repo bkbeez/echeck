@@ -1,9 +1,9 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
-    // ดึง event ID จาก query parameter
-    $eventId = isset($_GET['delete']) ? intval($_GET['delete']) : 0;
+    // ดึง event ID จาก query parameter (events_id เป็น VARCHAR)
+    $eventId = isset($_GET['delete']) ? trim($_GET['delete']) : '';
     
-    if ($eventId <= 0) {
+    if ($eventId === '') {
         $_SESSION['event_delete_error'] = 'ไม่พบข้อมูลกิจกรรม';
         header('Location: index.php');
         exit();
@@ -16,7 +16,7 @@
                     (isset($_SESSION['login']['user']['id']) ? $_SESSION['login']['user']['id'] : '');
     }
     
-    // ตรวจสอบว่าผู้ใช้เป็นเจ้าของกิจกรรมหรือไม่
+    // ตรวจสอบว่ามีกิจกรรมนี้หรือไม่ (ไม่ตรวจ owner เพราะ schema ไม่มี user_id)
     $event = Event::getOwnedEvent($eventId, $user_id);
     
     if (!$event) {

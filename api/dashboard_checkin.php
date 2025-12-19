@@ -6,8 +6,8 @@
     require_once __DIR__ . '/../app/autoload.php';
 
     try {
-        // รับ event_id จาก query parameter (ถ้ามี)
-        $events_id = isset($_GET['event_id']) ? trim($_GET['event_id']) : null;
+        // รับ events_id จาก query parameter (ถ้ามี)
+        $events_id = isset($_GET['events_id']) ? trim($_GET['events_id']) : null;
         
         // สร้าง WHERE clause สำหรับกรองตาม event (ถ้ามี)
         $whereClause = '';

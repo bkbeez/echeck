@@ -27,26 +27,26 @@
     $search = $_GET['q'] ?? '';
 
     // Build query with filters
-    $sql = "SELECT * FROM participants WHERE events_id = :id";
-    $params = [':id' => $event_id];
+    $sql = "SELECT * FROM `participants` WHERE `events_id` = :id";
+    $params = ['id' => $event_id];
 
     if ($status !== '') {
-        $sql .= " AND status = :status";
-        $params[':status'] = $status;
+        $sql .= " AND `status` = :status";
+        $params['status'] = $status;
     }
     if ($from !== '') {
-        $sql .= " AND joined_at >= :from";
-        $params[':from'] = $from . ' 00:00:00';
+        $sql .= " AND `create_at` >= :from";
+        $params['from'] = $from . ' 00:00:00';
     }
     if ($to !== '') {
-        $sql .= " AND joined_at <= :to";
-        $params[':to'] = $to . ' 23:59:59';
+        $sql .= " AND `create_at` <= :to";
+        $params['to'] = $to . ' 23:59:59';
     }
     if ($search !== '') {
-        $sql .= " AND (firstname LIKE :q OR lastname LIKE :q OR email LIKE :q)";
-        $params[':q'] = '%' . $search . '%';
+        $sql .= " AND (`firstname` LIKE :q OR `lastname` LIKE :q OR `email` LIKE :q)";
+        $params['q'] = '%' . $search . '%';
     }
-    $sql .= " ORDER BY joined_at DESC";
+    $sql .= " ORDER BY `create_at` DESC";
 
     try {
         $participants = DB::query($sql, $params);
@@ -92,8 +92,8 @@
         $statusText = ($participantStatus == 'เข้าร่วมแล้ว') ? 'เช็คอินแล้ว' : 
                     (($participantStatus == 'ยกเลิก') ? 'ยกเลิก' : 'ยังไม่เช็คอิน');
         
-        $joinedDate = isset($p['joined_at']) && $p['joined_at'] && $p['joined_at'] !== '0000-00-00 00:00:00' 
-            ? Helper::datetimeDisplay($p['joined_at'], 'th') 
+        $joinedDate = isset($p['create_at']) && $p['create_at'] && $p['create_at'] !== '0000-00-00 00:00:00' 
+            ? Helper::datetimeDisplay($p['create_at'], 'th') 
             : '-';
         
         $checkinDate = isset($p['checkin_time']) && $p['checkin_time'] && $p['checkin_time'] !== '0000-00-00 00:00:00'

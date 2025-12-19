@@ -14,7 +14,7 @@
         } else {
             // ดึงกิจกรรมทั้งหมด
             $events = DB::query(
-                "SELECT * FROM `events` ORDER BY `start_date` DESC, `id` DESC"
+                "SELECT * FROM `events` ORDER BY `start_date` DESC, `events_id` DESC"
             );
         }
         
