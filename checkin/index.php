@@ -1,3 +1,13 @@
+<?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
+<?php
+    $user_id = '';
+    if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
+        $user_id = isset($_SESSION['login']['user']['email']) ? $_SESSION['login']['user']['email'] : 
+    (isset($_SESSION['login']['user']['id']) ? $_SESSION['login']['user']['id'] : '');
+    }
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="th">
@@ -294,6 +304,16 @@
             const requestBody = { participant_id: decodedText };
             if (eventId) {
                 requestBody.event_id = eventId;
+            }
+
+            const payload = {
+                events_id: params.get('events_id') || '',
+                prefix: params.get('prefix') || '',
+                firstname: params.get('firstname') || '',
+                lastname: params.get('lastname') || '',
+                organization: params.get('organization') || '',
+                email: params.get('email') || '',
+                student_id: params.get('student_id') || '' //ใช้สำหรับงานที่ต้องการรหัสนักศึกษา
             }
 
             fetch('../api/checkin.php', {

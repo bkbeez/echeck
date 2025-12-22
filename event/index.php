@@ -408,6 +408,12 @@
                                                 </a>
                                             </li>
                                             <li>
+                                                <a class="dropdown-item text-success" href="../participants/index.php?id<?= urlencode($row['events_id'])?>">
+                                                    <i class="bi bi-people"></i>
+                                                    <span>รายชื่อผู้เข้าร่วม</span>
+                                                </a>
+                                            </li>
+                                            <li>
                                                 <a class="dropdown-item text-primary" href="edit.php?id=<?= urlencode($row['events_id']) ?>">
                                                     <i class="bi bi-pencil-fill"></i>
                                                     <span>แก้ไข</span>
