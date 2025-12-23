@@ -72,7 +72,7 @@
                         <div class="form-control on-text-display">
                             <div style="right:20px;float:right;position:absolute;margin-top:-2px;"><a href="javascript:void(0);" class="btn btn-soft-primary btn-sm rounded-pill" onclick="record_events('info', { 'self':this });" display="N" style="padding:1px 7px 1px 5px;"><span class="uil uil-plus"></span><font class="on-text-normal"><?=( (App::lang()=='en') ? 'Info' : 'ข้อมูล' )?></font></a></div>
                             <div style="float:left;margin:-15px 5px 0 -10px;"><span class="fs-32 uil uil-shield-check"></span></div>
-                            <b class="fs-16"><?=((isset($data['user_role'])&&$data['user_role'])?$data['user_role']:$data['USER'])?></b>
+                            <b class="fs-16"><?=((isset($data['user_role'])&&$data['user_role'])?$data['user_role']:'USER')?></b>
                         </div>
                     </div>
                     <div class="row gx-1 on-info" style="display:none;"><?=(isset($changeloghtmls)?$changeloghtmls:null)?></div>
