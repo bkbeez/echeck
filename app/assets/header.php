@@ -18,6 +18,7 @@
         <link rel="apple-touch-icon-precomposed" href="<?=APP_PATH?>/favicon.png" />
         <link rel="stylesheet" href="<?=THEME_CSS?>/plugins.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/style.css">
+        <link rel="stylesheet" href="<?=THEME_CSS?>/colors/purple.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/index.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/table.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">

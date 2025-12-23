@@ -114,15 +114,16 @@ class App {
         if( isset($index['page'])&& in_array($index['page'], array('login','deny')) ){
             return null;
         }
-        $htmls = '<header class="wrapper bg-soft-primary">';
+        $htmls = '<header class="wrapper bg-grape">';
             $htmls .= '<nav class="navbar navbar-expand-lg classic transparent navbar-light">';
                 $htmls .= '<div class="container flex-lg-row flex-nowrap align-items-center">';
                     $htmls .= '<div class="navbar-brand w-100">';
                         $htmls .= '<a href="'.APP_HOME.'">';
-                            $htmls .= '<img src="'.THEME_IMG.'/logo/logo.png" srcset="'.THEME_IMG.'/logo/logo@2x.png 2x" alt="" style="height:72px;"/>';
+                            $htmls .= '<img class="on-light"src="'.THEME_IMG.'/logo/logo-light.png" srcset="'.THEME_IMG.'/logo/logo-light@2x.png 2x" alt=""/>';
+                            $htmls .= '<img class="on-color" src="'.THEME_IMG.'/logo/logo.png" srcset="'.THEME_IMG.'/logo/logo@2x.png 2x" alt=""/>';
                         $htmls .= '</a>';
                     $htmls .= '</div>';
-                    $htmls .= '<div class="navbar-collapse offcanvas offcanvas-nav offcanvas-start">';
+                    $htmls .= '<div class="navbar-collapse offcanvas offcanvas-nav offcanvas-start bg-grape">';
                         $htmls .= '<div class="offcanvas-header d-lg-none">';
                             $htmls .= '<img src="'.THEME_IMG.'/logo/logo-light.png" srcset="'.THEME_IMG.'/logo/logo-light@2x.png 2x" alt="" style="height:72px;"/>';
                             $htmls .= '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>';
@@ -218,7 +219,7 @@ class App {
                                 $htmls .= '</li>';
                             }
                             $htmls .= '<li class="nav-item d-lg-none">';
-                                $htmls .= '<button class="hamburger offcanvas-nav-btn"><span></span></button>';
+                                $htmls .= '<button class="hamburger offcanvas-nav-btn text-white"><span></span></button>';
                             $htmls .= '</li>';
                         $htmls .= '</ul>';
                     $htmls .= '</div>';
@@ -243,8 +244,8 @@ class App {
         }else if( isset($_SESSION['deny']) ){
             unset($_SESSION['deny']);
         }
-        $htmls = '<footer class="bg-dark text-inverse">';
-            $htmls .= '<div class="container py-2 py-md-7">';
+        $htmls = '<footer class="bg-grape text-inverse">';
+            $htmls .= '<div class="container pt-17 pb-8">';
                 $htmls .= '<div class="row gy-2 gy-lg-0">';
                     $htmls .= '<div class="col-md-12 col-lg-2">';
                         $htmls .= '<div class="widget">';
@@ -263,9 +264,9 @@ class App {
                     $htmls .= '<div class="col-md-4 col-lg-3">';
                         $htmls .= '<div class="widget">';
                             $htmls .= '<h4 class="widget-title text-white mb-3">Contact Us</h4>';
-                            $htmls .= '<p class="on-text-oneline">';
+                            $htmls .= '<p class="mb-0 on-text-oneline">';
                                 $htmls .= '<i class="uil uil-phone-volume"></i> '.APP_PHONE;
-                                $htmls .= '<br/><i class="uil uil-envelopes"></i> '.APP_EMAIL;
+                                //$htmls .= '<br/><i class="uil uil-envelopes"></i> '.APP_EMAIL;
                             $htmls .= '</p>';
                             $htmls .= '<nav class="nav social social-white">';
                                 $htmls .= '<a href="https://www.facebook.com/edu.cmu.ac.th" target="_blank"><i class="uil uil-facebook-f"></i></a>';

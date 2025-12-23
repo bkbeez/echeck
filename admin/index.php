@@ -28,7 +28,7 @@
 <style type="text/css">
     body { background:url('<?=THEME_IMG?>/map.png') top center; }
 </style>
-<section class="wrapper bg-soft-primary">
+<section class="wrapper bg-grape angled lower-start">
     <div class="container pt-10 pb-12 pt-md-14 pb-md-17">
         <div class="row gx-lg-8 gx-xl-12 gy-10 align-items-center">
             <div class="col-md-10 offset-md-1 offset-lg-0 col-lg-5 mt-lg-n2 text-center text-lg-start order-2 order-lg-0" data-cues="slideInDown" data-group="page-title" data-delay="600">
@@ -57,6 +57,9 @@
             </div>
         </div>
     </div>
+</section>
+<section class="wrapper bg-light angled upper-end lower-start">
+    <div class="container py-1 position-relative">&nbsp;</div>
 </section>
 <?php } ?>
 <?php include(APP_FOOTER);?>

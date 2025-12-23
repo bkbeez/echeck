@@ -6,8 +6,10 @@
 .on-font-primary {
     font-family: 'Prompt Regular';
 }
-
 .navbar-brand>a>img {
+    height:72px;
+}
+.navbar-brand>a>img.on-light {
     -webkit-animation: logo-fadein 5s; /* Safari, Chrome and Opera > 12.1 */
        -moz-animation: logo-fadein 5s; /* Firefox < 16 */
         -ms-animation: logo-fadein 5s; /* Internet Explorer */
@@ -18,17 +20,23 @@
     from { opacity: 0; }
     to   { opacity: 1; }
 }
+.navbar-brand>a>img.on-color,
+.navbar-stick .navbar-brand>a>img.on-light {
+    display: none;
+}
+.navbar-stick .navbar-brand>a>img.on-color {
+    display: block;
+}
 #mainsite-navbar .navbar-nav .nav-item .nav-link {
     cursor: pointer;
 }
 #mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name {
+    color: white;
     font-family: 'Prompt Regular';
     border-bottom:2px solid transparent;
 }
-#mainsite-navbar .navbar-nav .nav-item:hover .nav-link .nav-name,
-#mainsite-navbar .navbar-nav .nav-item.active .nav-link .nav-name {
-    color: #3f78e0;
-    border-bottom:2px solid #3f78e0;
+#mainsite-navbar .navbar-nav .nav-item:hover .nav-link .nav-name {
+    border-bottom:2px solid white;
 }
 #mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name .m-box-top {
     width: 28px;
@@ -65,20 +73,26 @@
     -moz-border-radius: 25px;
     -webkit-border-radius: 25px;
 }
+.navbar-stick #mainsite-navbar .navbar-nav .nav-item .nav-link.nav-icon .nav-name {
+    color: black;
+}
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item:hover .nav-link.nav-icon .nav-name,
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item.active .nav-link.nav-icon .nav-name {
     color: white;
-    background: #1950d8;
+    background: #615eba;
+}
+.navbar-stick #mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name {
+    color: black;
 }
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item:hover .nav-link .nav-name,
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item.active .nav-link .nav-name {
-    border-bottom:2px solid #1950d8;
+    border-bottom:2px solid #615eba;
 }
 .mainsite-dropdown .nav-item .nav-name {
     border-bottom:2px solid transparent;
 }
 .mainsite-dropdown .nav-item:hover .nav-name {
-    border-bottom:2px solid #1950d8;
+    border-bottom:2px solid #615eba;
 }
 .mainsite-dropdown .nav-item .nav-name .m-box {
     width: 30px;
@@ -97,7 +111,7 @@
     border-bottom:2px solid transparent;
 }
 .mainsite-dropdown-box font:hover .nav-name {
-    border-bottom:2px solid #1950d8;
+    border-bottom:2px solid #615eba;
 }
 .mainsite-dropdown-box font .m-box {
     width: 30px;
