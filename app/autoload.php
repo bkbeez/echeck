@@ -9,9 +9,6 @@
     define('APP_HOME', APP_HOST.APP_PATH);
     define('APP_CODE', 'CHECKIN');
     define('APP_PHONE', '053-941215');
-    define('APP_EMAIL', 'edu@cmu.ac.th');
-    define('APP_DPAT_TH', 'ภาควิชาพื้นฐานและการพัฒนาการศึกษา');
-    define('APP_DPAT_EN', 'Department of Educational Foundations and Development');
     define('APP_FACT_TH', 'คณะศึกษาศาสตร์ มหาวิทยาลัยเชียงใหม่');
     define('APP_FACT_EN', 'Faculty of Education, Chiang Mai University');
     define('APP_ADDR_TH', '239 ถ.ห้วยแก้ว ต.สุเทพ อ.เมืองเชียงใหม่ จ.เชียงใหม่ 50200');

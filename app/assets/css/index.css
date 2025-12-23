@@ -130,6 +130,12 @@
     font-size: 128px;
     line-height: 128px;
 }
+footer .widget.on-logo {
+    text-align: right;
+}
+footer .widget.on-logo img {
+    height: 92px;
+}
 .form-manage .form-select {
     color: #60697c;
     font-weight: normal;
@@ -157,35 +163,6 @@
 .form-manage .form-check .form-check-label span {
     font-size: 0.75rem;
     padding-left: 5px;
-}
-.modal-manage .modal-header {
-    display: block;
-    min-height: 75px;
-    padding-top: 25px;
-    padding-left: 10px;
-    padding-bottom: 10px;
-}
-.modal-manage .modal-header .btn-close {
-    top: 1.2rem;
-    right: 1.2rem;
-}
-.modal-manage .modal-body {
-    padding-top:0;
-    padding-bottom:0;
-}
-.modal-manage .modal-footer {
-    display: block;
-    min-height: 130px;
-    padding-top:25px;
-    padding-bottom:20px;
-}
-.modal-manage .modal-footer .confirm-box .btn {
-    padding-top:8px;
-    padding-bottom:8px;
-}
-.modal-manage .modal-footer .row-button>div {
-    float: none;
-    width: 50%;
 }
 .run-start {
     width: 50% !important;
@@ -238,6 +215,35 @@
   to {
     visibility: hidden;
   }
+}
+.modal-manage .modal-header {
+    display: block;
+    min-height: 75px;
+    padding-top: 25px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+.modal-manage .modal-header .btn-close {
+    top: 1.2rem;
+    right: 1.2rem;
+}
+.modal-manage .modal-body {
+    padding-top:0;
+    padding-bottom:0;
+}
+.modal-manage .modal-footer {
+    display: block;
+    min-height: 130px;
+    padding-top:25px;
+    padding-bottom:20px;
+}
+.modal-manage .modal-footer .confirm-box .btn {
+    padding-top:8px;
+    padding-bottom:8px;
+}
+.modal-manage .modal-footer .row-button>div {
+    float: none;
+    width: 50%;
 }
 .modal-imageviewer {
     padding: 15px 15px 0 15px !important;
@@ -350,6 +356,15 @@
     .mainsite-dropdown-box font:hover .nav-name,
     .mainsite-dropdown .nav-item:hover .nav-name {
         border-bottom:2px solid white;
+    }
+    footer .widget.on-logo {
+        text-align: left;
+    }
+    footer .widget .widget-title {
+        margin: 0 !important;
+    }
+    footer .widget-phone {
+        margin-top: -25px;
     }
 }
 @media only all and (max-width: 768px) {

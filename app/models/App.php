@@ -195,7 +195,7 @@ class App {
                             $htmls .= '<div class="offcanvas-footer d-lg-none">';
                                 $htmls .= '<div>';
                                     $htmls .= '<i class="uil uil-phone-volume"></i> '.APP_PHONE;
-                                    $htmls .= '<br/><a href="mailto:'.APP_EMAIL.'" class="link-inverse"><i class="uil uil-envelopes"></i> '.APP_EMAIL.'</a><br />';
+                                    //$htmls .= '<br/><a href="mailto:'.APP_EMAIL.'" class="link-inverse"><i class="uil uil-envelopes"></i> '.APP_EMAIL.'</a><br />';
                                     $htmls .= '<nav class="nav social social-white">';
                                         $htmls .= '<a href="https://www.facebook.com/edu.cmu.ac.th" target="_blank"><i class="uil uil-facebook-f"></i></a>';
                                         $htmls .= '<a href="https://www.edu.cmu.ac.th" target="_blank"><i class="uil uil-browser"></i></a>';
@@ -245,16 +245,16 @@ class App {
             unset($_SESSION['deny']);
         }
         $htmls = '<footer class="bg-grape text-inverse">';
-            $htmls .= '<div class="container pt-17 pb-8">';
+            $htmls .= '<div class="container py-7">';
                 $htmls .= '<div class="row gy-2 gy-lg-0">';
                     $htmls .= '<div class="col-md-12 col-lg-2">';
-                        $htmls .= '<div class="widget">';
-                            $htmls .= '<img class="mb-4" src="'.THEME_IMG.'/logo/logo-light.png" srcset="'.THEME_IMG.'/logo/logo-light@2x.png 2x" alt="" />';
+                        $htmls .= '<div class="widget on-logo">';
+                            $htmls .= '<img src="'.THEME_IMG.'/logo/logo-o.png" srcset="'.THEME_IMG.'/logo/logo-o.png 2x" alt="" />';
                         $htmls .= '</div>';
                     $htmls .= '</div>';
                     $htmls .= '<div class="col-md-8 col-lg-7">';
                         $htmls .= '<div class="widget">';
-                            $htmls .= '<h4 class="widget-title text-white mb-3">© All rights reserved.</h4>';
+                            $htmls .= '<h4 class="widget-title text-white mb-3"><i class="uil uil-map-marker"></i> Contact</h4>';
                             $htmls .= '<address class="pe-xl-15 pe-xxl-17">';
                                 $htmls .= '<div class="on-text-oneline">'.APP_FACT_EN.'</div>';
                                 $htmls .= '<div>'.APP_ADDR_EN.'</div>';
@@ -262,20 +262,21 @@ class App {
                         $htmls .= '</div>';
                     $htmls .= '</div>';
                     $htmls .= '<div class="col-md-4 col-lg-3">';
-                        $htmls .= '<div class="widget">';
-                            $htmls .= '<h4 class="widget-title text-white mb-3">Contact Us</h4>';
+                        $htmls .= '<div class="widget widget-phone">';
+                            $htmls .= '<h4 class="widget-title text-white mb-3"><i class="uil uil-phone-volume"></i> Phone</h4>';
                             $htmls .= '<p class="mb-0 on-text-oneline">';
-                                $htmls .= '<i class="uil uil-phone-volume"></i> '.APP_PHONE;
-                                //$htmls .= '<br/><i class="uil uil-envelopes"></i> '.APP_EMAIL;
+                                $htmls .= '<i class="uil uil-forwaded-call"></i> '.APP_PHONE;
                             $htmls .= '</p>';
-                            $htmls .= '<nav class="nav social social-white">';
-                                $htmls .= '<a href="https://www.facebook.com/edu.cmu.ac.th" target="_blank"><i class="uil uil-facebook-f"></i></a>';
-                                $htmls .= '<a href="https://www.edu.cmu.ac.th" target="_blank"><i class="uil uil-browser"></i></a>';
+                            $htmls .= '<nav class="nav social social-white" style="margin-top:-5px;">';
+                                $htmls .= '<a href="https://www.edu.cmu.ac.th" target="_blank"><i class="uil uil-globe"></i></a>';
+                                $htmls .= '<a href="https://www.facebook.com/edu.cmu.ac.th" target="_blank"><i class="uil uil-facebook"></i></a>';
                                 $htmls .= '<a href="https://www.youtube.com/@predcmu4451" target="_blank"><i class="uil uil-youtube" target="_blank"></i></a>';
                             $htmls .= '</nav>';
                         $htmls .= '</div>';
                     $htmls .= '</div>';
                 $htmls .= '</div>';
+                $htmls .= '<hr class="mt-4 mb-4"/>';
+                $htmls .= '<div class="text-white text-center">Copyright © '.date("Y").' <span class="underline-3 style-3 white">EDU CMU</span>, All rights reserved.</div>';
             $htmls .= '</div>';
         $htmls .= '</footer>';
 
