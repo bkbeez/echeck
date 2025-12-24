@@ -1,6 +1,7 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
     $index['page'] = 'home';
+    $index['addfooter'] = true;
 ?>
 <?php include(APP_HEADER); ?>
 <section class="wrapper bg-sky angled lower-end">
@@ -79,5 +80,4 @@
         </div>
     </div>
 </section>
-<section class="wrapper bg-sky angled upper-start"></section>
 <?php include(APP_FOOTER); ?>
