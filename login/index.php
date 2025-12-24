@@ -41,16 +41,8 @@
         <script type="text/javascript" src="<?=THEME_JS?>/sweetalert/sweetalert2.min.js"></script>
         <script type="text/javascript" src="<?=THEME_JS?>/index.js?<?=time()?>"></script>
         <style type="text/css">
-            body {
-                background-size: cover !important;
-                background-attachment: fixed !important;
-                background: no-repeat center center;
-                background-color: rgb(22 38 132)!important;
-                background-image: url('<?=THEME_IMG?>/bg/bg-blue.jpg');
-            }
-            .login .card {
-                width: 480px;
-            }
+            html,body { background: url('<?=THEME_IMG?>/map.png') top center; }
+            body .login .card {width: 480px;}
         </style>
     </head>
     <body>
@@ -63,7 +55,6 @@
                                 <div class="card-body">
                                     <form name="LoginForm" action="<?=APP_PATH?>/login/signinlocal.php" method="POST" enctype="multipart/form-data" class="form-manage">
                                         <figure class="text-center"><img src="<?=THEME_IMG?>/logo/logo@2x.png" style="width:200px;"/></figure>
-                                        <h2 class="mt-2 mb-1 text-center"><?=Lang::get('Welcome')?></h2>
                                         <div class="blockquote-details">
                                             <img class="rounded-circle w-12" src="<?=THEME_IMG?>/avatar.png">
                                             <div class="info">
@@ -96,16 +87,12 @@
                                             <input name="password" value="" type="password" class="form-control" placeholder="..." id="password">
                                             <label for="password"><?=Lang::get('Password')?></label>
                                         </div>
-
                                         <button type="submit" class="btn btn-lg btn-icon btn-icon-start btn-blue rounded-pill w-100"><i class="uil uil-user"></i> <?=Lang::get('Login')?></button>
                                         <div class="text-center mb-3 mt-2">
                                             <span class="text-muted"><?=Lang::get('Or sign in with')?></span>
                                         </div>
                                         <div class="Signin-google text-center mb-3">
-                                            <a href="<?=APP_PATH?>/login/signingoogle.php" class="btn btn-lg btn-icon btn-icon-start btn-blue rounded-pill w-100">
-                                                <i class="uil uil-google p-1"></i>
-                                                <?=Lang::get('Sign in with Google')?>
-                                            </a>
+                                            <a href="<?=APP_PATH?>/login/signingoogle.php" class="btn btn-lg btn-icon btn-icon-start btn-red rounded-pill w-100"><i class="uil uil-google"></i><?=Lang::get('Sign in with Google')?></a>
                                         </div>
                                     </form>
                                 </div>
