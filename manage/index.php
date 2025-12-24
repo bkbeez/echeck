@@ -10,15 +10,23 @@
     }
     $loadpage = null;
     if( isset($_GET['events']) ){
-        $loadpage = 'events';
+        $loadpage = 'events/index.php';
         $index['view'] = $loadpage;
+        if( $_GET['events'] ){
+            $index['addfooter'] = true;
+            if( $_GET['events']=='new' ){
+                $loadpage = 'events/new.php';
+            }else{
+                $loadpage = 'events/edit.php';
+            }
+        }
     }else if( isset($_GET['participants']) ){
         $loadpage = 'participants';
         $index['view'] = $loadpage;
     }
 ?>
 <?php include(APP_HEADER);?>
-<?php if( isset($loadpage)&&$loadpage ){ include(APP_ROOT.'/'.$index['page'].'/'.$loadpage.'/index.php'); }else{ ?>
+<?php if( isset($loadpage)&&$loadpage ){ include(APP_ROOT.'/'.$index['page'].'/'.$loadpage); }else{ ?>
 <style type="text/css">
     body { background:url('<?=THEME_IMG?>/map.png') top center; }
 </style>
