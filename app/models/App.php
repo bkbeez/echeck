@@ -178,7 +178,7 @@ class App {
             $htmls .= '<section class="wrapper bg-sky angled upper-start"></section>';
         }
         $htmls .= '<footer class="bg-sky text-white">';
-            $htmls .= '<div class="container pt-15 pb-1">';
+            $htmls .= '<div class="container pt-16 pb-1">';
                 $htmls .= '<div class="row gy-2 gy-lg-0">';
                     $htmls .= '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 on-copyright">';
                         $htmls .= '<div class="widget on-logo">';
