@@ -68,7 +68,7 @@
     <form name="filter" action="<?=$formby?>/filter/search.php" method="POST" enctype="multipart/form-data" target="_blank">
         <input type="hidden" name="state" value="loading" />
         <input type="hidden" name="filter_as" value="<?=$filter_as?>" />
-        <section class="wrapper bg-grape">
+        <section class="wrapper bg-sky">
             <div class="container">
                 <div class="filter-search">
                     <div class="row">
@@ -86,8 +86,8 @@
                             <div class="mc-field-group input-group form-floating mb-1">
                                 <input id="keyword" name="keyword" type="text" value="<?=((isset($filter['keyword'])&&$filter['keyword'])?$filter['keyword']:null)?>" class="form-control" placeholder="...">
                                 <label for="keyword"><?=Lang::get('Keyword')?></label>
-                                <button type="submit" class="btn btn-soft-primary btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
-                                <button type="button" class="btn btn-primary btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-filter-slash"></i></button>
+                                <button type="submit" class="btn btn-soft-sky btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
+                                <button type="button" class="btn btn-blue btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-filter-slash"></i></button>
                             </div>
                         </div>
                     </div>

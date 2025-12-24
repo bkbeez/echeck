@@ -116,7 +116,7 @@
                     }
                 $htmls .= '</td>';
                 $htmls .= '<td class="actions">';
-                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'id\':\''.$row['id'].'\' });" type="button" class="btn btn-circle btn-outline-primary"><i class="uil uil-edit-alt"></i></button><small class=b-tip>'.(($lang=='en')?'Edit':'แก้ไข').'</small></div>';
+                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'id\':\''.$row['id'].'\' });" type="button" class="btn btn-circle btn-outline-blue"><i class="uil uil-edit-alt"></i></button><small class=b-tip>'.(($lang=='en')?'Edit':'แก้ไข').'</small></div>';
                     if( $row['user_role']=='ADMIN' ){
                         $htmls .= '<div class="btn-box disabled"><button type="button" class="btn btn-circle btn-soft-ash text-ash" style="cursor:default;"><i class="uil uil-trash-alt"></i></button><small class=b-tip>'.Lang::get('Del').'</small></div>';
                     }else{

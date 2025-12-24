@@ -82,10 +82,10 @@
                 <div class="confirm-box"></div>
                 <div class="row gx-1 row-button">
                     <div class="col-lg-6 col-md-6 pt-1">
-                        <button type="button" class="btn btn-lg btn-icon btn-icon-start btn-primary rounded-pill w-100" onclick="record_events('confirm');"><i class="uil uil-check-circle"></i><?=Lang::get('Save')?></button>
+                        <button type="button" class="btn btn-lg btn-icon btn-icon-start btn-blue rounded-pill w-100" onclick="record_events('confirm');"><i class="uil uil-check-circle"></i><?=Lang::get('Save')?></button>
                     </div>
                     <div class="col-lg-6 col-md-6 pt-1">
-                        <button type="button" class="btn btn-lg btn-icon btn-icon-start btn-outline-default rounded-pill w-100" data-bs-dismiss="modal"><i class="uil uil-times-circle"></i><?=Lang::get('Close')?></button>
+                        <button type="button" class="btn btn-lg btn-icon btn-icon-start btn-soft-ash rounded-pill w-100" data-bs-dismiss="modal"><i class="uil uil-times-circle"></i><?=Lang::get('Close')?></button>
                     </div>
                 </div>
             </div>

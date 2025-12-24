@@ -2,7 +2,7 @@
 <style type="text/css">
     body { background:url('<?=THEME_IMG?>/map.png') top center; }
 </style>
-<section class="wrapper bg-grape">
+<section class="wrapper bg-sky">
     <div class="container pt-2 pb-2 text-center">
         <h3 class="text-white"><?=( (App::lang()=='en') ? 'Sessions' : 'ข้อมูลผู้ใช้ระบบ' )?></h3>
     </div>
