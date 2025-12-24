@@ -3,65 +3,6 @@
  * App Class
  */
 class App {
-    private $applications = array('home'=> array(
-                                    'th'=>'หน้าแรก',
-                                    'en'=>'Home',
-                                    'icon'=>'uil uil-house-user',
-                                    'link'=>'/'
-                                )
-                                , 'menu' => array(
-                                    'th'=>'เมนู 1',
-                                    'en'=>'Menu 1',
-                                    'icon'=>'uil uil-server',
-                                    'link'=>'/menu1',
-                                    'dropdown'=>array('type'=>'item'
-                                                    , 'item'=>array('conference'=>array(
-                                                                        'th'=>'เมนูย่อย 1',
-                                                                        'en'=>'Sub menu 1',
-                                                                        'icon'=>'uil uil-server',
-                                                                        'link'=>'#'
-                                                                    ),
-                                                                    'programs'=>array(
-                                                                        'th'=>'เมนูย่อย 2',
-                                                                        'en'=>'Sub menu 2',
-                                                                        'icon'=>'uil uil-server',
-                                                                        'link'=>'#'
-                                                                    )
-                                                    )
-                                    )
-                                )
-                                , 'about' => array(
-                                    'th'=>'เมนู 2',
-                                    'en'=>'Menu 2',
-                                    'icon'=>'uil uil-browser',
-                                    'link'=>'/menu2',
-                                    'dropdown'=>array('type'=>'box'
-                                                    , 'item'=>array('conference'=>array(
-                                                                        'th'=>'เมนูย่อย 1',
-                                                                        'en'=>'Sub menu 1',
-                                                                        'icon'=>'uil uil-window',
-                                                                        'link'=>'#'
-                                                                    ),
-                                                                    'programs'=>array(
-                                                                        'th'=>'เมนูย่อย 2',
-                                                                        'en'=>'Sub menu 2',
-                                                                        'icon'=>'uil uil-window',
-                                                                        'link'=>'#'
-                                                                    )
-                                                    )
-                                    )
-                                )
-    );
-
-    /**
-     *  Get
-     *  @param  key
-     *  @return value
-     */
-    static function lang()
-    {
-        return (isset($_SESSION['NICE_LANGUAGE'])?$_SESSION['NICE_LANGUAGE']:'th');
-    }
 
     /**
      *  Profile
@@ -73,7 +14,7 @@ class App {
         if( isset($_SESSION['login']) ){
             $htmls = '<div class="offcanvas offcanvas-end bg-light iceahe-profile on-font-primary" id="offcanvas-info" data-bs-scroll="true" style="background:url(\''.THEME_IMG.'/map.png\') repeat-y top center;">';
                 $htmls .= '<div class="offcanvas-header">';
-                    $htmls .= '<h3 class="fs-30 mb-0" style="color:#372770;">'.Lang::get('Profile').'</h3>';
+                    $htmls .= '<h3 class="fs-30 mb-0 text-sky">'.Lang::get('Profile').'</h3>';
                     $htmls .= '<button type="button" class="btn-close btn-close-dark" data-bs-dismiss="offcanvas" aria-label="Close"></button>';
                 $htmls .= '</div>';
                 $htmls .= '<div class="offcanvas-body d-flex flex-column">';
@@ -87,14 +28,14 @@ class App {
                         $htmls .= '</div>';
                     $htmls .= '</div>';
                     $htmls .= '<div class="offcanvas-footer flex-column text-center">';
-                        $htmls .= '<div class="row text-center gx-0">';
+                        /*$htmls .= '<div class="row text-center gx-0">';
                             $htmls .= '<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="float:none;width:50%;">';
                                 $htmls .= '<button type="button" class="btn btn-soft-ash rounded-pill iceahe-lang'.((App::lang()=='th')?' active':null).' w-100 mb-1" onclick="runLanguage(\'th\');"><span class="underline-3 style-1 primary">&nbsp;&nbsp;TH&nbsp;&nbsp;</span>&nbsp;&nbsp;'.Lang::get('Thai').'</button>';
                             $htmls .= '</div>';
                             $htmls .= '<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="float:none;width:50%;">';
                                 $htmls .= '<button type="button" class="btn btn-soft-ash rounded-pill iceahe-lang'.((App::lang()=='en')?' active':null).' w-100 mb-1" onclick="runLanguage(\'en\');"><span class="underline-3 style-1 primary">&nbsp;&nbsp;EN&nbsp;&nbsp;</span>&nbsp;&nbsp;'.Lang::get('English').'</button>';
                             $htmls .= '</div>';
-                        $htmls .= '</div>';
+                        $htmls .= '</div>';*/
                         $htmls .= '<button type="button" class="btn btn-danger btn-icon btn-icon-start rounded-pill w-100 mb-0" onclick="runLogout();"><i class="uil uil-exit fs-18"></i> '.Lang::get('Logout').'</button>';
                     $htmls .= '</div>';
                 $htmls .= '</div>';
@@ -130,66 +71,54 @@ class App {
                         $htmls .= '</div>';
                         $htmls .= '<div id="mainsite-navbar" class="offcanvas-body ms-lg-auto d-flex flex-column h-100">';
                             $htmls .= '<ul class="navbar-nav">';
-                            /*foreach( (new App())->applications as $key => $value ){
-                                if( isset($value['dropdown']) ){
-                                    $htmls .= '<li class="nav-item'.((isset($index['page'])&&$index['page']==$key) ? ' active':null).' dropdown">';
-                                        $htmls .= '<a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown"><span class="nav-name"><div class="m-box-top"><i class="'.$value['icon'].'"></i></div><div class="m-box"><i class="'.$value['icon'].'"></i></div>'.$value[App::lang()].'</span></a>';
-                                        if( $value['dropdown']['type']=='box' ){
-                                            $htmls .= '<div class="dropdown-menu dropdown-lg">';
-                                                $htmls .= '<div class="dropdown-lg-content">';
-                                                foreach( $value['dropdown']['item'] as $ikey => $item ){
-                                                    $htmls .= '<div class="mainsite-dropdown-box">';
-                                                        $htmls .= '<ul class="list-unstyled">';
-                                                            $htmls .= '<li>';
-                                                                $htmls .= '<a class="dropdown-item" href="'.$value['link'].$item['link'].'">';
-                                                                    $htmls .= '<font><div class="m-box"><i class="'.$item['icon'].'"></i></div><span class="nav-name">'.$item[App::lang()].'</span></font>';
-                                                                    $htmls .= '<div class="i-box"><i class="'.$item['icon'].'"></i></div>';
-                                                                $htmls .= '</a>';
-                                                            $htmls .= '</li>';
-                                                        $htmls .= '</ul>';
-                                                    $htmls .= '</div>';
-                                                }
-                                                $htmls .= '</div>';
-                                            $htmls .= '</div>';
-                                        }else{
-                                            $htmls .= '<ul class="dropdown-menu mainsite-dropdown">';
-                                            foreach( $value['dropdown']['item'] as $ikey => $item ){
-                                                $htmls .= '<li class="nav-item">';
-                                                    $htmls .= '<a class="dropdown-item" href="'.$value['link'].$item['link'].'">';
-                                                        $htmls .= '<span class="nav-name"><div class="m-box"><i class="'.$item['icon'].'"></i></div>'.$item[App::lang()].'</span>';
+                            if( Auth::check() ){
+                                    $htmls .= '<li class="nav-item dropdown">';
+                                        $htmls .= '<a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown"><span class="nav-name"><div class="m-box-top"><i class="uil uil-user-nurse"></i></div><div class="m-box"><i class="uil uil-user-nurse"></i></div>'.Lang::get('Officer').'</span></a>';
+                                        $htmls .= '<ul class="dropdown-menu mainsite-dropdown">';
+                                            $htmls .= '<li class="nav-item">';
+                                                $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/event">';
+                                                    $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-edit"></i></div>จัดการกิจกรรม</span>';
+                                                $htmls .= '</a>';
+                                            $htmls .= '</li>';
+                                            $htmls .= '<li class="nav-item">';
+                                                $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/participants">';
+                                                    $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-users-alt"></i></div>รายชื่อผู้เข้าร่วม</span>';
+                                                $htmls .= '</a>';
+                                            $htmls .= '</li>';
+                                            $htmls .= '<li class="nav-item">';
+                                                $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/participants/user_register.php">';
+                                                    $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-qrcode-scan"></i></div>ลงทะเบียน USER</span>';
+                                                $htmls .= '</a>';
+                                            $htmls .= '</li>';
+                                            $htmls .= '<li class="nav-item">';
+                                                $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/participants/staff_register.php">';
+                                                    $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-desktop"></i></div>ลงทะเบียน STAFF</span>';
+                                                $htmls .= '</a>';
+                                            $htmls .= '</li>';
+                                        $htmls .= '</ul>';
+                                    $htmls .= '</li>';
+                                    if( Auth::admin() ){
+                                        $htmls .= '<li class="nav-item'.((isset($index['page'])&&$index['page']=='admin') ? ' active':null).' dropdown">';
+                                            $htmls .= '<a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown"><span class="nav-name"><div class="m-box-top"><i class="uil uil-user-md"></i></div><div class="m-box"><i class="uil uil-user-md"></i></div>'.Lang::get('Administrator').'</span></a>';
+                                            $htmls .= '<ul class="dropdown-menu mainsite-dropdown'.((isset($index['page'])&&$index['page']=='admin') ? ' show':null).'">';
+                                                $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='users') ? ' active':null).'">';
+                                                    $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?users">';
+                                                        $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-users-alt"></i></div>User Accounts</span>';
                                                     $htmls .= '</a>';
                                                 $htmls .= '</li>';
-                                            }
+                                                $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='sessions') ? ' active':null).'">';
+                                                    $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?sessions">';
+                                                        $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-transaction"></i></div>View Sessions</span>';
+                                                    $htmls .= '</a>';
+                                                $htmls .= '</li>';
+                                                $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='logs') ? ' active':null).'">';
+                                                    $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?logs">';
+                                                        $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-sim-card"></i></div>View Logs</span>';
+                                                    $htmls .= '</a>';
+                                                $htmls .= '</li>';
                                             $htmls .= '</ul>';
-                                        }
-                                    $htmls .= '</li>';
-                                }else{
-                                    $htmls .= '<li class="nav-item'.((isset($index['page'])&&$index['page']==$key) ? ' active':null).'">';
-                                        $htmls .= '<a href="'.$value['link'].'" class="nav-link"><span class="nav-name"><div class="m-box-top"><i class="'.$value['icon'].'"></i></div><div class="m-box"><i class="'.$value['icon'].'"></i></div>'.$value[App::lang()].'</span></a>';
-                                    $htmls .= '</li>';
-                                }
-                            }*/
-                            if( isset($_SESSION['login'])&&Auth::admin() ){
-                                $htmls .= '<li class="nav-item'.((isset($index['page'])&&$index['page']=='admin') ? ' active':null).' dropdown">';
-                                    $htmls .= '<a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown"><span class="nav-name"><div class="m-box-top"><i class="uil uil-create-dashboard"></i></div><div class="m-box"><i class="uil uil-create-dashboard"></i></div>'.Lang::get('Administrator').'</span></a>';
-                                    $htmls .= '<ul class="dropdown-menu mainsite-dropdown">';
-                                        $htmls .= '<li class="nav-item">';
-                                            $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?users">';
-                                                $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-users-alt"></i></div>User Accounts</span>';
-                                            $htmls .= '</a>';
                                         $htmls .= '</li>';
-                                        $htmls .= '<li class="nav-item">';
-                                            $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?sessions">';
-                                                $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-desktop"></i></div>View Sessions</span>';
-                                            $htmls .= '</a>';
-                                        $htmls .= '</li>';
-                                        $htmls .= '<li class="nav-item">';
-                                            $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?logs">';
-                                                $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-monitor-heart-rate"></i></div>View Logs</span>';
-                                            $htmls .= '</a>';
-                                        $htmls .= '</li>';
-                                    $htmls .= '</ul>';
-                                $htmls .= '</li>';
+                                    }
                             }
                             $htmls .= '</ul>';
                             $htmls .= '<div class="offcanvas-footer d-lg-none">';
@@ -280,6 +209,16 @@ class App {
         $htmls .= '</footer>';
 
         return $htmls;
+    }
+
+    /**
+     *  Get
+     *  @param  key
+     *  @return value
+     */
+    static function lang()
+    {
+        return (isset($_SESSION['NICE_LANGUAGE'])?$_SESSION['NICE_LANGUAGE']:'th');
     }
 
 }

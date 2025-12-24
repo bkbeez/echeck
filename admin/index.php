@@ -17,10 +17,13 @@
     $loadpage = null;
     if( isset($_GET['users']) ){
         $loadpage = 'users';
+        $index['view'] = $loadpage;
     }else if( isset($_GET['sessions']) ){
         $loadpage = 'sessions';
+        $index['view'] = $loadpage;
     }else if( isset($_GET['logs']) ){
         $loadpage = 'userlogs';
+        $index['view'] = $loadpage;
     }
 ?>
 <?php include(APP_HEADER);?>
