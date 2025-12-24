@@ -5,10 +5,11 @@
 ?>
 <?php include(APP_HEADER); ?>
 <section class="wrapper bg-sky angled lower-end">
-    <div class="container pt-7 pt-md-11 pb-8">
+    <div class="container pt-5 pb-10">
         <div class="row gx-0 gy-10 align-items-center">
             <div class="col-lg-6 site-intro" data-cues="slideInDown" data-group="page-title" data-delay="600">
-                <h1 class="display-1 text-yellow mb-4"><?=APP_NAME?> <br /><span class="typer text-white text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,มหาวิทยาลัยเชียงใหม่,Faculty of Education,Chiang Mai University"></span><span class="cursor text-white" data-owner="typer"></span></h1>
+                <h1 class="display-1 text-yellow mb-4"><?=APP_NAME?><br/>
+                <span class="typer fs-38 text-white text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,มหาวิทยาลัยเชียงใหม่,Faculty of Education,Chiang Mai University"></span><span class="cursor fs-38 text-white" data-owner="typer"></span></h1>
                 <p class="lead fs-24 lh-sm text-white mb-7 pe-lg-0 pe-xxl-15">ระบบบริการจัดการข้อมูลกิจกรรมและรายชื่อผู้เข้าร่วม สำหรับใช้ลงทะเบียนเข้าร่วมกิจกรรมต่างๆ ที่จัดโดยคณะศึกษาศาสตร์ มหาวิทยาลัยเชียงใหม่</p>
                 <div><a href="<?=APP_HOME?>/event" class="btn btn-lg btn-soft-sky rounded-pill">เริ่มต้นใช้งาน &rarr;</a></div>
             </div>
