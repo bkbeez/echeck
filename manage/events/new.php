@@ -3,21 +3,73 @@
     body { background:url('<?=THEME_IMG?>/map.png') top center; }
 </style>
 <section class="wrapper bg-sky angled lower-end">
-    <div class="container pt-7 pt-md-11 pb-8">
-        <div class="site-intro" data-cues="slideInDown" data-group="page-title" data-delay="600">
-            <h1 class="display-1 text-white mb-4"><i class="uil uil-file-plus-alt"></i> เพิ่มกิจกรรมใหม่</h1>
-        </div>
-    </div>
+    <div class="container pb-4">&nbsp;</div>
 </section>
-<section class="wrapper image-wrapper bg-auto no-overlay bg-image bg-map" data-image-src="<?=THEME_IMG?>/map.png" style="background: url('<?=THEME_IMG?>/map.png') top center;">
-    <div class="container pt-18 pb-15">
-        <div class="row text-center">
-            <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-                <h3 class="display-4 text-sky mb-10 px-xl-10">กิจกรรมและรายชื่อผู้เข้าร่วม</h3>
+<section class="wrapper">
+    <div class="container">
+        <form name="MeetingForm" action="<?=$form?>/meeting/saving.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
+            <input type="hidden" name="id" value="<?=((isset($meeting['id'])&&$meeting['id'])?$meeting['id']:null)?>" />
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-10 mx-auto mt-n6 mb-n3">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="lead mb-1 text-start on-text-oneline">ข้อมูล</p>
+                            <div class="form-floating mb-1">
+                                <input required name="name_th" value="<?=((isset($meeting['name_th'])&&$meeting['name_th'])?$meeting['name_th']:null)?>" type="text" class="form-control">
+                                <label>ชื่อกิจกรรม <span class="text-red">*</span></label>
+                            </div>
+                            <div class="row gx-1">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
+                                    <div class="form-floating mb-1">
+                                        <input required name="date_start" value="<?=((isset($meeting['date_start_date'])&&$meeting['date_start_date'])?$meeting['date_start_date']:null)?>" type="datetime-local" class="form-control" placeholder="...">
+                                        <label>วันที่เริ่มต้น <span class="text-red">*</span></label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
+                                    <div class="form-floating mb-1">
+                                        <input name="early_bird_date" value="<?=((isset($meeting['early_bird_date_time'])&&$meeting['early_bird_date_time'])?$meeting['early_bird_date_time']:null)?>" type="datetime-local" class="form-control" placeholder="...">
+                                        <label>วันที่สิ้นสุด <span class="text-red">*</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="lead mt-4 mb-1 text-start on-text-oneline">ประเภท</p>
+                            <div class="row gx-1">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="participant_type" value="ALL" id="participant-type-n" checked onchange="manage_events('payslip', { 'self':this });">
+                                        <label class="form-check-label form-payslip-select" for="participant-type-n"><span class=text-green>ALL</span><span class="desc fs-14 on-text-normal-i">ทั้งหมด</span></label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="participant_type" value="LIST" id="participant-type-y" onchange="manage_events('payslip', { 'self':this });">
+                                        <label class="form-check-label form-payslip-select" for="participant-type-y"><span class=text-dark>LIST</span><span class="desc fs-14 on-text-normal-i">เฉพาะผู้ที่มีรายชื่อ</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="lead mt-4 mb-1 text-start on-text-oneline">สถานะ</p>
+                            <div class="row gx-1">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="status" value="1" id="status-1" checked onchange="manage_events('payslip', { 'self':this });">
+                                        <label class="form-check-label form-payslip-select" for="status-1"><span class=text-green>OPEN</span><span class="desc fs-14 on-text-normal-i">เปิดลงทะเบียน</span></label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 ">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="status" value="2" id="status-2" onchange="manage_events('payslip', { 'self':this });">
+                                        <label class="form-check-label form-payslip-select" for="status-2"><span class=text-red>CLOSE</span><span class="desc fs-14 on-text-normal-i">ปิดลงทะเบียน</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center position-relative">
+                            <button type="submit" class="btn btn-lg btn-sky btn-icon btn-icon-start rounded-pill mb-2"><span class="uil uil-plus-circle"></span>&nbsp;สร้าง</button>
+                            <button type="button" class="btn btn-lg btn-danger btn-icon btn-icon-start rounded-pill mb-2"><span class="uil uil-times-circle"></span>&nbsp;ยกเลิก</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="position-relative mb-7">
-
-        </div>
+        </form>
     </div>
 </section>

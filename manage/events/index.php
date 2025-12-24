@@ -102,13 +102,13 @@
                 <div class="filter-pagination">
                     <div class="row">
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 filter-prev">
-                            <button type="button" class="btn btn-icon btn-icon-start<?=((isset($filter['page'])&&$filter['page']==1)?' btn-white':' btn-primary')?>"><i class="uil uil-angle-left-b"></i><span> <?=Lang::get('Prev')?></span></button>
+                            <button type="button" class="btn btn-icon btn-icon-start<?=((isset($filter['page'])&&$filter['page']==1)?' btn-white':' btn-sky')?>"><i class="uil uil-angle-left-b"></i><span> <?=Lang::get('Prev')?></span></button>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 filter-page">
                             <center><select name="page" class="page-on form-select"><?php if(isset($filter['pages'])&&$filter['pages']){ ?><?php for($page=1;$page<=intval($filter['pages']);$page++){ ?><option value="<?=$page?>" <?=((isset($filter['page'])&&intval($filter['page'])==$page)?'selected':null)?>><?=$page?></option><?php } ?><?php }else{ ?><option value="1">1</option><?php } ?></select><div class="page-total">/<span>1</span></div></center>
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 filter-next">
-                            <button type="button" class="btn btn-icon btn-icon-end<?=((isset($filter['page'])&&isset($filter['pages'])&&$filter['page']==$filter['pages'])?' btn-white':' btn-primary')?>"><span><?=Lang::get('Next')?> </span><i class="uil uil-angle-right-b"></i></button>
+                            <button type="button" class="btn btn-icon btn-icon-end<?=((isset($filter['page'])&&isset($filter['pages'])&&$filter['page']==$filter['pages'])?' btn-white':' btn-sky')?>"><span><?=Lang::get('Next')?> </span><i class="uil uil-angle-right-b"></i></button>
                         </div>
                     </div>
                 </div>
