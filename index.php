@@ -69,7 +69,7 @@
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
                     <div class="card">
                         <div class="card-body">
-                            <div class="icon btn btn-circle btn-lg btn-sky pe-none mb-3"><i class="uil uil-check-square"></i></div>
+                            <div class="icon btn btn-circle btn-lg btn-sky pe-none mb-3"><i class="uil uil-desktop"></i></div>
                             <h4>ลงทะเบียน<sup> STAFF</sup></h4>
                             <a href="<?=APP_HOME?>/participants/staff_register.php" class="more hover link-blue">เข้าใช้งาน</a>
                         </div>
