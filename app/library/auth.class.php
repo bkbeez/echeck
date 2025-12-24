@@ -158,7 +158,7 @@ class Auth {
      */
     static function check($redirect=null)
     {
-        if( isset($_SESSION['login']) ){
+        if( isset($_SESSION['login']['user']) ){
             return true;
         }else if( $redirect ){
             header("location:".(($_SERVER['SERVER_PORT']==443)?'https://':'http://').$_SERVER["HTTP_HOST"]).$redirect;

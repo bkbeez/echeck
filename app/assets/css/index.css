@@ -27,6 +27,9 @@
 .navbar-stick .navbar-brand>a>img.on-color {
     display: block;
 }
+.navbar-nav .nav-item .hamburger {
+    color: white;
+}
 #mainsite-navbar .navbar-nav .nav-item .nav-link {
     cursor: pointer;
 }
@@ -73,26 +76,33 @@
     -moz-border-radius: 25px;
     -webkit-border-radius: 25px;
 }
+.navbar-stick .navbar-nav .nav-item .hamburger {
+    color: #5ebaf0;
+}
+.navbar-stick .navbar-nav .nav-item .btn-login {
+    border-color:#5ebaf0 !important;
+    background-color:#5ebaf0 !important;
+}
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item .nav-link.nav-icon .nav-name {
     color: black;
 }
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item:hover .nav-link.nav-icon .nav-name,
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item.active .nav-link.nav-icon .nav-name {
     color: white;
-    background: #615eba;
+    background: #5ebaf0;
 }
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name {
-    color: black;
+    color: #5ebaf0;
 }
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item:hover .nav-link .nav-name,
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item.active .nav-link .nav-name {
-    border-bottom:2px solid #615eba;
+    border-bottom:2px solid #5ebaf0;
 }
 .mainsite-dropdown .nav-item .nav-name {
     border-bottom:2px solid transparent;
 }
 .mainsite-dropdown .nav-item:hover .nav-name {
-    border-bottom:2px solid #615eba;
+    border-bottom:2px solid #3f78e0;
 }
 .mainsite-dropdown .nav-item .nav-name .m-box {
     width: 30px;
@@ -129,12 +139,6 @@
 .mainsite-dropdown-box .i-box>i {
     font-size: 128px;
     line-height: 128px;
-}
-footer .widget.on-logo {
-    text-align: right;
-}
-footer .widget.on-logo img {
-    height: 92px;
 }
 .form-manage .form-select {
     color: #60697c;
@@ -318,7 +322,19 @@ footer .widget.on-logo img {
     -moz-border-radius-bottomleft: 0;
     border-bottom-left-radius: 0;
 }
+footer .on-copyright {
+    text-align: center;
+}
+footer .on-logo img {
+    height: 115px;
+    margin: -92px 0 22px 0;
+}
 @media only all and (max-width: 991px) {
+    .site-intro,
+    .site-intro>p,
+    .site-intro>div {
+        text-align: center;
+    }
     #mainsite-navbar .navbar-nav .nav-item .nav-link {
         overflow:hidden;
         white-space:nowrap;
@@ -357,20 +373,30 @@ footer .widget.on-logo img {
     .mainsite-dropdown .nav-item:hover .nav-name {
         border-bottom:2px solid white;
     }
-    footer .widget.on-logo {
+    footer .on-copyright {
         text-align: left;
     }
-    footer .widget .widget-title {
-        margin: 0 !important;
+    footer .on-copyright>p {
+        margin-top: -15px;
     }
-    footer .widget-phone {
-        margin-top: -25px;
+    footer .on-logo img {
+        height: 75px;
+        margin-bottom: 0;
+    }
+    footer .widget-title {
+        margin: 0 !important;
     }
 }
 @media only all and (max-width: 768px) {
     .form-manage .form-check .form-check-label span.price {
         display: block;
         padding-left: 0;
+    }
+    footer .widget-title {
+        margin:-5px 0 0 0 !important;
+    }
+    footer .widget-phone {
+        margin-top: -25px;
     }
 }
 @media only all and (max-width: 475px) {

@@ -114,7 +114,7 @@ class App {
         if( isset($index['page'])&& in_array($index['page'], array('login','deny')) ){
             return null;
         }
-        $htmls = '<header class="wrapper bg-grape">';
+        $htmls = '<header class="wrapper bg-sky">';
             $htmls .= '<nav class="navbar navbar-expand-lg classic transparent navbar-light">';
                 $htmls .= '<div class="container flex-lg-row flex-nowrap align-items-center">';
                     $htmls .= '<div class="navbar-brand w-100">';
@@ -123,7 +123,7 @@ class App {
                             $htmls .= '<img class="on-color" src="'.THEME_IMG.'/logo/logo.png" srcset="'.THEME_IMG.'/logo/logo@2x.png 2x" alt=""/>';
                         $htmls .= '</a>';
                     $htmls .= '</div>';
-                    $htmls .= '<div class="navbar-collapse offcanvas offcanvas-nav offcanvas-start bg-grape">';
+                    $htmls .= '<div class="navbar-collapse offcanvas offcanvas-nav offcanvas-start bg-sky">';
                         $htmls .= '<div class="offcanvas-header d-lg-none">';
                             $htmls .= '<img src="'.THEME_IMG.'/logo/logo-light.png" srcset="'.THEME_IMG.'/logo/logo-light@2x.png 2x" alt="" style="height:72px;"/>';
                             $htmls .= '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>';
@@ -207,20 +207,20 @@ class App {
                     $htmls .= '</div>';
                     $htmls .= '<div class="navbar-other ms-lg-4">';
                         $htmls .= '<ul class="navbar-nav flex-row align-items-center ms-auto">';
-                            if( isset($_SESSION['login']) ){
-                                $htmls .= '<li class="nav-item">';
-                                    $htmls .= '<a class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-info">';
-                                        $htmls .= '<div style="width:48px;overflow:hidden;border-radius:50%;-moz-border-radius:50%;-webkit-border-radius:50%;"><img src="'.User::get('picture').'" onerror="this.onerror=null;this.src=\''.THEME_IMG.'/avatar.png\';" style="width:100%;" /></div>';
-                                    $htmls .= '</a>';
-                                $htmls .= '</li>';
-                            }else{
-                                $htmls .= '<li class="nav-item d-none d-md-block">';
-                                    $htmls .= '<a href="'.APP_HOME.'/login" class="btn btn-sm btn-primary rounded-pill">Login</a>';
-                                $htmls .= '</li>';
-                            }
-                            $htmls .= '<li class="nav-item d-lg-none">';
-                                $htmls .= '<button class="hamburger offcanvas-nav-btn text-white"><span></span></button>';
+                        if( isset($_SESSION['login']) ){
+                            $htmls .= '<li class="nav-item">';
+                                $htmls .= '<a class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-info">';
+                                    $htmls .= '<div style="width:48px;overflow:hidden;border-radius:50%;-moz-border-radius:50%;-webkit-border-radius:50%;"><img src="'.User::get('picture').'" onerror="this.onerror=null;this.src=\''.THEME_IMG.'/avatar.png\';" style="width:100%;" /></div>';
+                                $htmls .= '</a>';
                             $htmls .= '</li>';
+                            $htmls .= '<li class="nav-item d-lg-none">';
+                                $htmls .= '<button class="hamburger offcanvas-nav-btn"><span></span></button>';
+                            $htmls .= '</li>';
+                        }else{
+                            $htmls .= '<li class="nav-item d-md-block">';
+                                $htmls .= '<a href="'.APP_HOME.'/login" class="btn btn-login btn-sm btn-soft-sky rounded-pill">Login</a>';
+                            $htmls .= '</li>';
+                        }
                         $htmls .= '</ul>';
                     $htmls .= '</div>';
                 $htmls .= '</div>';
@@ -244,15 +244,16 @@ class App {
         }else if( isset($_SESSION['deny']) ){
             unset($_SESSION['deny']);
         }
-        $htmls = '<footer class="bg-grape text-inverse">';
-            $htmls .= '<div class="container py-7">';
+        $htmls = '<footer class="bg-sky text-white">';
+            $htmls .= '<div class="container pt-15 pb-1">';
                 $htmls .= '<div class="row gy-2 gy-lg-0">';
-                    $htmls .= '<div class="col-md-12 col-lg-2">';
+                    $htmls .= '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 on-copyright">';
                         $htmls .= '<div class="widget on-logo">';
                             $htmls .= '<img src="'.THEME_IMG.'/logo/logo-o.png" srcset="'.THEME_IMG.'/logo/logo-o.png 2x" alt="" />';
                         $htmls .= '</div>';
+                        $htmls .= '<p class="mb-0">© '.date("Y").' '.APP_CODE.'. <br class="d-none d-lg-block">All rights reserved.</p>';
                     $htmls .= '</div>';
-                    $htmls .= '<div class="col-md-8 col-lg-7">';
+                    $htmls .= '<div class="col-xs-12 col-sm-12 col-md-9 col-lg-7">';
                         $htmls .= '<div class="widget">';
                             $htmls .= '<h4 class="widget-title text-white mb-3"><i class="uil uil-map-marker"></i> Contact</h4>';
                             $htmls .= '<address class="pe-xl-15 pe-xxl-17">';
@@ -261,7 +262,7 @@ class App {
                             $htmls .= '</address>';
                         $htmls .= '</div>';
                     $htmls .= '</div>';
-                    $htmls .= '<div class="col-md-4 col-lg-3">';
+                    $htmls .= '<div class="col-xs-12 col-sm-12 col-md-3 col-lg-2">';
                         $htmls .= '<div class="widget widget-phone">';
                             $htmls .= '<h4 class="widget-title text-white mb-3"><i class="uil uil-phone-volume"></i> Phone</h4>';
                             $htmls .= '<p class="mb-0 on-text-oneline">';
@@ -275,8 +276,6 @@ class App {
                         $htmls .= '</div>';
                     $htmls .= '</div>';
                 $htmls .= '</div>';
-                $htmls .= '<hr class="mt-4 mb-4"/>';
-                $htmls .= '<div class="text-white text-center">Copyright © '.date("Y").' <span class="underline-3 style-3 white">EDU CMU</span>, All rights reserved.</div>';
             $htmls .= '</div>';
         $htmls .= '</footer>';
 

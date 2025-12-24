@@ -2,7 +2,7 @@
 <html lang="<?=App::lang()?>">
     <head app-lang="<?=App::lang()?>" app-path="<?=APP_PATH?>">
         <meta charset="utf-8" />
-        <meta name="keywords" content="<?=APP_CODE?>,EDU CMU">
+        <meta name="keywords" content="<?=APP_CODE?>,EDU CMU CHECKIN">
         <meta name="description" content="<?=APP_FACT_TH.','.APP_FACT_EN?>">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
@@ -18,10 +18,9 @@
         <link rel="apple-touch-icon-precomposed" href="<?=APP_PATH?>/favicon.png" />
         <link rel="stylesheet" href="<?=THEME_CSS?>/plugins.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/style.css">
-        <link rel="stylesheet" href="<?=THEME_CSS?>/colors/purple.css">
+        <link rel="stylesheet" href="<?=THEME_CSS?>/colors/navy.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/index.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/table.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
         <link rel="stylesheet" href="<?=THEME_JS?>/sweetalert/sweetalert2.min.css" />
         <script type="text/javascript" src="<?=THEME_JS?>/jquery-2.1.1.js"></script>
         <script type="text/javascript" src="<?=THEME_JS?>/jquery.form.min.js"></script>
