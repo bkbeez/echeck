@@ -72,16 +72,16 @@ class App {
                         $htmls .= '<div id="mainsite-navbar" class="offcanvas-body ms-lg-auto d-flex flex-column h-100">';
                             $htmls .= '<ul class="navbar-nav">';
                             if( Auth::check() ){
-                                    $htmls .= '<li class="nav-item dropdown">';
+                                    $htmls .= '<li class="nav-item'.((isset($index['page'])&&$index['page']=='manage') ? ' active':null).' dropdown">';
                                         $htmls .= '<a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown"><span class="nav-name"><div class="m-box-top"><i class="uil uil-user-nurse"></i></div><div class="m-box"><i class="uil uil-user-nurse"></i></div>'.Lang::get('Officer').'</span></a>';
-                                        $htmls .= '<ul class="dropdown-menu mainsite-dropdown">';
-                                            $htmls .= '<li class="nav-item">';
-                                                $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/event">';
+                                        $htmls .= '<ul class="dropdown-menu mainsite-dropdown'.((isset($index['page'])&&$index['page']=='manage') ? ' show':null).'">';
+                                            $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='events') ? ' active':null).'">';
+                                                $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/manage/?events">';
                                                     $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-edit"></i></div>จัดการกิจกรรม</span>';
                                                 $htmls .= '</a>';
                                             $htmls .= '</li>';
-                                            $htmls .= '<li class="nav-item">';
-                                                $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/participants">';
+                                            $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='participants') ? ' active':null).'">';
+                                                $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/manage/?participants">';
                                                     $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-users-alt"></i></div>รายชื่อผู้เข้าร่วม</span>';
                                                 $htmls .= '</a>';
                                             $htmls .= '</li>';
