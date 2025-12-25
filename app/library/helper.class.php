@@ -15,6 +15,27 @@ class Helper {
     }
 
     /**
+     * Valid Date
+     * @param date
+     * @return string
+     */
+    static function validDate($value)
+    {
+        $values = explode('/',$value);
+        if( isset($values)&&count($values)==3 ){
+            if( isset($values[0])&&intval($values[0])>31 ){
+                return false;
+            }else if( isset($values[1])&&intval($values[1])>12 ){
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Valid Time
      * @param date
      * @return string
@@ -22,13 +43,17 @@ class Helper {
     static function validTime($value)
     {
         $values = explode(':',$value);
-        if( isset($values[0])&&intval($values[0])>23 ){
-            return false;
-        }else if( isset($values[1])&&intval($values[1])>59 ){
-            return false;
+        if( isset($values)&&count($values)==2 ){
+            if( isset($values[0])&&intval($values[0])>23 ){
+                return false;
+            }else if( isset($values[1])&&intval($values[1])>59 ){
+                return false;
+            }
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**

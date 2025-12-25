@@ -20,8 +20,8 @@
     if( $keyword ){
         $_SESSION['login']['filter'][$filter_as]['keyword'] = $keyword;
         $parameters['keyword'] = "%".$keyword."%";
-        $condition .= " AND ( member.email LIKE :keyword";
-            $condition .= " OR TRIM(CONCAT(member.name,' ',COALESCE(member.surname,''))) LIKE :keyword";
+        $condition .= " AND ( events.events_name LIKE :keyword";
+            //$condition .= " OR TRIM(CONCAT(member.name,' ',COALESCE(member.surname,''))) LIKE :keyword";
         $condition .= " )";
     }
     $_SESSION['login']['filter'][$filter_as]['condition'] = array();
@@ -44,10 +44,9 @@
         }
     }
     // Total and Pages
-    $sql = "SELECT COUNT(member.id) AS total
-            FROM member
-            LEFT JOIN member_permission ON member.email=member_permission.email
-            WHERE member.id IS NOT NULL";
+    $sql = "SELECT COUNT(events.events_id) AS total
+            FROM events
+            WHERE events.events_id IS NOT NULL";
     $count = DB::one($sql.$condition, $parameters);
     $result['total'] = ( (isset($count['total'])&&$count['total']) ? intval($count['total']) : 0 );
     $result['pages'] = 1;
@@ -74,15 +73,16 @@
     }
     // Run
     $start = (($page-1)*$limit);
-    $sql = "SELECT member.*
-            , TRIM(CONCAT(COALESCE(member.title,''),member.name,' ',COALESCE(member.surname,''))) AS fullname
-            , member_permission.role AS user_role
+    $sql = "SELECT events.*
+            , IF(events.events_type='LIST'
+                ,'<span class=\"badge badge-sm bg-pale-blue text-blue rounded me-1 align-self-start\"><i class=\"uil uil-check-circle\"></i>LIST</span>'
+                ,'<span class=\"badge badge-sm bg-pale-green text-green rounded me-1 align-self-start\"><i class=\"uil uil-check-circle\"></i>ALL</span>'
+            ) AS events_icon
             , 'NORM' AS status
-            FROM member
-            LEFT JOIN member_permission ON member.email=member_permission.email
-            WHERE member.id IS NOT NULL";
+            FROM events
+            WHERE events.events_id IS NOT NULL";
     $sql .= $condition;
-    $sql .= " ORDER BY member.date_create";
+    $sql .= " ORDER BY events.date_create DESC";
     $sql .= " LIMIT $start, $limit;";
     $htmls = '';
     $lists = DB::sql($sql, $parameters);
@@ -92,12 +92,13 @@
             $row_no = (($start+1)+$no);
             $htmls .= '<tr class="'.$row['status'].'">';
                 $htmls .= '<td class="no" scope="row">'.$row_no.'</td>';
-                $htmls .= '<td class="mail">'.$row['email'].'</td>';
+                $htmls .= '<td class="type">'.$row['events_icon'].'</td>';
                 $htmls .= '<td class="name">';
                     $htmls .= '<mark class="doc row-no">'.$row_no.'</mark>';
-                    $htmls .= '<font class="mail-o">'.$row['email'].'</font>';
-                    $htmls .= '<font>'.Helper::stringTitleShort($row['fullname']).'</font>';
-                    $htmls .= '<span class="name-o"><i class="uil uil-user"></i> '.Helper::stringTitleShort($row['fullname']).'</span>';
+                    //$htmls .= '<font class="mail-o">'.$row['email'].'</font>';
+                    $htmls .= '<font>'.$row['events_name'].'</font>';
+                    //$htmls .= $row['events_icon'];
+                    /*$htmls .= '<span class="name-o"><i class="uil uil-user"></i> '.Helper::stringTitleShort($row['fullname']).'</span>';
                     $htmls .= '<span class="date-o"><i class="uil uil-calendar-alt"></i> '.Helper::datetimeDisplay($row['date_create'], $lang).'</span>';
                     $htmls .= '<span class="remark-o">';
                         if($row['is_cmu']=='Y'){
@@ -105,23 +106,21 @@
                         }else{
                             $htmls .= '<span class="cmu text-ash"><i class="uil uil-circle"></i> CMU Account</span>';
                         }
-                    $htmls.= '</span>';
+                    $htmls.= '</span>';*/
                 $htmls .= '</td>';
-                $htmls .= '<td class="remark">';
-                    $htmls .= '<font><i class="uil uil-calendar-alt"></i> '.Helper::datetimeDisplay($row['date_create'], $lang).'</font>';
+                $htmls .= '<td class="date">'.Helper::datetimeDisplay($row['start_date']).'</td>';
+                $htmls .= '<td class="date">'.Helper::datetimeDisplay($row['end_date']).'</td>';
+                $htmls .= '<td class="status">';
+                    /*$htmls .= '<font><i class="uil uil-calendar-alt"></i> '.Helper::datetimeDisplay($row['date_create'], $lang).'</font>';
                     if($row['is_cmu']=='Y'){
                         $htmls .= ' <span class="badge badge-lg bg-pale-green text-green rounded me-2 align-self-start"><i class="uil uil-check-circle"></i>CMU</span>';
                     }else{
                         $htmls .= ' <span class="badge badge-lg bg-pale-ash text-ash rounded me-2 align-self-start"><i class="uil uil-circle"></i>CMU</span>';
-                    }
+                    }*/
                 $htmls .= '</td>';
                 $htmls .= '<td class="actions">';
-                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'id\':\''.$row['id'].'\' });" type="button" class="btn btn-circle btn-outline-blue"><i class="uil uil-edit-alt"></i></button><small class=b-tip>'.(($lang=='en')?'Edit':'แก้ไข').'</small></div>';
-                    if( $row['user_role']=='ADMIN' ){
-                        $htmls .= '<div class="btn-box disabled"><button type="button" class="btn btn-circle btn-soft-ash text-ash" style="cursor:default;"><i class="uil uil-trash-alt"></i></button><small class=b-tip>'.Lang::get('Del').'</small></div>';
-                    }else{
-                        $htmls .= '<div class="btn-box delete"><button type="button" onclick="manage_events(\'delete\', { \'id\':\''.$row['id'].'\', \'email\':\''.$row['email'].'\' });" class="btn btn-circle btn-outline-danger"><i class="uil uil-trash-alt"></i></button><small class=b-tip>'.Lang::get('Del').'</small></div>';
-                    }
+                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'events_id\':\''.$row['events_id'].'\' });" type="button" class="btn btn-circle btn-outline-blue"><i class="uil uil-edit-alt"></i></button><small class=b-tip>แก้ไข</small></div>';
+                    $htmls .= '<div class="btn-box delete"><button type="button" onclick="manage_events(\'delete\', { \'events_id\':\''.$row['events_id'].'\' });" class="btn btn-circle btn-outline-danger"><i class="uil uil-trash-alt"></i></button><small class=b-tip>ลบ</small></div>';
                 $htmls .= '</td>';
             $htmls .= '</tr>';
         }

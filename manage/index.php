@@ -19,6 +19,7 @@
             }else{
                 $loadpage = 'events/edit.php';
             }
+            $index['back'] = $link.'/?events';
         }
     }else if( isset($_GET['participants']) ){
         $loadpage = 'participants';
