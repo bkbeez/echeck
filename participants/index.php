@@ -1,6 +1,6 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
-    $index['page'] = 'manage';
+    $index['page'] = 'event';
     $index['view'] = 'participants';
     if( !Auth::check() ){
         $_SESSION['login_redirect'] = APP_HOME.'/'.$index['page']; 
