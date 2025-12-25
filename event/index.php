@@ -1,6 +1,11 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
-
+    $index['page'] = 'event';
+    $form = (APP_PATH ? APP_PATH.'/' : '') . $index['page'];
+    $formby = $form;
+    // For relative paths from event/index.php
+    $filter_path = 'filter';
+    
 #https:://checkin.edu.cmu.ac.th/?events_id=EVENT_ID
 
 
@@ -323,6 +328,7 @@
     <div class="page-loader"></div>
         <div class="content-wrapper on-font-primary">
         <!-- Body -->
+            <?php if(!isset($index)){ $index = array(); } ?>
             <?=App::menus($index)?>
 
     <div class="container py-5 position-relative">
@@ -335,9 +341,9 @@
                     <a href="../dashboard/" class="btn btn-create shadow-sm">
                         <i class="bi bi-graph-up-arrow me-2"></i>Dashboard
                     </a>
-                    <a href="create.php" class="btn btn-create shadow-sm">
+                    <button type="button" class="btn btn-create shadow-sm" onclick="manage_events('create');">
                         <i class="bi bi-plus-circle-fill me-2"></i>เพิ่มกิจกรรมใหม่
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -414,13 +420,13 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-primary" href="edit.php?id=<?= urlencode($row['events_id']) ?>">
+                                                <a class="dropdown-item text-primary" href="javascript:void(0);" onclick="manage_events('edit', { 'events_id': '<?= urlencode($row['events_id']) ?>' });">
                                                     <i class="bi bi-pencil-fill"></i>
                                                     <span>แก้ไข</span>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-secondary" href="share.php?id=<?= urlencode($row['events_id']) ?>">
+                                                <a class="dropdown-item text-secondary" href="javascript:void(0);" onclick="manage_events('share', { 'events_id': '<?= urlencode($row['events_id']) ?>' });">
                                                     <i class="bi bi-share-fill"></i>
                                                     <span>แชร์</span>
                                                 </a>
@@ -460,8 +466,198 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<div id="ManageDialog" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="false" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered"></div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+    var manageModal = null;
     
+    $(document).ready(function(){
+        // Initialize Bootstrap Modal
+        var modalElement = document.getElementById('ManageDialog');
+        if(modalElement){
+            manageModal = new bootstrap.Modal(modalElement, {
+                backdrop: 'static',
+                keyboard: false
+            });
+        }
+    });
+    
+    function manage_events(action, params){
+        if(action=='create'){
+            params = params || {};
+            params['form_as'] = '<?=$formby?>';
+            var url = "<?=$filter_path?>/create.php";
+            console.log('Loading URL:', url, 'Params:', params);
+            $("#ManageDialog").load(url, params, function(response, status, xhr){
+                if(status=="error"){
+                    console.error('Error loading:', xhr.status, xhr.statusText, url);
+                    $("#ManageDialog").html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center"><div class="modal-body">'+xhr.status + "<br>" + xhr.statusText+'</div></div></div>');
+                    if(manageModal){
+                        manageModal.show();
+                    }
+                }else{
+                    if(manageModal){
+                        manageModal.show();
+                    }else{
+                        var modalElement = document.getElementById('ManageDialog');
+                        if(modalElement){
+                            manageModal = new bootstrap.Modal(modalElement, {
+                                backdrop: 'static',
+                                keyboard: false
+                            });
+                            manageModal.show();
+                        }
+                    }
+                }
+            });
+        }else if(action=='edit'){
+            params = params || {};
+            params['form_as'] = '<?=$formby?>';
+            var url = "<?=$filter_path?>/edit.php";
+            console.log('Loading URL:', url, 'Params:', params);
+            $("#ManageDialog").load(url, params, function(response, status, xhr){
+                if(status=="error"){
+                    console.error('Error loading:', xhr.status, xhr.statusText, url);
+                    $("#ManageDialog").html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center"><div class="modal-body">'+xhr.status + "<br>" + xhr.statusText+'</div></div></div>');
+                    if(manageModal){
+                        manageModal.show();
+                    }
+                }else{
+                    if(manageModal){
+                        manageModal.show();
+                    }else{
+                        var modalElement = document.getElementById('ManageDialog');
+                        if(modalElement){
+                            manageModal = new bootstrap.Modal(modalElement, {
+                                backdrop: 'static',
+                                keyboard: false
+                            });
+                            manageModal.show();
+                        }
+                    }
+                }
+            });
+        }else if(action=='delete'){
+            swal({
+                'title':'<b class="text-red" style="font-size:100px;"><i class="uil uil-trash-alt"></i></b>',
+                'html' :'<?=( (App::lang()=='en') ? 'Confirm to delete ' : 'ยืนยันลบ ' )?><span class="underline red">'+params.email+'</span> ?',
+                'showCloseButton': false,
+                'showConfirmButton': true,
+                'showCancelButton': true,
+                'focusConfirm': false,
+                'allowEscapeKey': false,
+                'allowOutsideClick': false,
+                'confirmButtonClass': 'btn btn-icon btn-icon-start btn-success rounded-pill',
+                'confirmButtonText':'<font class="fs-16"><i class="uil uil-check-circle"></i> <?=Lang::get('Yes')?></font>',
+                'cancelButtonClass': 'btn btn-icon btn-icon-start btn-outline-danger rounded-pill',
+                'cancelButtonText':'<font class="fs-16"><i class="uil uil-times-circle"></i> <?=Lang::get('No')?></font>',
+                'buttonsStyling': false
+            }).then(
+                function () {
+                    $.ajax({
+                        url : "<?=$formby?>/scripts/delete.php",
+                        type: 'POST',
+                        data: params,
+                        dataType: "json",
+                        beforeSend: function( xhr ) {
+                            runStart();
+                        }
+                    }).done(function(data) {
+                        runStop();
+                        if(data.status=='success'){
+                            swal({
+                                'type': data.status,
+                                'title': data.title,
+                                'html': data.text,
+                                'showConfirmButton': false,
+                                'timer': 1500
+                            }).then(
+                                function () {},
+                                function (dismiss) {
+                                    if (dismiss === 'timer') {
+                                        $("form[name='filter'] button[type='submit']").click();
+                                    }
+                                }
+                            );
+                        }else{
+                            swal({
+                                'type' : data.status,
+                                'title': data.title,
+                                'html' : data.text,
+                                'showCloseButton': false,
+                                'showCancelButton': false,
+                                'focusConfirm': false,
+                                'allowEscapeKey': false,
+                                'allowOutsideClick': false,
+                                'confirmButtonClass': 'btn btn-outline-danger',
+                                'confirmButtonText':'<span><?=Lang::get('Understand')?></span>',
+                                'buttonsStyling': false
+                            }).then(
+                                function () {
+                                    swal.close();
+                                },
+                                function (dismiss) {
+                                    if (dismiss === 'cancel') {
+                                        swal.close();
+                                    }
+                                }
+                            );
+                        }
+                    });
+                },
+                function (dismiss) {
+                    if (dismiss === 'cancel') {
+                        swal.close();
+                    }
+                }
+            );
+        }else if(action=='share'){
+            params = params || {};
+            params['form_as'] = '<?=$formby?>';
+            var url = "<?=$filter_path?>/share.php";
+            console.log('Loading URL:', url, 'Params:', params);
+            $("#ManageDialog").load(url, params, function(response, status, xhr){
+                if(status=="error"){
+                    console.error('Error loading:', xhr.status, xhr.statusText, url);
+                    $("#ManageDialog").html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center"><div class="modal-body">'+xhr.status + "<br>" + xhr.statusText+'</div></div></div>');
+                    if(manageModal){
+                        manageModal.show();
+                    }
+                }else{
+                    if(manageModal){
+                        manageModal.show();
+                    }else{
+                        var modalElement = document.getElementById('ManageDialog');
+                        if(modalElement){
+                            manageModal = new bootstrap.Modal(modalElement, {
+                                backdrop: 'static',
+                                keyboard: false
+                            });
+                            manageModal.show();
+                        }
+                    }
+                }
+            });
+        }
+    }
+    $(document).ready(function(){
+        $("form[name='filter'] .filter-search select").change(function(){
+            $("form[name='filter'] button[type='submit']").click();
+        });
+        $("form[name='filter'] .filter-search .btn-clear").click(function(){
+            $("form[name='filter'] input[name='pages']").val(0);
+            $("form[name='filter'] input[name='keyword']").val(null);
+            $("form[name='filter'] .filter-search select").val('ALL');
+            $("form[name='filter'] .filter-search .form-control").val(null);
+            $("form[name='filter'] .filter-pagination select").val(1);
+            $("form[name='filter'] button[type='submit']").click();
+        });
+        $(".table-filter").tablefilter({'keyword':'auto'});
+    });
+</script>
 </body>
 </html>
 <!-- Body -->

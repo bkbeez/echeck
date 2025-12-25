@@ -2,12 +2,6 @@
 
 class Checkin {
 
-    private $db;
-
-    public function __construct($db) {
-        $this->db = $db;
-    }
-
     /**
      * เช็คอิน
      */
@@ -25,13 +19,14 @@ class Checkin {
         }
 
         // ป้องกันเช็คอินซ้ำ
-        $stmt = $this->db->prepare("
-            SELECT id FROM checkins
-            WHERE event_id=? AND student_id=?
-        ");
-        $stmt->bind_param("is",$data['event_id'],$data['student_id']);
-        $stmt->execute();
-        if ($stmt->get_result()->num_rows > 0) {
+        $existing = DB::one("
+            SELECT id FROM checkin
+            WHERE event_id=:event_id AND student_id=:student_id
+        ", [
+            ':event_id' => $data['event_id'],
+            ':student_id' => $data['student_id']
+        ]);
+        if ($existing) {
             return [
                 'status' => false,
                 'message' => 'เช็คอินไปแล้ว'
@@ -39,87 +34,73 @@ class Checkin {
         }
 
         // บันทึกข้อมูล
-        $stmt = $this->db->prepare("
+        $result = DB::create("
             INSERT INTO checkin
             (event_id,prefix,firstname,lastname,organization,email,student_id,checkin_time)
-            VALUES (?,?,?,?,?,?,?,NOW())
-        ");
-        $stmt->bind_param(
-            "issssss",
-            $data['event_id'],
-            $data['prefix'],
-            $data['firstname'],
-            $data['lastname'],
-            $data['organization'],
-            $data['email'],
-            $data['student_id']
-        );
-        $stmt->execute();
+            VALUES (:event_id,:prefix,:firstname,:lastname,:organization,:email,:student_id,NOW())
+        ", [
+            ':event_id' => $data['event_id'],
+            ':prefix' => $data['prefix'],
+            ':firstname' => $data['firstname'],
+            ':lastname' => $data['lastname'],
+            ':organization' => $data['organization'],
+            ':email' => $data['email'],
+            ':student_id' => $data['student_id']
+        ]);
 
-        return [
-            'status' => true,
-            'message' => 'เช็คอินสำเร็จ'
-        ];
+        if ($result) {
+            return [
+                'status' => true,
+                'message' => 'เช็คอินสำเร็จ'
+            ];
+        } else {
+            return [
+                'status' => false,
+                'message' => 'เกิดข้อผิดพลาดในการเช็คอิน'
+            ];
+        }
     }
 
     /**
      * ดึงรายชื่อเช็คอินตามกิจกรรม
      */
     public function getByEvent($event_id) {
-        $stmt = $this->db->prepare("
+        return DB::query("
             SELECT * FROM checkin
-            WHERE event_id=?
+            WHERE event_id=:event_id
             ORDER BY checkin_time DESC
-        ");
-        $stmt->bind_param("i",$event_id);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        ", [':event_id' => $event_id]);
     }
 
     /**
      * นับจำนวนเช็คอินตามกิจกรรม
      */
     public function getCountByEvent($event_id) {
-        $stmt = $this->db->prepare("
+        $result = DB::one("
             SELECT COUNT(*) AS count FROM checkin
-            WHERE event_id=?
-        ");
-        $stmt->bind_param("i",$event_id);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
+            WHERE event_id=:event_id
+        ", [':event_id' => $event_id]);
         return $result['count'] ?? 0;
-    }
-
-    /**
-     * ปิดการเชื่อมต่อฐานข้อมูลเมื่อทำงานเสร็จ
-     */
-    public function __destruct() {
-        $this->db->close();
     }
 
     /**
      * ลบข้อมูลเช็คอินเก่าที่เกินจำนวนวันที่กำหนด
      */
     public function clearOldCheckins($days) {
-        $stmt = $this->db->prepare("
+        DB::update("
             DELETE FROM checkin
-            WHERE checkin_time < NOW() - INTERVAL ? DAY
-        ");
-        $stmt->bind_param("i",$days);
-        $stmt->execute();
+            WHERE checkin_time < NOW() - INTERVAL :days DAY
+        ", [':days' => $days]);
     }
 
     /**
      * ดึงข้อมูลเช็คอินตาม ID
      */
     public function getCheckin($id) {
-        $stmt = $this->db->prepare("
+        return DB::one("
             SELECT * FROM checkin
-            WHERE id=?
-        ");
-        $stmt->bind_param("i",$id);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+            WHERE id=:id
+        ", [':id' => $id]);
     }
 
     /**
@@ -127,45 +108,38 @@ class Checkin {
      */
 
     public function deleteCheckin($id) {
-        $stmt = $this->db->prepare("
+        DB::update("
             DELETE FROM checkin
-            WHERE id=?
-        ");
-        $stmt->bind_param("i",$id);
-        $stmt->execute();
+            WHERE id=:id
+        ", [':id' => $id]);
     }
 
     /**
      * อัพเดตข้อมูลเช็คอินตาม ID
      */
     public function updateCheckin($id, $data) {
-        $stmt = $this->db->prepare("
+        DB::update("
             UPDATE checkin
-            SET prefix=?, firstname=?, lastname=?, organization=?, email=?, student_id=?
-            WHERE id=?
-        ");
-        $stmt->bind_param(
-            "ssssssi",
-            $data['prefix'],
-            $data['firstname'],
-            $data['lastname'],
-            $data['organization'],
-            $data['email'],
-            $data['student_id'],
-            $id
-        );
-        $stmt->execute();
+            SET prefix=:prefix, firstname=:firstname, lastname=:lastname, organization=:organization, email=:email, student_id=:student_id
+            WHERE id=:id
+        ", [
+            ':prefix' => $data['prefix'],
+            ':firstname' => $data['firstname'],
+            ':lastname' => $data['lastname'],
+            ':organization' => $data['organization'],
+            ':email' => $data['email'],
+            ':student_id' => $data['student_id'],
+            ':id' => $id
+        ]);
     }
 
     /**
      * นับจำนวนเช็คอินทั้งหมด
      */
     public function getTotalCheckins() {
-        $stmt = $this->db->prepare("
+        $result = DB::one("
             SELECT COUNT(*) AS total FROM checkin
         ");
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
         return $result['total'] ?? 0;
     }
 
@@ -173,38 +147,31 @@ class Checkin {
      * ดึงรายชื่อเช็คอินทั้งหมด
      */
     public function getAllCheckins() {
-        $stmt = $this->db->prepare("
+        return DB::query("
             SELECT * FROM checkin
             ORDER BY checkin_time DESC
         ");
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
     /**
      * ตรวจสอบว่าผู้เข้าร่วมกิจกรรมได้เช็คอินหรือไม่
      */
     public function isCheckedIn($event_id, $student_id) {
-        $stmt = $this->db->prepare("
+        $result = DB::one("
             SELECT id FROM checkin
-            WHERE event_id=? AND student_id=?
-        ");
-        $stmt->bind_param("is",$event_id,$student_id);
-        $stmt->execute();
-        return $stmt->get_result()->num_rows > 0;
+            WHERE event_id=:event_id AND student_id=:student_id
+        ", [':event_id' => $event_id, ':student_id' => $student_id]);
+        return $result ? true : false;
     }
 
     /**
      * นับจำนวนเช็คอินตามช่วงเวลา
      */
     public function getCountByDateRange($start_date, $end_date) {
-        $stmt = $this->db->prepare("
+        $result = DB::one("
             SELECT COUNT(*) AS count FROM checkin
-            WHERE checkin_time BETWEEN ? AND ?
-        ");
-        $stmt->bind_param("ss",$start_date,$end_date);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
+            WHERE checkin_time BETWEEN :start_date AND :end_date
+        ", [':start_date' => $start_date, ':end_date' => $end_date]);
         return $result['count'] ?? 0;
     }
 
@@ -212,10 +179,9 @@ class Checkin {
      * ลบข้อมูลเช็คอินทั้งหมด
      */
     public function clearAllCheckins() {
-        $stmt = $this->db->prepare("
+        DB::update("
             DELETE FROM checkin
         ");
-        $stmt->execute();
     }
 
     /**
@@ -223,97 +189,77 @@ class Checkin {
      */
 
     public function getByOrganization($organization) {
-        $stmt = $this->db->prepare("
+        return DB::query("
             SELECT * FROM checkin
-            WHERE organization=?
+            WHERE organization=:organization
             ORDER BY checkin_time DESC
-        ");
-        $stmt->bind_param("s",$organization);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        ", [':organization' => $organization]);
     }
 
     /**
      * ดึงรายชื่อเช็คอินตามอีเมล
      */
     public function getByEmail($email) {
-        $stmt = $this->db->prepare("
+        return DB::query("
             SELECT * FROM checkin
-            WHERE email=?
+            WHERE email=:email
             ORDER BY checkin_time DESC
-        ");
-        $stmt->bind_param("s",$email);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        ", [':email' => $email]);
     }
 
     /**
      * ดึงรายชื่อเช็คอินตามชื่อ
      */
     public function getByName($name) {
-        $stmt = $this->db->prepare("
-            SELECT * FROM checkin
-            WHERE firstname LIKE ? OR lastname LIKE ?
-            ORDER BY checkin_time DESC
-        ");
         $like_name = "%$name%";
-        $stmt->bind_param("ss",$like_name,$like_name);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        return DB::query("
+            SELECT * FROM checkin
+            WHERE firstname LIKE :name OR lastname LIKE :name
+            ORDER BY checkin_time DESC
+        ", [':name' => $like_name]);
     }
 
     /**
      * ดึงรายชื่อเช็คอินตามวันที่เช็คอิน
      */
     public function getByCheckinDate($date) {
-        $stmt = $this->db->prepare("
+        return DB::query("
             SELECT * FROM checkin
-            WHERE DATE(checkin_time)=?
+            WHERE DATE(checkin_time)=:date
             ORDER BY checkin_time DESC
-        ");
-        $stmt->bind_param("s",$date);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        ", [':date' => $date]);
     }
 
     /**
      * ดึงรายชื่อเช็คอินตามรหัสนักศึกษา
      */
     public function getByStudentId($student_id) {
-        $stmt = $this->db->prepare("
+        return DB::query("
             SELECT * FROM checkin
-            WHERE student_id=?
+            WHERE student_id=:student_id
             ORDER BY checkin_time DESC
-        ");
-        $stmt->bind_param("s",$student_id);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        ", [':student_id' => $student_id]);
     }
 
     /**
      * อัพเดตเวลาการเช็คอิน
      */
     public function updateCheckinTime($id, $new_time) {
-        $stmt = $this->db->prepare("
+        DB::update("
             UPDATE checkin
-            SET checkin_time=?
-            WHERE id=?
-        ");
-        $stmt->bind_param("si",$new_time,$id);
-        $stmt->execute();
+            SET checkin_time=:new_time
+            WHERE id=:id
+        ", [':new_time' => $new_time, ':id' => $id]);
     }
 
     /**
      * นับจำนวนเช็คอินตาม prefix
      */
     public function getCountByPrefix($prefix) {
-        $stmt = $this->db->prepare("
+        $result = DB::one("
             SELECT COUNT(*) AS count FROM checkin
-            WHERE prefix=?
-        ");
-        $stmt->bind_param("s",$prefix);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
+            WHERE prefix=:prefix
+        ", [':prefix' => $prefix]);
         return $result['count'] ?? 0;
     }
 
@@ -321,13 +267,10 @@ class Checkin {
      * นับจำนวนเช็คอินตาม organization
      */
     public function getCountByOrganization($organization) {
-        $stmt = $this->db->prepare("
+        $result = DB::one("
             SELECT COUNT(*) AS count FROM checkin
-            WHERE organization=?
-        ");
-        $stmt->bind_param("s",$organization);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
+            WHERE organization=:organization
+        ", [':organization' => $organization]);
         return $result['count'] ?? 0;
     }
 
@@ -335,13 +278,10 @@ class Checkin {
      * นับจำนวนเช็คอินตาม email
      */
     public function getCountByEmail($email) {
-        $stmt = $this->db->prepare("
+        $result = DB::one("
             SELECT COUNT(*) AS count FROM checkin
-            WHERE email=?
-        ");
-        $stmt->bind_param("s",$email);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
+            WHERE email=:email
+        ", [':email' => $email]);
         return $result['count'] ?? 0;
     }
 
@@ -349,14 +289,11 @@ class Checkin {
      * นับจำนวนเช็คอินตามชื่อ
      */
     public function getCountByName($name) {
-        $stmt = $this->db->prepare("
-            SELECT COUNT(*) AS count FROM checkin
-            WHERE firstname LIKE ? OR lastname LIKE ?
-        ");
         $like_name = "%$name%";
-        $stmt->bind_param("ss",$like_name,$like_name);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
+        $result = DB::one("
+            SELECT COUNT(*) AS count FROM checkin
+            WHERE firstname LIKE :name OR lastname LIKE :name
+        ", [':name' => $like_name]);
         return $result['count'] ?? 0;
     }
 
@@ -364,55 +301,10 @@ class Checkin {
      * นับจำนวนเช็คอินตามวันที่เช็คอิน
      */
     public function getCountByCheckinDate($date) {
-        $stmt = $this->db->prepare("
+        $result = DB::one("
             SELECT COUNT(*) AS count FROM checkin
-            WHERE DATE(checkin_time)=?
-        ");
-        $stmt->bind_param("s",$date);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
+            WHERE DATE(checkin_time)=:date
+        ", [':date' => $date]);
         return $result['count'] ?? 0;
-    }
-
-    /**
-     * นับจำนวนเช็คอินตามรหัสนักศึกษา
-     */
-    public function getCountByStudentId($student_id) {
-        $stmt = $this->db->prepare("
-            SELECT COUNT(*) AS count FROM checkin
-            WHERE student_id=?
-        ");
-        $stmt->bind_param("s",$student_id);
-        $stmt->execute();
-        $result = $stmt->get_result()->fetch_assoc();
-        return $result['count'] ?? 0;
-    }
-
-    /**
-     * ดึงรายชื่อเช็คอินตาม prefix
-     */
-    public function getByPrefix($prefix) {
-        $stmt = $this->db->prepare("
-            SELECT * FROM checkin
-            WHERE prefix=?
-            ORDER BY checkin_time DESC
-        ");
-        $stmt->bind_param("s",$prefix);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    }
-
-    /**
-     * ดึงรายชื่อเช็คอินตามช่วงเวลาเช็คอิน
-     */
-    public function getByCheckinTimeRange($start_time, $end_time) {
-        $stmt = $this->db->prepare("
-            SELECT * FROM checkin
-            WHERE checkin_time BETWEEN ? AND ?
-            ORDER BY checkin_time DESC
-        ");
-        $stmt->bind_param("ss",$start_time,$end_time);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 }

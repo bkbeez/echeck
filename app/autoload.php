@@ -46,6 +46,7 @@
     require_once(APP_ROOT.'/app/library/mail.class.php');
     require_once(APP_ROOT.'/app/library/helper.class.php');
     require_once(APP_ROOT.'/app/library/status.class.php');
+    require_once(APP_ROOT.'/app/library/checkin.class.php');
     // Model
     $models = opendir(APP_ROOT."/app/models/");
     while (($inclass=readdir($models))!==false) {

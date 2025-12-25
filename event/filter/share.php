@@ -1,25 +1,70 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
+<?php Auth::ajax(APP_PATH.'/event'); ?>
 <?php
-    $error = '';
-    $success = '';
+    $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );
     $event = null;
     $shares = [];
+    $error = '';
+    $success = '';
     
-    $eventId = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    $eventId = isset($_POST['events_id']) ? intval($_POST['events_id']) : 0;
+    
+    $user_id = '';
+    if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
+        $user_id = isset($_SESSION['login']['user']['email']) ? $_SESSION['login']['user']['email'] : 
+                    (isset($_SESSION['login']['user']['id']) ? $_SESSION['login']['user']['id'] : '');
+    }
+    
+    // Handle POST requests for add/remove actions
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+        $action = isset($_POST['action']) ? trim($_POST['action']) : '';
+        
+        if ($action === 'add') {
+            $shared_id = isset($_POST['shared_id']) ? trim($_POST['shared_id']) : '';
+            
+            if (empty($shared_id)) {
+                $error = ( (App::lang()=='en') ? 'Please enter email or user ID' : 'กรุณากรอกอีเมลหรือ ID ของผู้ใช้ที่ต้องการแชร์' );
+            } else {
+                try {
+                    $result = Event::addShare($eventId, $user_id, $shared_id);
+                    
+                    if ($result) {
+                        $success = ( (App::lang()=='en') ? 'Share added successfully' : 'เพิ่มการแชร์สำเร็จ' );
+                    } else {
+                        $error = ( (App::lang()=='en') ? 'Cannot add share. May already be shared or user is event owner' : 'ไม่สามารถเพิ่มการแชร์ได้ อาจเป็นเพราะแชร์กับผู้ใช้นี้แล้วหรือผู้ใช้เป็นเจ้าของกิจกรรม' );
+                    }
+                } catch (Exception $e) {
+                    $error = ( (App::lang()=='en') ? 'Error occurred' : 'เกิดข้อผิดพลาด' ) . ': ' . $e->getMessage();
+                }
+            }
+        } elseif ($action === 'remove') {
+            $shareId = isset($_POST['share_id']) ? intval($_POST['share_id']) : 0;
+            
+            if ($shareId <= 0) {
+                $error = ( (App::lang()=='en') ? 'Share not found' : 'ไม่พบข้อมูลการแชร์' );
+            } else {
+                try {
+                    $result = Event::removeShare($shareId, $eventId, $user_id);
+                    
+                    if ($result) {
+                        $success = ( (App::lang()=='en') ? 'Share removed successfully' : 'ลบการแชร์สำเร็จ' );
+                    } else {
+                        $error = ( (App::lang()=='en') ? 'Cannot remove share. Please try again' : 'ไม่สามารถลบการแชร์ได้ กรุณาลองใหม่อีกครั้ง' );
+                    }
+                } catch (Exception $e) {
+                    $error = ( (App::lang()=='en') ? 'Error occurred' : 'เกิดข้อผิดพลาด' ) . ': ' . $e->getMessage();
+                }
+            }
+        }
+    }
     
     if ($eventId <= 0) {
-        $error = 'ไม่พบข้อมูลกิจกรรม';
+        $error = ( (App::lang()=='en') ? 'Event not found' : 'ไม่พบข้อมูลกิจกรรม' );
     } else {
-        $user_id = '';
-        if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
-            $user_id = isset($_SESSION['login']['user']['email']) ? $_SESSION['login']['user']['email'] : 
-                        (isset($_SESSION['login']['user']['id']) ? $_SESSION['login']['user']['id'] : '');
-        }
-
         $event = Event::getOwnedEvent($eventId, $user_id);
         
         if (!$event) {
-            $error = 'ไม่พบกิจกรรมหรือคุณไม่มีสิทธิ์แชร์กิจกรรมนี้';
+            $error = ( (App::lang()=='en') ? 'Event not found or you do not have permission to share this event' : 'ไม่พบกิจกรรมหรือคุณไม่มีสิทธิ์แชร์กิจกรรมนี้' );
         } else {
             $shares = Event::listShares($eventId, $user_id);
             if (!is_array($shares)) {
@@ -27,224 +72,181 @@
             }
         }
     }
-    
-    // จัดการ POST request สำหรับเพิ่มแชร์
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $event) {
-        $action = isset($_POST['action']) ? trim($_POST['action']) : '';
-        
-        if ($action === 'add') {
-            // เพิ่มแชร์
-            $shared_id = isset($_POST['shared_id']) ? trim($_POST['shared_id']) : '';
-            
-            if (empty($shared_id)) {
-                $error = 'กรุณากรอกอีเมลหรือ ID ของผู้ใช้ที่ต้องการแชร์';
-            } else {
-                // ใช้ Event model เพื่อเพิ่มแชร์
-                try {
-                    $result = Event::addShare($eventId, $user_id, $shared_id);
-                    
-                    if ($result) {
-                        $success = 'เพิ่มการแชร์สำเร็จ';
-                        // ดึงรายการแชร์ใหม่
-                        $shares = Event::listShares($eventId, $user_id);
-                        if (!is_array($shares)) {
-                            $shares = [];
-                        }
-                    } else {
-                        $error = 'ไม่สามารถเพิ่มการแชร์ได้ อาจเป็นเพราะแชร์กับผู้ใช้นี้แล้วหรือผู้ใช้เป็นเจ้าของกิจกรรม';
-                    }
-                } catch (Exception $e) {
-                    $error = 'เกิดข้อผิดพลาด: ' . $e->getMessage();
-                }
-            }
-        } elseif ($action === 'remove') {
-            // ลบแชร์
-            $shareId = isset($_POST['share_id']) ? intval($_POST['share_id']) : 0;
-            
-            if ($shareId <= 0) {
-                $error = 'ไม่พบข้อมูลการแชร์';
-            } else {
-                // ใช้ Event model เพื่อลบแชร์
-                try {
-                    $result = Event::removeShare($shareId, $eventId, $user_id);
-                    
-                    if ($result) {
-                        $success = 'ลบการแชร์สำเร็จ';
-                        // ดึงรายการแชร์ใหม่
-                        $shares = Event::listShares($eventId, $user_id);
-                        if (!is_array($shares)) {
-                            $shares = [];
-                        }
-                    } else {
-                        $error = 'ไม่สามารถลบการแชร์ได้ กรุณาลองใหม่อีกครั้ง';
-                    }
-                } catch (Exception $e) {
-                    $error = 'เกิดข้อผิดพลาด: ' . $e->getMessage();
-                }
-            }
-        }
-    }
 ?>
-<!DOCTYPE html>
-<html lang="<?=App::lang()?>">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แชร์กิจกรรม</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        body {
-            background: radial-gradient(circle at 10% 20%, #e0f2ff 0%, #f3f4ff 40%, #ffffff 100%);
-            min-height: 100vh;
-            font-family: "Prompt", "Segoe UI", sans-serif;
-        }
-        .page-header {
-            border-radius: 1.5rem;
-            background: linear-gradient(135deg, rgba(13, 110, 253, 0.95), rgba(111, 66, 193, 0.92));
-            color: #fff;
-            padding: 2.5rem;
-            box-shadow: 0 20px 45px rgba(13, 110, 253, 0.2);
-        }
-        .content-card {
-            margin-top: -4rem;
-            border-radius: 1.5rem;
-            border: none;
-            box-shadow: 0 16px 45px rgba(15, 23, 42, 0.1);
-        }
-        .form-label {
-            font-weight: 600;
-            color: #475569;
-            margin-bottom: 0.5rem;
-        }
-        .form-control, .form-select {
-            border-radius: 0.5rem;
-            border: 1px solid #e2e8f0;
-            padding: 0.75rem 1rem;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-        }
-        .alert {
-            border-radius: 0.5rem;
-            border: none;
-        }
-        .share-item {
-            padding: 1rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            margin-bottom: 0.5rem;
-            background: #f8fafc;
-        }
-    </style>
-</head>
-<body>
-    <div class="page-loader"></div>
-        <div class="content-wrapper on-font-primary">
-        <!-- Body -->
-            <?=App::menus($index)?>
-    <div class="container py-5">
-        <div class="page-header mb-5">
-            <h1 class="display-6 mb-2">🔗 แชร์กิจกรรม</h1>
-            <p class="mb-0 opacity-75">จัดการการแชร์กิจกรรมกับผู้ใช้อื่น</p>
-        </div>
-        
-        <div class="card content-card">
-            <div class="card-body p-4">
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content modal-manage">
+        <form name="RecordForm" action="<?=$form?>/filter/share.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
+            <input type="hidden" name="events_id" value="<?=((isset($event['events_id'])&&$event['events_id'])?$event['events_id']:null)?>">
+            <input type="hidden" name="form_as" value="<?=$form?>">
+            <div class="modal-header" style="min-height:100px;background:#eef6f9;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h2 class="mb-0 text-start on-text-oneline"><i class="uil uil-share-alt fs-32"></i> <?=( (App::lang()=='en') ? 'Share Event' : 'แชร์กิจกรรม' )?></h2>
+            </div>
+            <div class="modal-body" style="margin-top:-30px;padding-left:35px;padding-right:35px;">
+                <div class="on-status"></div>
                 <?php if ($error): ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i><?= htmlspecialchars($error) ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="alert alert-danger alert-icon mb-2" style="padding:5px 15px;">
+                        <p class="mb-0 on-text-normal"><?= htmlspecialchars($error) ?></p>
                     </div>
                 <?php endif; ?>
-                
                 <?php if ($success): ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="bi bi-check-circle-fill me-2"></i><?= htmlspecialchars($success) ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="alert alert-success alert-icon mb-2" style="padding:5px 15px;">
+                        <p class="mb-0 on-text-normal"><?= htmlspecialchars($success) ?></p>
                     </div>
                 <?php endif; ?>
-                
                 <?php if ($event): ?>
-                    <div class="mb-4">
-                        <h5 class="mb-2">ข้อมูลกิจกรรม</h5>
-                        <div class="card bg-light">
-                            <div class="card-body">
-                                <p class="mb-1"><strong>ชื่อกิจกรรม:</strong> <?= htmlspecialchars($event['events_name']) ?></p>
-                                <p class="mb-1"><strong>รหัสกิจกรรม:</strong> <?= htmlspecialchars($event['events_id']) ?></p>
-                                <p class="mb-0"><strong>วันที่เริ่มต้น:</strong> <?= !empty($event['start_date']) && $event['start_date'] !== '0000-00-00' ? Helper::dateDisplay($event['start_date'], 'th') : '-' ?> <strong>วันที่สิ้นสุด:</strong> <?= !empty($event['end_date']) && $event['end_date'] !== '0000-00-00' ? Helper::dateDisplay($event['end_date'], 'th') : '-' ?></p>
+                    <div class="alert alert-info alert-icon mb-2" style="padding:5px 15px;">
+                        <div class="row gx-1">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="form-floating mb-1">
+                                    <div class="form-control on-text-display"><?=((isset($event['events_id'])&&$event['events_id'])?$event['events_id']:'-')?></div>
+                                    <label><?=((isset($event['events_name'])&&$event['events_name'])?htmlspecialchars($event['events_name']):'-')?></label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Form เพิ่มแชร์ -->
-                    <div class="mb-4">
-                        <h5 class="mb-3">เพิ่มการแชร์</h5>
-                        <form method="POST" class="row g-3">
-                            <input type="hidden" name="action" value="add">
-                            <div class="col-md-8">
-                                <label class="form-label">อีเมลหรือ ID ของผู้ใช้ <span class="text-danger">*</span></label>
-                                <input type="text" name="shared_id" class="form-control" placeholder="กรุณากรอกอีเมลหรือ ID" required>
+                    <div class="alert alert-info alert-icon mb-2" style="padding:5px 15px;">
+                        <p class="lead text-dark mb-1 text-start on-text-oneline"><?=( (App::lang()=='en') ? 'Add Share' : 'เพิ่มการแชร์' )?></p>
+                        <div class="form-floating mb-1">
+                            <input name="shared_id" type="text" class="form-control" placeholder="<?=( (App::lang()=='en') ? 'Email or User ID' : 'อีเมลหรือ ID ของผู้ใช้' )?>" id="shared_id" required>
+                            <label for="shared_id"><?=( (App::lang()=='en') ? 'Email or User ID' : 'อีเมลหรือ ID ของผู้ใช้' )?> *<span></span></label>
+                            <div class="on-shared_id"></div>
+                        </div>
+                        <div class="row gx-1">
+                            <div class="col-lg-12 col-md-12">
+                                <button type="button" class="btn btn-lg btn-icon btn-icon-start btn-blue rounded-pill w-100" onclick="record_events('add');"><i class="uil uil-plus-circle"></i><?=( (App::lang()=='en') ? 'Add Share' : 'เพิ่มการแชร์' )?></button>
                             </div>
-                            <div class="col-md-4">
-                                <label class="form-label">&nbsp;</label>
-                                <button type="submit" class="btn btn-primary w-100">
-                                    <i class="bi bi-plus-circle me-2"></i>เพิ่มการแชร์
-                                </button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
-                    
-                    <!-- รายการแชร์ -->
-                    <div class="mb-4">
-                        <h5 class="mb-3">รายการแชร์ (<?= count($shares) ?>)</h5>
-                        <?php if (count($shares) > 0): ?>
-                            <?php foreach ($shares as $share): ?>
-                                <div class="share-item">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <i class="bi bi-person-circle me-2"></i>
-                                            <strong><?= htmlspecialchars($share['shared_id']) ?></strong>
-                                            <?php if (isset($share['date_shared'])): ?>
-                                                <small class="text-muted ms-2">(แชร์เมื่อ: <?= date('d/m/Y H:i', strtotime($share['date_shared'])) ?>)</small>
-                                            <?php endif; ?>
-                                        </div>
-                                        <form method="POST" class="d-inline" onsubmit="return confirm('ยืนยันการลบการแชร์นี้?')">
-                                            <input type="hidden" name="action" value="remove">
-                                            <input type="hidden" name="share_id" value="<?= htmlspecialchars($share['id']) ?>">
-                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                <i class="bi bi-trash me-1"></i>ลบ
+                    <div class="alert alert-info alert-icon mb-2" style="padding:5px 15px;">
+                        <p class="lead text-dark mb-1 text-start on-text-oneline"><?=( (App::lang()=='en') ? 'Shared Users' : 'ผู้ใช้ที่ถูกแชร์' )?> (<?= count($shares) ?>)</p>
+                        <div class="share-list" style="max-height:300px;overflow-y:auto;">
+                            <?php if (count($shares) > 0): ?>
+                                <?php foreach ($shares as $share): ?>
+                                    <div class="mb-2 p-2" style="border:1px solid #e2e8f0;border-radius:0.5rem;background:#f8fafc;">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <i class="uil uil-user me-2"></i>
+                                                <strong><?= htmlspecialchars($share['shared_id']) ?></strong>
+                                                <?php if (isset($share['date_shared'])): ?>
+                                                    <small class="text-muted ms-2">(<?= ( (App::lang()=='en') ? 'Shared on' : 'แชร์เมื่อ' )?>: <?= Helper::datetimeDisplay($share['date_shared'], App::lang()) ?>)</small>
+                                                <?php endif; ?>
+                                            </div>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="record_events('remove', { 'share_id': '<?= htmlspecialchars($share['id']) ?>' });">
+                                                <i class="uil uil-trash-alt"></i>
                                             </button>
-                                        </form>
+                                        </div>
                                     </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="text-center text-ash p-3">
+                                    <i class="uil uil-info-circle fs-32 mb-2 d-block"></i>
+                                    <p class="mb-0 on-text-normal"><?=( (App::lang()=='en') ? 'No shared users yet' : 'ยังไม่มีผู้ใช้ที่ถูกแชร์กิจกรรมนี้' )?></p>
                                 </div>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <div class="alert alert-info">
-                                <i class="bi bi-info-circle me-2"></i>ยังไม่มีผู้ใช้ที่ถูกแชร์กิจกรรมนี้
-                            </div>
-                        <?php endif; ?>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                    
-                    <div class="d-flex gap-2 mt-4">
-                        <a href="index.php" class="btn btn-secondary px-4">
-                            <i class="bi bi-arrow-left me-2"></i>กลับ
-                        </a>
-                    </div>
-                <?php else: ?>
-                    <div class="alert alert-warning">
-                        <i class="bi bi-exclamation-triangle me-2"></i>ไม่พบข้อมูลกิจกรรม
-                    </div>
-                    <a href="index.php" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left me-2"></i>กลับไปยังรายการกิจกรรม
-                    </a>
                 <?php endif; ?>
             </div>
-        </div>
+            <div class="modal-footer text-center">
+                <div class="confirm-box"></div>
+                <div class="row gx-1 row-button">
+                    <div class="col-lg-12 col-md-12 pt-1">
+                        <button type="button" class="btn btn-lg btn-icon btn-icon-start btn-soft-ash rounded-pill w-100" data-bs-dismiss="modal"><i class="uil uil-times-circle"></i><?=Lang::get('Close')?></button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
-<?=App::footer($index)?>
+</div>
+<script type="text/javascript">
+    function record_events(action, params){
+        $("form[name='RecordForm'] .on-status, form[name='RecordForm'] .on-focus").html('');
+        if(action=="add"){
+            if( params!=undefined ){
+                $("form[name='RecordForm'] .confirm-box").html('').css('margin-top','0');
+                $("form[name='RecordForm'] .row-button").show();
+            }else{
+                var shared_id = $("form[name='RecordForm'] input[name='shared_id']").val();
+                if(!shared_id || shared_id.trim()==''){
+                    $("form[name='RecordForm'] .on-shared_id").html('<font class="fs-12 on-text-normal-i text-red"><?=( (App::lang()=='en') ? 'Please enter email or user ID' : 'กรุณากรอกอีเมลหรือ ID ของผู้ใช้' )?></font>');
+                    $("form[name='RecordForm'] input[name='shared_id']").focus();
+                    return;
+                }
+                var htmls  = '<div class="fs-19 mb-2 text-center on-text-normal"><?=( (App::lang()=='en') ? 'Are you sure to add share ?' : 'ยืนยันการเพิ่มการแชร์ ?' )?></div>';                    
+                    htmls += '<button type="button" class="btn btn-lg btn-icon btn-icon-start btn-success rounded-pill" onclick="record_events(\'add\', { \'confirm\':\'Y\' });"><i class="uil uil-check-circle"></i><?=Lang::get('Yes')?></button>';
+                    htmls += '&nbsp;';
+                    htmls += '<button type="button" class="btn btn-lg btn-icon btn-icon-start btn-outline-danger rounded-pill" onclick="record_events(\'add\', { \'on\':\'N\' });"><i class="uil uil-times-circle"></i><?=Lang::get('No')?></button>';
+                $("form[name='RecordForm'] .confirm-box").html(htmls).css('margin-top','-15px');
+                $("form[name='RecordForm'] .row-button").hide();
+            }
+            if( params!=undefined && params.confirm=='Y' ){
+                $.ajax({
+                    url : "<?=$form?>/filter/share.php",
+                    type: 'POST',
+                    data: {
+                        'action': 'add',
+                        'events_id': $("form[name='RecordForm'] input[name='events_id']").val(),
+                        'shared_id': $("form[name='RecordForm'] input[name='shared_id']").val(),
+                        'form_as': '<?=$form?>'
+                    },
+                    dataType: "html",
+                    beforeSend: function( xhr ) {
+                        runStart();
+                    }
+                }).done(function(html) {
+                    runStop();
+                    $("#ManageDialog").html(html);
+                });
+            }
+        }else if(action=="remove"){
+            if( params!=undefined && params.share_id ){
+                swal({
+                    'title':'<b class="text-red" style="font-size:100px;"><i class="uil uil-trash-alt"></i></b>',
+                    'html' :'<?=( (App::lang()=='en') ? 'Confirm to remove share ?' : 'ยืนยันการลบการแชร์ ?' )?>',
+                    'showCloseButton': false,
+                    'showConfirmButton': true,
+                    'showCancelButton': true,
+                    'focusConfirm': false,
+                    'allowEscapeKey': false,
+                    'allowOutsideClick': false,
+                    'confirmButtonClass': 'btn btn-icon btn-icon-start btn-success rounded-pill',
+                    'confirmButtonText':'<font class="fs-16"><i class="uil uil-check-circle"></i> <?=Lang::get('Yes')?></font>',
+                    'cancelButtonClass': 'btn btn-icon btn-icon-start btn-outline-danger rounded-pill',
+                    'cancelButtonText':'<font class="fs-16"><i class="uil uil-times-circle"></i> <?=Lang::get('No')?></font>',
+                    'buttonsStyling': false
+                }).then(
+                    function () {
+                        $.ajax({
+                            url : "<?=$form?>/filter/share.php",
+                            type: 'POST',
+                            data: {
+                                'action': 'remove',
+                                'events_id': $("form[name='RecordForm'] input[name='events_id']").val(),
+                                'share_id': params.share_id,
+                                'form_as': '<?=$form?>'
+                            },
+                            dataType: "html",
+                            beforeSend: function( xhr ) {
+                                runStart();
+                            }
+                        }).done(function(html) {
+                            runStop();
+                            $("#ManageDialog").html(html);
+                        });
+                    },
+                    function (dismiss) {
+                        if (dismiss === 'cancel') {
+                            swal.close();
+                        }
+                    }
+                );
+            }
+        }
+    }
+    $(document).ready(function() {
+        <?php if ($success): ?>
+            $("form[name='RecordForm'] input[name='shared_id']").val('');
+        <?php endif; ?>
+    });
+</script>

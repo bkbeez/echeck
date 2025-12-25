@@ -1,301 +1,263 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
+<?php Auth::ajax(APP_PATH.'/event'); ?>
 <?php
     $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );
-    if( isset($_POST['events_id']) && $_POST['events_id'] ){
-        $data = DB::one("SELECT events.*
-                        ,events_list.email AS user_role
-                        FROM events
-                        LEFT JOIN events_lists ON events.email=events_lists.email
-                        WHERE events.events_id=:events_id
-                        LIMIT 1;"
-                        , array('events_id'=>$_POST['events_id'])
-        );
-        if(isset($data['events_id'])&&$data['events_id']){
-            
-        }
+    $user_id = '';
+    if (isset($_SESSION['login']) && isset($_SESSION['login']['user'])) {
+        $user_id = isset($_SESSION['login']['user']['email']) ? $_SESSION['login']['user']['email'] : 
+                    (isset($_SESSION['login']['user']['id']) ? $_SESSION['login']['user']['id'] : '');
     }
 ?>
-<!DOCTYPE html>
-<html lang="<?=App::lang()?>">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เพิ่มกิจกรรม</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        body {
-            background: radial-gradient(circle at 10% 20%, #e0f2ff 0%, #f3f4ff 40%, #ffffff 100%);
-            min-height: 100vh;
-            font-family: "Prompt", "Segoe UI", sans-serif;
-        }
-        .page-header {
-            border-radius: 1.5rem;
-            background: linear-gradient(135deg, rgba(13, 110, 253, 0.95), rgba(111, 66, 193, 0.92));
-            color: #fff;
-            padding: 2.5rem;
-            box-shadow: 0 20px 45px rgba(13, 110, 253, 0.2);
-        }
-        .content-card {
-            margin-top: -4rem;
-            border-radius: 1.5rem;
-            border: none;
-            box-shadow: 0 16px 45px rgba(15, 23, 42, 0.1);
-        }
-        .content-card .card-body {
-            padding-top: 2.5rem;
-            
-        }
-        .form-label {
-            font-weight: 600;
-            color: #475569;
-            margin-bottom: 0.5rem;
-        }
-        .form-control, .form-select {
-            border-radius: 0.5rem;
-            border: 1px solid #e2e8f0;
-            padding: 0.75rem 1rem;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-        }
-        .alert {
-            border-radius: 0.5rem;
-            border: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="page-loader"></div>
-        <div class="content-wrapper on-font-primary">
-        <!-- Body -->
-            <?=App::menus($index)?>
-
-    <div class="container py-5">
-        <div class="page-header mb-5">
-            <h1 class="display-6 mb-2">➕ เพิ่มกิจกรรมใหม่</h1>
-            <p class="mb-0 opacity-75">กรอกข้อมูลกิจกรรมที่ต้องการสร้าง</p>
-        </div>
-        
-        <div class="card content-card mt-3">
-            <div class="card-body p-4 pt-5">
-                <?php if ($error): ?>
-                    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i><?= htmlspecialchars($error) ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php endif; ?>
-                
-                <?php if ($success): ?>
-                    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                        <i class="bi bi-check-circle-fill me-2"></i><?= htmlspecialchars($success) ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php endif; ?>
-                
-                <form method="GET" class="mt-4">
-                    <div class="mb-3">
-                        <label class="form-label">ชื่อกิจกรรม <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control" value="<?= isset($_GET['name']) ? htmlspecialchars($_GET['name']) : '' ?>" required>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">วันที่เริ่มต้น <span class="text-danger">*</span></label>
-                            <div class="position-relative">
-                                <input type="text" name="start_date" id="start_date" class="form-control" placeholder="dd/mm/yyyy" value="<?= isset($_GET['start_date']) ? htmlspecialchars($_GET['start_date']) : '' ?>" required autocomplete="off">
-                                <i class="bi bi-calendar position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #6c757d;"></i>
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">วันที่สิ้นสุด <span class="text-danger">*</span></label>
-                            <div class="position-relative">
-                                <input type="text" name="end_date" id="end_date" class="form-control" placeholder="dd/mm/yyyy" value="<?= isset($_GET['end_date']) ? htmlspecialchars($_GET['end_date']) : '' ?>" required autocomplete="off">
-                                <i class="bi bi-calendar position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #6c757d;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">ประเภทผู้เข้าร่วม</label>
-                        <select name="participant_type" class="form-select">
-                            <option value="ALL" <?= (isset($_GET['participant_type']) && $_GET['participant_type'] === 'ALL') ? 'selected' : '' ?>>ทุกคน</option>
-                            <option value="LIST" <?= (isset($_GET['participant_type']) && $_GET['participant_type'] === 'LIST') ? 'selected' : '' ?>>เฉพาะผู้ที่มีรายชื่อ</option>
-                        </select>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label">สถานะ</label>
-                        <select name="status" class="form-select">
-                            <option value="0" <?= (isset($_GET['status']) && $_GET['status'] == 0) ? 'selected' : '' ?>>ร่าง</option>
-                            <option value="1" <?= (isset($_GET['status']) && $_GET['status'] == 1) ? 'selected' : '' ?>>เปิดการเข้าร่วม</option>
-                            <option value="2" <?= (isset($_GET['status']) && $_GET['status'] == 2) ? 'selected' : '' ?>>ปิดการเข้าร่วม</option>
-                            <option value="3" <?= (isset($_GET['status']) && $_GET['status'] == 3) ? 'selected' : '' ?>>ยกเลิก</option>
-                        </select>
-                    </div>
-                    
-                    <div class="d-flex gap-2 mt-4">
-                        <a href="index.php"><button type="submit" class="btn btn-success px-4">
-                            <i class="bi bi-check-circle me-2"></i>บันทึก
-                        </button></a>
-                        <a href="index.php" class="btn btn-secondary px-4">
-                            <i class="bi bi-arrow-left me-2"></i>กลับ
-                        </a>
-                    </div>
-                </form>
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content modal-manage">
+        <form name="RecordForm" action="/event/scripts/create.php" method="POST" enctype="multipart/form-data" class="form-mange">
+            <div class="modal-header" style="min-height:100px;background:#eef6f9;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h2 class="mb-0 text-start on-text-oneline"><i class="uil uil-plus-circle fs-32"></i> <?=( (App::lang()=='en') ? 'Create Event' : 'สร้างกิจกรรม' )?></h2>
             </div>
-        </div>
+            <div class="modal-body" style="margin-top:-30px;padding-left:35px;padding-right:35px;">
+                <div class="on-status"></div>
+                <div class="alert alert-info alert-icon mb-2" style="padding:5px 15px;">
+                    <div class="row gx-1">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-floating mb-1">
+                                <div class="form-control on-text-display"><?=( (App::lang()=='en') ? 'New Event' : 'กิจกรรมใหม่' )?></div>
+                                <label><?=date('d/m/Y H:i:s')?></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-info alert-icon mb-2" style="padding:5px 15px;">
+                    <p class="lead text-dark mb-1 text-start on-text-oneline"><?=( (App::lang()=='en') ? 'Event Information' : 'ข้อมูลกิจกรรม' )?></p>
+                    <div class="form-floating mb-1">
+                        <input name="events_name" type="text" class="form-control" placeholder="<?=( (App::lang()=='en') ? 'Event Name' : 'ชื่อกิจกรรม' )?>" id="events_name" required>
+                        <label for="events_name"><?=( (App::lang()=='en') ? 'Event Name' : 'ชื่อกิจกรรม' )?> *<span></span></label>
+                        <div class="on-events_name"></div>
+                    </div>
+                    <div class="row gx-1">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-floating mb-1">
+                                <input name="start_date" type="text" id="start_date" class="form-control" placeholder="dd/mm/yyyy" required autocomplete="off">
+                                <label for="start_date"><?=( (App::lang()=='en') ? 'Start Date' : 'วันที่เริ่มต้น' )?> *<span></span></label>
+                                <div class="on-start_date"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-floating mb-1">
+                                <input name="end_date" type="text" id="end_date" class="form-control" placeholder="dd/mm/yyyy" required autocomplete="off">
+                                <label for="end_date"><?=( (App::lang()=='en') ? 'End Date' : 'วันที่สิ้นสุด' )?> *<span></span></label>
+                                <div class="on-end_date"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <select name="participant_type" class="form-select" id="participant_type">
+                            <option value="ALL"><?=( (App::lang()=='en') ? 'Everyone' : 'ทุกคน' )?></option>
+                            <option value="LIST"><?=( (App::lang()=='en') ? 'List Only' : 'เฉพาะรายชื่อ' )?></option>
+                        </select>
+                        <label for="participant_type"><?=( (App::lang()=='en') ? 'Participant Type' : 'ประเภทผู้เข้าร่วม' )?></label>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <select name="status" class="form-select" id="status">
+                            <option value="0"><?=( (App::lang()=='en') ? 'Draft' : 'ร่าง' )?></option>
+                            <option value="1"><?=( (App::lang()=='en') ? 'Open' : 'เปิดการเข้าร่วม' )?></option>
+                            <option value="2"><?=( (App::lang()=='en') ? 'Closed' : 'ปิดการเข้าร่วม' )?></option>
+                            <option value="3"><?=( (App::lang()=='en') ? 'Cancelled' : 'ยกเลิก' )?></option>
+                        </select>
+                        <label for="status"><?=( (App::lang()=='en') ? 'Status' : 'สถานะ' )?></label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center">
+                <div class="confirm-box"></div>
+                <div class="row gx-1 row-button">
+                    <div class="col-lg-6 col-md-6 pt-1">
+                        <button type="button" class="btn btn-lg btn-icon btn-icon-start btn-blue rounded-pill w-100" onclick="record_events('confirm');"><i class="uil uil-check-circle"></i><?=Lang::get('Save')?></button>
+                    </div>
+                    <div class="col-lg-6 col-md-6 pt-1">
+                        <button type="button" class="btn btn-lg btn-icon btn-icon-start btn-soft-ash rounded-pill w-100" data-bs-dismiss="modal"><i class="uil uil-times-circle"></i><?=Lang::get('Close')?></button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script>
-        // Helper function to format date for display
-        function formatDateForDisplay(dateStr) {
-            if (!dateStr) return '';
-            // If already in Y-m-d format, convert to d/m/Y
-            if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-                const parts = dateStr.split('-');
-                return parts[2] + '/' + parts[1] + '/' + parts[0];
+</div>
+</div>
+<script type="text/javascript">
+    function record_events(action, params){
+        $("form[name='RecordForm'] .on-status, form[name='RecordForm'] .on-focus").html('');
+        if(action=="confirm"){
+            if( params!=undefined ){
+                $("form[name='RecordForm'] .confirm-box").html('').css('margin-top','0');
+                $("form[name='RecordForm'] .row-button").show();
+            }else{
+                var htmls  = '<div class="fs-19 mb-2 text-center on-text-normal"><?=( (App::lang()=='en') ? 'Are you sure to create ?' : 'ยืนยันการสร้าง ?' )?></div>';                    
+                    htmls += '<button type="submit" class="btn btn-lg btn-icon btn-icon-start btn-success rounded-pill"><i class="uil uil-check-circle"></i><?=Lang::get('Yes')?></button>';
+                    htmls += '&nbsp;';
+                    htmls += '<button type="button" class="btn btn-lg btn-icon btn-icon-start btn-outline-danger rounded-pill" onclick="record_events(\'confirm\', { \'on\':\'N\' });"><i class="uil uil-times-circle"></i><?=Lang::get('No')?></button>';
+                $("form[name='RecordForm'] .confirm-box").html(htmls).css('margin-top','-15px');
+                $("form[name='RecordForm'] .row-button").hide();
             }
-            return dateStr;
         }
-
+    }
+    $(document).ready(function() {
         // Initialize date pickers
         let startDatePicker, endDatePicker;
         
-        document.addEventListener('DOMContentLoaded', function() {
-            const startInput = document.getElementById('start_date');
-            const endInput = document.getElementById('end_date');
-            
-            // Format initial values for display
-            if (startInput.value) {
-                startInput.value = formatDateForDisplay(startInput.value);
-            }
-            if (endInput.value) {
-                endInput.value = formatDateForDisplay(endInput.value);
-            }
-            
-            startDatePicker = flatpickr("#start_date", {
-                dateFormat: "d/m/Y",
-                altInput: false,
-                placeholder: "dd/mm/yyyy",
-                allowInput: true,
-                parseDate: function(datestr, format) {
-                    // Try to parse d/m/Y format (day/month/year)
-                    const parts = datestr.split('/');
-                    if (parts.length === 3) {
-                        const day = parseInt(parts[0], 10);
-                        const month = parseInt(parts[1], 10);
-                        const year = parseInt(parts[2], 10);
-                        if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900) {
-                            return new Date(year, month - 1, day);
-                        }
-                    }
-                    return null;
-                },
-                onChange: function(selectedDates, dateStr, instance) {
-                    // Update hidden value to Y-m-d format
-                    if (selectedDates.length > 0) {
-                        const formatted = selectedDates[0].toISOString().split('T')[0];
-                        instance.input.setAttribute('data-date-value', formatted);
-                        if (endDatePicker) {
-                            endDatePicker.set('minDate', selectedDates[0]);
-                        }
+        startDatePicker = flatpickr("#start_date", {
+            dateFormat: "d/m/Y",
+            altInput: false,
+            placeholder: "dd/mm/yyyy",
+            allowInput: true,
+            parseDate: function(datestr, format) {
+                const parts = datestr.split('/');
+                if (parts.length === 3) {
+                    const day = parseInt(parts[0], 10);
+                    const month = parseInt(parts[1], 10);
+                    const year = parseInt(parts[2], 10);
+                    if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900) {
+                        return new Date(year, month - 1, day);
                     }
                 }
-            });
-
-            endDatePicker = flatpickr("#end_date", {
-                dateFormat: "d/m/Y",
-                altInput: false,
-                placeholder: "dd/mm/yyyy",
-                allowInput: true,
-                parseDate: function(datestr, format) {
-                    // Try to parse d/m/Y format (day/month/year)
-                    const parts = datestr.split('/');
-                    if (parts.length === 3) {
-                        const day = parseInt(parts[0], 10);
-                        const month = parseInt(parts[1], 10);
-                        const year = parseInt(parts[2], 10);
-                        if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900) {
-                            return new Date(year, month - 1, day);
-                        }
-                    }
-                    return null;
-                },
-                onChange: function(selectedDates, dateStr, instance) {
-                    // Update hidden value to Y-m-d format
-                    if (selectedDates.length > 0) {
-                        const formatted = selectedDates[0].toISOString().split('T')[0];
-                        instance.input.setAttribute('data-date-value', formatted);
+                return null;
+            },
+            onChange: function(selectedDates, dateStr, instance) {
+                if (selectedDates.length > 0) {
+                    const formatted = selectedDates[0].toISOString().split('T')[0];
+                    instance.input.setAttribute('data-date-value', formatted);
+                    if (endDatePicker) {
+                        endDatePicker.set('minDate', selectedDates[0]);
                     }
                 }
-            });
-            
-            if (startDatePicker.selectedDates.length > 0) {
-                endDatePicker.set('minDate', startDatePicker.selectedDates[0]);
             }
         });
 
-        // Form validation and conversion
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const startInput = document.getElementById('start_date');
-            const endInput = document.getElementById('end_date');
-            
-            // Convert display format to Y-m-d for submission
-            if (startInput.value) {
-                const startValue = startInput.getAttribute('data-date-value');
-                if (startValue) {
-                    startInput.value = startValue;
-                } else if (startDatePicker && startDatePicker.selectedDates.length > 0) {
-                    startInput.value = startDatePicker.selectedDates[0].toISOString().split('T')[0];
-                } else {
-                    // Try to parse d/m/Y format (day/month/year)
-                    const parts = startInput.value.split('/');
-                    if (parts.length === 3) {
-                        startInput.value = parts[2] + '-' + parts[1].padStart(2, '0') + '-' + parts[0].padStart(2, '0');
+        endDatePicker = flatpickr("#end_date", {
+            dateFormat: "d/m/Y",
+            altInput: false,
+            placeholder: "dd/mm/yyyy",
+            allowInput: true,
+            parseDate: function(datestr, format) {
+                const parts = datestr.split('/');
+                if (parts.length === 3) {
+                    const day = parseInt(parts[0], 10);
+                    const month = parseInt(parts[1], 10);
+                    const year = parseInt(parts[2], 10);
+                    if (month >= 1 && month <= 12 && day >= 1 && day <= 31 && year >= 1900) {
+                        return new Date(year, month - 1, day);
                     }
                 }
-            }
-            
-            if (endInput.value) {
-                const endValue = endInput.getAttribute('data-date-value');
-                if (endValue) {
-                    endInput.value = endValue;
-                } else if (endDatePicker && endDatePicker.selectedDates.length > 0) {
-                    endInput.value = endDatePicker.selectedDates[0].toISOString().split('T')[0];
-                } else {
-                    // Try to parse d/m/Y format (day/month/year)
-                    const parts = endInput.value.split('/');
-                    if (parts.length === 3) {
-                        endInput.value = parts[2] + '-' + parts[1].padStart(2, '0') + '-' + parts[0].padStart(2, '0');
-                    }
-                }
-            }
-            
-            // Validate dates
-            if (startInput.value && endInput.value) {
-                const start = new Date(startInput.value);
-                const end = new Date(endInput.value);
-                
-                if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-                    e.preventDefault();
-                    alert('รูปแบบวันที่ไม่ถูกต้อง กรุณาใช้รูปแบบ dd/mm/yyyy');
-                    return false;
-                }
-                
-                if (start > end) {
-                    e.preventDefault();
-                    alert('วันที่เริ่มต้นต้องไม่เกินวันที่สิ้นสุด');
-                    return false;
+                return null;
+            },
+            onChange: function(selectedDates, dateStr, instance) {
+                if (selectedDates.length > 0) {
+                    const formatted = selectedDates[0].toISOString().split('T')[0];
+                    instance.input.setAttribute('data-date-value', formatted);
                 }
             }
         });
-    </script>
-</body>
-</html>
+        
+        $("form[name='RecordForm']").ajaxForm({
+            beforeSubmit: function (formData, jqForm, options) {
+                // Convert date format before submit
+                const startInput = document.getElementById('start_date');
+                const endInput = document.getElementById('end_date');
+                
+                if (startInput.value) {
+                    const startValue = startInput.getAttribute('data-date-value');
+                    if (startValue) {
+                        startInput.value = startValue;
+                    } else if (startDatePicker && startDatePicker.selectedDates.length > 0) {
+                        startInput.value = startDatePicker.selectedDates[0].toISOString().split('T')[0];
+                    } else {
+                        const parts = startInput.value.split('/');
+                        if (parts.length === 3) {
+                            startInput.value = parts[2] + '-' + parts[1].padStart(2, '0') + '-' + parts[0].padStart(2, '0');
+                        }
+                    }
+                }
+                
+                if (endInput.value) {
+                    const endValue = endInput.getAttribute('data-date-value');
+                    if (endValue) {
+                        endInput.value = endValue;
+                    } else if (endDatePicker && endDatePicker.selectedDates.length > 0) {
+                        endInput.value = endDatePicker.selectedDates[0].toISOString().split('T')[0];
+                    } else {
+                        const parts = endInput.value.split('/');
+                        if (parts.length === 3) {
+                            endInput.value = parts[2] + '-' + parts[1].padStart(2, '0') + '-' + parts[0].padStart(2, '0');
+                        }
+                    }
+                }
+                
+                $("form[name='RecordForm'] .on-status, form[name='RecordForm'] .on-focus").html('');
+                runStart();
+            },
+            success: function(rs) {
+                runStop();
+                var data = JSON.parse(rs);
+                if(data.status=='success'){
+                    $("form[name='RecordForm'] .modal-header, form[name='RecordForm'] .modal-body, hr").hide();
+                    var htmls ='<div class="d-flex flex-row text-start" style="margin-top:15px;">';
+                        htmls +='<div style="margin-top:-5px;"><span class="icon btn btn-circle btn-lg btn-success pe-none me-4"><i class="uil uil-check"></i></span></div>';
+                        htmls +='<div class="text-primary" style="font-weight:normal;">';
+                            htmls +='<h4 class="mb-0 text-green on-text-oneline" style="color:#3a2e74;">'+data.title+'</h4>';
+                            htmls +='<p class="fs-14 text-green">'+data.text+'</p>';
+                        htmls +='</div>';
+                    htmls +='</div>';
+                    $("form[name='RecordForm'] .modal-footer").html(htmls);
+                    $("form[name='RecordForm'] .modal-footer").fadeOut(1000, function(){
+                        $("#ManageDialog").modal('hide');
+                        $("form[name='filter'] input[name='state']").val(null);
+                    if(data.status=='success'){
+                        $("#ManageDialog").modal('hide');
 
-<?=App::footer($index)?>
+                        setTimeout(function () {
+                            window.location.href = EVENT_URL;
+                        }, 500);
+                    }
+
+                    });
+                }else{
+                    if( data.swal!=undefined ){
+                        swal({
+                            'type' : data.status,
+                            'title': data.title,
+                            'html' : data.text,
+                            'showCloseButton': false,
+                            'showCancelButton': false,
+                            'focusConfirm': false,
+                            'allowEscapeKey': false,
+                            'allowOutsideClick': false,
+                            'confirmButtonClass': 'btn btn-outline-danger',
+                            'confirmButtonText':'<span><?=Lang::get('Understand')?></span>',
+                            'buttonsStyling': false
+                        }).then(
+                            function () {
+                                swal.close();
+                            },
+                            function (dismiss) {
+                                if (dismiss === 'cancel') {
+                                    swal.close();
+                                }
+                            }
+                        );
+                    }else{
+                        if( $("form[name='RecordForm'] .on-"+data.onfocus).length>0 ){
+                            $("form[name='RecordForm'] .on-"+data.onfocus).html('<font class="fs-12 on-text-normal-i text-red">'+data.text+'</font>');
+                        }else{
+                            $("form[name='RecordForm'] .on-status").html('<font class="on-text-normal-i text-red">'+data.text+'</font>');
+                        }
+                        $("form[name='RecordForm'] .confirm-box").html('').css('margin-top','0');
+                        $("form[name='RecordForm'] .row-button").show();
+                        if( data.onfocus!=undefined&&data.onfocus ){
+                            $("form[name='RecordForm'] input[name='"+data.onfocus+"']").focus();
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+</div>
