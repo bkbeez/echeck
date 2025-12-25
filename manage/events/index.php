@@ -9,11 +9,11 @@
     .table-filter .filter-result {
         background: white;
     }
+    .table-filter .filter-result .type {
+        width: 65px;
+    }
     .table-filter .filter-result .name {
         width: auto
-    }
-    .table-filter .filter-result .type {
-        width: 100px;
     }
     .table-filter .filter-result .date {
         width: 100px;
@@ -21,13 +21,13 @@
     .table-filter .filter-result .status {
         width: 15%;
     }
-    .table-filter .filter-result .name>span {
+    /*.table-filter .filter-result .name>span {
         display: block;
         font-weight: normal;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-    }
+    }*/
     .table-filter .filter-result .name>.name-o,
     .table-filter .filter-result .name>.date-o,
     .table-filter .filter-result .name>.status-o {
@@ -87,8 +87,8 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="no">#</th>
-                                <th scope="col" class="name">ชื่อกิจกรรม</th>
                                 <th scope="col" class="type">ประเภท</th>
+                                <th scope="col" class="name">กิจกรรม</th>
                                 <th scope="col" class="date">วันที่เริ่มต้น</th>
                                 <th scope="col" class="date">วันที่สิ้นสุด</th>
                                 <th scope="col" class="status">สถานะ</th>
@@ -219,6 +219,6 @@
             $("form[name='filter'] .filter-pagination select").val(1);
             $("form[name='filter'] button[type='submit']").click();
         });
-        //$(".table-filter").tablefilter({'keyword':'auto'});
+        $(".table-filter").tablefilter({'keyword':'auto'});
     });
 </script>
