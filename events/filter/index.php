@@ -85,11 +85,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <select name="condition[is_cmu]" class="form-select mb-1">
-                                <option value="ALL"<?=((!isset($filter['condition']['is_cmu'])||$filter['condition']['is_cmu']=='ALL')?' selected':null)?>>All Accounts</option>
-                                <option value="Y"<?=((isset($filter['condition']['is_cmu'])&&$filter['condition']['is_cmu']=='Y')?' selected':null)?>>CMU Accounts</option>
-                                <option value="N"<?=((isset($filter['condition']['is_cmu'])&&$filter['condition']['is_cmu']=='N')?' selected':null)?>>Other Accounts</option>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <select name="condition[participant_type]" class="form-select mb-1">
+                                <option value="NONE"<?=((!isset($filter['condition']['participant_type'])||$filter['condition']['participant_type']=='NONE')?' selected':null)?>>แสดงทุกประเภท...</option>
+                                <option value="ALL"<?=((isset($filter['condition']['participant_type'])&&$filter['condition']['participant_type']=='ALL')?' selected':null)?>>[ALL] ทั่วไป</option>
+                                <option value="LIST"<?=((isset($filter['condition']['participant_type'])&&$filter['condition']['participant_type']=='LIST')?' selected':null)?>>[LIST] เฉพาะผู้ที่มีรายชื่อ</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <select name="condition[status]" class="form-select mb-1">
+                                <option value="NONE"<?=((!isset($filter['condition']['status'])||$filter['condition']['status']=='NONE')?' selected':null)?>>แสดงทุกสถานะ...</option>
+                                <option value="DRAFT"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='DRAFT')?' selected':null)?>>[DRAFT] ร่าง</option>
+                                <option value="OPEN"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='OPEN')?' selected':null)?>>[OPEN] เปิดลงทะเบียน</option>
+                                <option value="CLOSE"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='CLOSE')?' selected':null)?>>[CLOSE] ปิดลงทะเบียน</option>
                             </select>
                         </div>
                     </div>

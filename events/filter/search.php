@@ -29,24 +29,33 @@
     }
     // Condition
     $_SESSION['login']['filter'][$filter_as]['condition'] = array();
-    /*if( isset($_POST['condition']) ){
+    if( isset($_POST['condition']) ){
         foreach($_POST['condition'] as $key => $value ){
             if($value){
-                if($key=="is_cmu"){
+                if($key=="participant_type"){
                     $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
-                    if($value=='Y'){
-                        $condition .= " AND member.is_cmu='Y'";
-                    }else if($value=='N'){
-                        $condition .= " AND member.is_cmu='N'";
+                    if($value=='ALL'){
+                        $condition .= " AND events.participant_type='ALL'";
+                    }else if($value=='LIST'){
+                        $condition .= " AND events.participant_type='LIST'";
+                    }
+                }else if($key=="status"){
+                    $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
+                    if($value=='DRAFT'){
+                        $condition .= " AND events.status=0";
+                    }else if($value=='OPEN'){
+                        $condition .= " AND events.status=1";
+                    }else if($value=='CLOSE'){
+                        $condition .= " AND events.status=2";
                     }
                 }else{
                     $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
                     $parameters[$key] = $value;
-                    $condition .= " AND member.".$key."=:".$key;
+                    $condition .= " AND events.".$key."=:".$key;
                 }
             }
         }
-    }*/
+    }
     // Total and Pages
     $sql = "SELECT COUNT(events.events_id) AS total
             FROM events
