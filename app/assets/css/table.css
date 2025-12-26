@@ -44,6 +44,11 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+.table-filter .filter-result table tr td.autoline {
+    overflow: unset !important;
+    white-space: normal !important;
+    text-overflow: unset !important;
+}
 .table-filter .filter-result table tr td font {
     font-weight: normal;
 }
