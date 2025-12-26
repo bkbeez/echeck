@@ -34,6 +34,7 @@
         <link rel="apple-touch-icon-precomposed" href="<?=APP_PATH?>/favicon.png" />
         <link rel="stylesheet" href="<?=THEME_CSS?>/plugins.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/style.css">
+        <link rel="stylesheet" href="<?=THEME_CSS?>/colors/grape.css">
         <link rel="stylesheet" href="<?=THEME_JS?>/sweetalert/sweetalert2.min.css" />
         <link rel="stylesheet" href="<?=THEME_CSS?>/index.css?<?=time()?>" />
         <script type="text/javascript" src="<?=THEME_JS?>/jquery-2.1.1.js"></script>
@@ -87,7 +88,7 @@
                                             <input name="password" value="" type="password" class="form-control" placeholder="..." id="password">
                                             <label for="password"><?=Lang::get('Password')?></label>
                                         </div>
-                                        <button type="submit" class="btn btn-lg btn-icon btn-icon-start btn-blue rounded-pill w-100"><i class="uil uil-user"></i> <?=Lang::get('Login')?></button>
+                                        <button type="submit" class="btn btn-lg btn-icon btn-icon-start btn-primary rounded-pill w-100"><i class="uil uil-user"></i> <?=Lang::get('Login')?></button>
                                         <div class="text-center mb-3 mt-2">
                                             <span class="text-muted"><?=Lang::get('Or sign in with')?></span>
                                         </div>
