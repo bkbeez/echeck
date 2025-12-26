@@ -28,11 +28,17 @@
     if( isset($_POST['condition']) ){
         foreach($_POST['condition'] as $key => $value ){
             if($value){
-                if($key=="is_cmu"){
+                if($key=="role"){
                     $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
-                    if($value=='Y'){
+                    if($value=='USER'){
+                        $condition .= " AND member_permission.role='USER'";
+                    }else if($value=='ADMIN'){
+                        $condition .= " AND member_permission.role='ADMIN'";
+                }else if($key=="cmu"){
+                    $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
+                    if($value=='CMU'){
                         $condition .= " AND member.is_cmu='Y'";
-                    }else if($value=='N'){
+                    }else if($value=='NOT'){
                         $condition .= " AND member.is_cmu='N'";
                     }
                 }else{
@@ -77,6 +83,14 @@
     $sql = "SELECT member.*
             , TRIM(CONCAT(COALESCE(member.title,''),member.name,' ',COALESCE(member.surname,''))) AS fullname
             , member_permission.role AS user_role
+            , IF(member_permission.role='ADMIN'
+                ,'<span class=\"badge badge-sm bg-pale-red text-red rounded me-1 align-self-start\"><i class=\"uil uil-user\"></i>ADMIN</span>'
+                ,'<span class=\"badge badge-sm bg-pale-blue text-blue rounded me-1 align-self-start\"><i class=\"uil uil-user\"></i>USER</span>'
+            ) AS user_icon
+            , IF(member.is_cmu='Y'
+                ,'<span class=\"badge badge-sm bg-pale-grape text-grape rounded me-1 align-self-start\"><i class=\"uil uil-check-circle\"></i>CMU</span>'
+                ,NULL
+            ) AS cmu_icon
             , 'NORM' AS status
             FROM member
             LEFT JOIN member_permission ON member.email=member_permission.email
@@ -92,6 +106,7 @@
             $row_no = (($start+1)+$no);
             $htmls .= '<tr class="'.$row['status'].'">';
                 $htmls .= '<td class="no" scope="row">'.$row_no.'</td>';
+                $htmls .= '<td class="type">'.$row['user_icon'].'</td>';
                 $htmls .= '<td class="mail">'.$row['email'].'</td>';
                 $htmls .= '<td class="name">';
                     $htmls .= '<mark class="doc row-no">'.$row_no.'</mark>';
@@ -99,24 +114,14 @@
                     $htmls .= '<font>'.Helper::stringTitleShort($row['fullname']).'</font>';
                     $htmls .= '<span class="name-o"><i class="uil uil-user"></i> '.Helper::stringTitleShort($row['fullname']).'</span>';
                     $htmls .= '<span class="date-o"><i class="uil uil-calendar-alt"></i> '.Helper::datetimeDisplay($row['date_create'], $lang).'</span>';
-                    $htmls .= '<span class="remark-o">';
-                        if($row['is_cmu']=='Y'){
-                            $htmls .= '<span class="cmu text-green"><i class="uil uil-check-circle"></i> <b class="underline-3 style-3 green">CMU</b> Account</span>';
-                        }else{
-                            $htmls .= '<span class="cmu text-ash"><i class="uil uil-circle"></i> CMU Account</span>';
-                        }
-                    $htmls.= '</span>';
+                    $htmls .= ( $row['cmu_icon'] ? '<span class="remark-o">'.$row['cmu_icon'].'</span>' : null );
                 $htmls .= '</td>';
                 $htmls .= '<td class="remark">';
                     $htmls .= '<font><i class="uil uil-calendar-alt"></i> '.Helper::datetimeDisplay($row['date_create'], $lang).'</font>';
-                    if($row['is_cmu']=='Y'){
-                        $htmls .= ' <span class="badge badge-lg bg-pale-green text-green rounded me-2 align-self-start"><i class="uil uil-check-circle"></i>CMU</span>';
-                    }else{
-                        $htmls .= ' <span class="badge badge-lg bg-pale-ash text-ash rounded me-2 align-self-start"><i class="uil uil-circle"></i>CMU</span>';
-                    }
+                    $htmls .= $row['cmu_icon'];
                 $htmls .= '</td>';
                 $htmls .= '<td class="actions">';
-                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'id\':\''.$row['id'].'\' });" type="button" class="btn btn-circle btn-outline-blue"><i class="uil uil-edit-alt"></i></button><small class=b-tip>'.(($lang=='en')?'Edit':'แก้ไข').'</small></div>';
+                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'id\':\''.$row['id'].'\' });" type="button" class="btn btn-circle btn-outline-primary"><i class="uil uil-edit-alt"></i></button><small class=b-tip>'.(($lang=='en')?'Edit':'แก้ไข').'</small></div>';
                     if( $row['user_role']=='ADMIN' ){
                         $htmls .= '<div class="btn-box disabled"><button type="button" class="btn btn-circle btn-soft-ash text-ash" style="cursor:default;"><i class="uil uil-trash-alt"></i></button><small class=b-tip>'.Lang::get('Del').'</small></div>';
                     }else{

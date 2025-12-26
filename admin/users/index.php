@@ -5,9 +5,14 @@
     $filter = ( isset($_SESSION['login']['filter'][$filter_as]) ? $_SESSION['login']['filter'][$filter_as] : null );
 ?>
 <style type="text/css">
-    body { background:url('<?=THEME_IMG?>/map.png') top center; }
+    .table-filter .filter-search .row>div.filter-keyword button.btn-adding {
+        width: 75px;
+    }
     .table-filter .filter-result {
         background: white;
+    }
+    .table-filter .filter-result .type {
+        width: 80px;
     }
     .table-filter .filter-result .mail {
         width: 25%;
@@ -30,6 +35,12 @@
     .table-filter .filter-result .name>.date-o,
     .table-filter .filter-result .name>.remark-o {
         display: none;
+    }
+    .table-filter .filter-result .badge>i {
+        float: left;
+        font-size: 16px;
+        line-height: 12px;
+        margin:0 2px 0 -2px;
     }
     @media only all and (max-width: 991px) {
         .table-filter .filter-result .mail {
@@ -68,7 +79,7 @@
     <form name="filter" action="<?=$formby?>/filter/search.php" method="POST" enctype="multipart/form-data" target="_blank">
         <input type="hidden" name="state" value="loading" />
         <input type="hidden" name="filter_as" value="<?=$filter_as?>" />
-        <section class="wrapper bg-sky">
+        <section class="wrapper bg-primary">
             <div class="container">
                 <div class="filter-search">
                     <div class="row">
@@ -86,17 +97,25 @@
                             <div class="mc-field-group input-group form-floating mb-1">
                                 <input id="keyword" name="keyword" type="text" value="<?=((isset($filter['keyword'])&&$filter['keyword'])?$filter['keyword']:null)?>" class="form-control" placeholder="...">
                                 <label for="keyword"><?=Lang::get('Keyword')?></label>
-                                <button type="submit" class="btn btn-soft-sky btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
-                                <button type="button" class="btn btn-blue btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-filter-slash"></i></button>
+                                <button type="submit" class="btn btn-soft-primary btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
+                                <button type="button" class="btn btn-soft-violet btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-filter-slash"></i></button>
+                                <button type="button" class="btn btn-purple btn-adding" title="Create New" onclick="manage_events('new', { 'link':'<?=$link?>' });"><i class="uil uil-plus"></i><sup><i>เพิ่มใหม่</i></sup></button>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <select name="condition[is_cmu]" class="form-select mb-1">
-                                <option value="ALL"<?=((!isset($filter['condition']['is_cmu'])||$filter['condition']['is_cmu']=='ALL')?' selected':null)?>>All Accounts</option>
-                                <option value="Y"<?=((isset($filter['condition']['is_cmu'])&&$filter['condition']['is_cmu']=='Y')?' selected':null)?>>CMU Accounts</option>
-                                <option value="N"<?=((isset($filter['condition']['is_cmu'])&&$filter['condition']['is_cmu']=='N')?' selected':null)?>>Other Accounts</option>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <select name="condition[role]" class="form-select mb-1">
+                                <option value="ALL"<?=((!isset($filter['condition']['role'])||$filter['condition']['role']=='ALL')?' selected':null)?>>All Roles</option>
+                                <option value="USER"<?=((isset($filter['condition']['role'])&&$filter['condition']['role']=='USER')?' selected':null)?>>Officer</option>
+                                <option value="ADMIN"<?=((isset($filter['condition']['role'])&&$filter['condition']['role']=='ADMIN')?' selected':null)?>>Administraotr</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <select name="condition[cmu]" class="form-select mb-1">
+                                <option value="ALL"<?=((!isset($filter['condition']['cmu'])||$filter['condition']['cmu']=='ALL')?' selected':null)?>>All Users</option>
+                                <option value="CMU"<?=((isset($filter['condition']['cmu'])&&$filter['condition']['cmu']=='CMU')?' selected':null)?>>CMU Accounts</option>
+                                <option value="NOT"<?=((isset($filter['condition']['cmu'])&&$filter['condition']['cmu']=='NOT')?' selected':null)?>>Other Accounts</option>
                             </select>
                         </div>
                     </div>
@@ -110,8 +129,9 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="no">#</th>
+                                <th scope="col" class="type"><?=Lang::get('Type')?></th>
                                 <th scope="col" class="mail"><?=Lang::get('Email')?></th>
-                                <th scope="col" class="name"><?=( (App::lang()=='en') ? 'User' : 'ผู้ใช้งาน' )?></th>
+                                <th scope="col" class="name"><?=( (App::lang()=='en') ? 'User' : 'ชื่อผู้ใช้' )?></th>
                                 <th scope="col" class="remark">&nbsp;</th>
                                 <th scope="col" class="actions act-2">&nbsp;</th>
                             </tr>
