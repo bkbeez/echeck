@@ -11,7 +11,7 @@
                 <h1 class="display-1 text-yellow mb-4"><?=APP_NAME?><br/>
                 <span class="typer fs-38 text-white text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,มหาวิทยาลัยเชียงใหม่,Faculty of Education,Chiang Mai University"></span><span class="cursor fs-38 text-white" data-owner="typer"></span></h1>
                 <p class="lead fs-24 lh-sm text-white mb-7 pe-lg-0 pe-xxl-15">ระบบบริการจัดการข้อมูลกิจกรรมและรายชื่อผู้เข้าร่วม สำหรับใช้ลงทะเบียนเข้าร่วมกิจกรรมต่างๆ ที่จัดโดยคณะศึกษาศาสตร์ มหาวิทยาลัยเชียงใหม่</p>
-                <div><a href="<?=APP_HOME?>/event" class="btn btn-lg btn-soft-sky rounded-pill">เริ่มต้นใช้งาน &rarr;</a></div>
+                <div><a href="<?=APP_HOME?>/events" class="btn btn-lg btn-soft-sky rounded-pill">เริ่มต้นใช้งาน &rarr;</a></div>
             </div>
             <div class="col-lg-5 offset-lg-1 mb-n18" data-cues="slideInDown">
                 <div class="swiper-container dots-over shadow-lg" data-margin="0" data-autoplay="true" data-autoplaytime="3000" data-nav="true" data-dots="false" data-items="1">
@@ -46,7 +46,7 @@
                         <div class="card-body">
                             <div class="icon btn btn-circle btn-lg btn-sky pe-none mb-3"><i class="uil uil-edit"></i></div>
                             <h4>จัดการกิจกรรม</h4>
-                            <a href="<?=APP_HOME?>/event" class="more hover link-blue">เข้าใช้งาน</a>
+                            <a href="<?=APP_HOME?>/events" class="more hover link-blue">เข้าใช้งาน</a>
                         </div>
                     </div>
                 </div>
