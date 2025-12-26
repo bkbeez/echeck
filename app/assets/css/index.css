@@ -82,7 +82,7 @@
     -webkit-border-radius: 25px;
 }
 .navbar-stick .navbar-nav .nav-item .hamburger {
-    color: #5ebaf0;
+    color: #615eba;
 }
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item .nav-link.nav-icon .nav-name {
     color: black;
@@ -90,24 +90,24 @@
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item:hover .nav-link.nav-icon .nav-name,
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item.active .nav-link.nav-icon .nav-name {
     color: white;
-    background: #5ebaf0;
+    background: #615eba;
 }
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name {
-    color: #5ebaf0;
+    color: #615eba;
 }
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item:hover .nav-link .nav-name,
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item.active .nav-link .nav-name {
-    border-bottom:2px solid #5ebaf0;
+    border-bottom:2px solid #615eba;
 }
 .navbar-stick #mainsite-navbar .navbar-nav .dropdown:not(.dropdown-submenu)>.dropdown-toggle:after {
-    color: #5ebaf0;
+    color: #615eba;
 }
 .mainsite-dropdown .nav-item .nav-name {
     border-bottom:2px solid transparent;
 }
 .mainsite-dropdown .nav-item:hover .nav-name,
 .mainsite-dropdown .nav-item.active .nav-name {
-    border-bottom:2px solid #5ebaf0;
+    border-bottom:2px solid #615eba;
 }
 .offcanvas-nav.show .mainsite-dropdown .nav-item.active .nav-name {
     border-bottom:2px solid white;
