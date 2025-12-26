@@ -84,10 +84,6 @@
 .navbar-stick .navbar-nav .nav-item .hamburger {
     color: #5ebaf0;
 }
-.navbar-stick .navbar-nav .nav-item .btn-login {
-    border-color:#5ebaf0 !important;
-    background-color:#5ebaf0 !important;
-}
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item .nav-link.nav-icon .nav-name {
     color: black;
 }
@@ -333,6 +329,12 @@
     -webkit-border-bottom-left-radius: 0;
     -moz-border-radius-bottomleft: 0;
     border-bottom-left-radius: 0;
+}
+.progress-wrap:after {
+    color: #03A9F4;
+}
+.progress-wrap svg.progress-circle path {
+    stroke: #03A9F4;
 }
 footer .on-copyright {
     text-align: center;

@@ -14,7 +14,7 @@ class App {
         if( isset($_SESSION['login']) ){
             $htmls = '<div class="offcanvas offcanvas-end bg-light iceahe-profile on-font-primary" id="offcanvas-info" data-bs-scroll="true" style="background:url(\''.THEME_IMG.'/map.png\') repeat-y top center;">';
                 $htmls .= '<div class="offcanvas-header">';
-                    $htmls .= '<h3 class="fs-30 mb-0 text-sky">'.Lang::get('Profile').'</h3>';
+                    $htmls .= '<h3 class="fs-30 mb-0 text-primary">'.Lang::get('Profile').'</h3>';
                     $htmls .= '<button type="button" class="btn-close btn-close-dark" data-bs-dismiss="offcanvas" aria-label="Close"></button>';
                 $htmls .= '</div>';
                 $htmls .= '<div class="offcanvas-body d-flex flex-column">';
@@ -55,7 +55,7 @@ class App {
         if( isset($index['page'])&& in_array($index['page'], array('login','deny')) ){
             return null;
         }
-        $htmls = '<header class="wrapper bg-sky">';
+        $htmls = '<header class="wrapper bg-primary">';
             $htmls .= '<nav class="navbar navbar-expand-lg classic transparent navbar-light">';
                 $htmls .= '<div class="container flex-lg-row flex-nowrap align-items-center">';
                     $htmls .= '<div class="navbar-brand w-100">';
@@ -64,7 +64,7 @@ class App {
                             $htmls .= '<img class="on-color" src="'.THEME_IMG.'/logo/logo.png" srcset="'.THEME_IMG.'/logo/logo@2x.png 2x" alt=""/>';
                         $htmls .= '</a>';
                     $htmls .= '</div>';
-                    $htmls .= '<div class="navbar-collapse offcanvas offcanvas-nav offcanvas-start bg-sky">';
+                    $htmls .= '<div class="navbar-collapse offcanvas offcanvas-nav offcanvas-start bg-primary">';
                         $htmls .= '<div class="offcanvas-header d-lg-none">';
                             $htmls .= '<img src="'.THEME_IMG.'/logo/logo-light.png" srcset="'.THEME_IMG.'/logo/logo-light@2x.png 2x" alt="" style="height:72px;"/>';
                             $htmls .= '<button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>';
@@ -147,7 +147,7 @@ class App {
                             $htmls .= '</li>';
                         }else{
                             $htmls .= '<li class="nav-item d-md-block">';
-                                $htmls .= '<a href="'.APP_HOME.'/login" class="btn btn-login btn-sm btn-soft-sky rounded-pill">Login</a>';
+                                $htmls .= '<a href="'.APP_HOME.'/login" class="btn btn-login btn-sm btn-soft-primary rounded-pill">Login</a>';
                             $htmls .= '</li>';
                         }
                         $htmls .= '</ul>';
@@ -175,9 +175,9 @@ class App {
         }
         $htmls = '';
         if( isset($index['addfooter']) ){
-            $htmls .= '<section class="wrapper bg-sky angled upper-start"></section>';
+            $htmls .= '<section class="wrapper bg-primary angled upper-start"></section>';
         }
-        $htmls .= '<footer class="bg-sky text-white">';
+        $htmls .= '<footer class="bg-primary text-white">';
             $htmls .= '<div class="container pt-16 pb-1">';
                 $htmls .= '<div class="row gy-2 gy-lg-0">';
                     $htmls .= '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 on-copyright">';
