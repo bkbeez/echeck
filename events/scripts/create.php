@@ -1,10 +1,10 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
-<?php Auth::ajax(APP_PATH); ?>
-<?php //Helper::debug($_POST, 1);
+<?php Auth::ajax(APP_PATH.'/events'); ?>
+<?php
     if( !isset($_POST['events_name'])||!$_POST['events_name'] ){
         Status::error( 'กรุณากรอกชื่อกิจกรรม !!!', array('title'=>"ไม่พบชื่อกิจกรรม", 'onfocus'=>"events_name") );
-    }else if( !isset($_POST['events_type'])||!$_POST['events_type'] ){
-        Status::error( 'กรุณาเลือกประเภทกิจกรรม !!!', array('title'=>"ไม่พบประเภทกิจกรรม", 'onselect'=>"events_type") );
+    }else if( !isset($_POST['participant_type'])||!$_POST['participant_type'] ){
+        Status::error( 'กรุณาเลือกประเภทกิจกรรม !!!', array('title'=>"ไม่พบประเภทกิจกรรม", 'onselect'=>"participant_type") );
     }else if( !isset($_POST['start_date'])||!$_POST['start_date'] ){
         Status::error( 'กรุณากรอกวันที่เริ่มต้นกิจกรรม !!!', array('title'=>"วันที่เริ่มต้นกิจกรรม", 'onfocus'=>"start_date") );
     }else if( !Helper::validDate($_POST['start_date']) ){
@@ -31,9 +31,9 @@
     $fields .= ',`events_name`';
     $values .= ",:events_name";
     $parameters['events_name'] = Helper::stringSave($_POST['events_name']);
-    $fields .= ',`events_type`';
-    $values .= ",:events_type";
-    $parameters['events_type'] = $_POST['events_type'];
+    $fields .= ',`participant_type`';
+    $values .= ",:participant_type";
+    $parameters['participant_type'] = $_POST['participant_type'];
     $fields .= ',`start_date`';
     $values .= ",:start_date";
     $parameters['start_date'] = Helper::dateSave($_POST['start_date']).' '.$_POST['start_time'].':00';
@@ -43,6 +43,11 @@
     if( (new datetime($parameters['start_date']))>=(new datetime($parameters['end_date'])) ){
         Status::error( 'เริ่มต้นกิจกรรม <= สิ้นสุดกิจกรรม !!!', array('title'=>"วันที่-เวลาไม่ถูกต้อง", 'onfocus'=>"end_date") );
     }
+    $fields .= ',`date_create`';
+    $values .= ",NOW()";
+    $fields .= ',`user_create`';
+    $values .= ",:user_create";
+    $parameters['user_create'] = User::get('email');
     if( DB::create("INSERT INTO `events` ($fields) VALUES ($values)", $parameters) ){
         Status::success( "เพิ่มกิจกรรมเรียบร้อยแล้ว", $parameters );
     }

@@ -1,11 +1,12 @@
-<?php if(!isset($index['page'])||$index['page']!='manage'){ header("location:".((isset($_SERVER['SERVER_PORT'])&&$_SERVER['SERVER_PORT']==443)?'https://':'http://').$_SERVER["HTTP_HOST"]); exit(); } ?>
+<?php if(!isset($index['page'])||$index['page']!='events'){ header("location:".((isset($_SERVER['SERVER_PORT'])&&$_SERVER['SERVER_PORT']==443)?'https://':'http://').$_SERVER["HTTP_HOST"]); exit(); } ?>
 <?php
-    $formby = $form.'/events';
-    $filter_as = strtolower($index['page'].'_events_as');
+    $filter_as = strtolower($index['page'].'_list_as');
     $filter = ( isset($_SESSION['login']['filter'][$filter_as]) ? $_SESSION['login']['filter'][$filter_as] : null );
 ?>
 <style type="text/css">
-    body { background:url('<?=THEME_IMG?>/map.png') top center; }
+    .table-filter .filter-search .row>div.filter-keyword button.btn-adding {
+        width: 75px;
+    }
     .table-filter .filter-result {
         background: white;
     }
@@ -16,32 +17,47 @@
         width: auto
     }
     .table-filter .filter-result .date {
-        width: 100px;
+        width: 120px;
     }
     .table-filter .filter-result .status {
         width: 15%;
     }
-    /*.table-filter .filter-result .name>span {
-        display: block;
-        font-weight: normal;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }*/
-    .table-filter .filter-result .name>.name-o,
+    .table-filter .filter-result .badge>i {
+        float: left;
+        font-size: 16px;
+        line-height: 12px;
+        margin:0 2px 0 -2px;
+    }
+    .table-filter .filter-result .name>.type-o,
     .table-filter .filter-result .name>.date-o,
     .table-filter .filter-result .name>.status-o {
         display: none;
     }
     @media only all and (max-width: 991px) {
-
+        .table-filter .filter-result .date {
+            display: none;
+        }
+        .table-filter .filter-result .name>.date-o {
+            display: block;
+        }
     }
     @media only all and (max-width: 768px) {
-
+        .table-filter .filter-result .type,
+        .table-filter .filter-result .status {
+            display: none;
+        }
+        .table-filter .filter-result .name>.type-o,
+        .table-filter .filter-result .name>.status-o {
+            display: block;
+        }
+        .table-filter .filter-result .name>.date-o>span {
+            display: block;
+            padding-left: 2px;
+        }
     }
 </style>
 <section class="table-filter">
-    <form name="filter" action="<?=$formby?>/filter/search.php" method="POST" enctype="multipart/form-data" target="_blank">
+    <form name="filter" action="<?=$form?>/filter/search.php" method="POST" enctype="multipart/form-data" target="_blank">
         <input type="hidden" name="state" value="loading" />
         <input type="hidden" name="filter_as" value="<?=$filter_as?>" />
         <section class="wrapper bg-sky">
@@ -64,7 +80,7 @@
                                 <label for="keyword"><?=Lang::get('Keyword')?></label>
                                 <button type="submit" class="btn btn-soft-sky btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
                                 <button type="button" class="btn btn-soft-blue btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-filter-slash"></i></button>
-                                <button type="button" class="btn btn-blue btn-adding" title="Create New" onclick="manage_events('new');"><i class="uil uil-plus"></i><sup>New</sup></button>
+                                <button type="button" class="btn btn-blue btn-adding" title="Create New" onclick="manage_events('new', { 'link':'<?=$link?>' });"><i class="uil uil-plus"></i><sup><i>เพิ่มใหม่</i></sup></button>
                             </div>
                         </div>
                     </div>
@@ -89,8 +105,8 @@
                                 <th scope="col" class="no">#</th>
                                 <th scope="col" class="type">ประเภท</th>
                                 <th scope="col" class="name">กิจกรรม</th>
-                                <th scope="col" class="date">วันที่เริ่มต้น</th>
-                                <th scope="col" class="date">วันที่สิ้นสุด</th>
+                                <th scope="col" class="date">เริ่มต้นกิจกรรม</th>
+                                <th scope="col" class="date">สิ้นสุดกิจกรรม</th>
                                 <th scope="col" class="status">สถานะ</th>
                                 <th scope="col" class="actions act-2">&nbsp;</th>
                             </tr>
@@ -121,10 +137,17 @@
 <script type="text/javascript">
     function manage_events(action, params){
         if(action=='new'){
-            document.location = '<?=$link.'/?events=new'?>';
+            params['form_as'] = '<?=$form?>';
+            $("#ManageDialog").load("<?=$form?>/filter/new.php", params, function(response, status, xhr){
+                if(status=="error"){
+                    $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
+                }else{
+                    $("#ManageDialog").modal('show');
+                }
+            });
         }else if(action=='edit'){
-            params['form_as'] = '<?=$formby?>';
-            $("#ManageDialog").load("<?=$formby?>/filter/edit.php", params, function(response, status, xhr){
+            params['form_as'] = '<?=$form?>';
+            $("#ManageDialog").load("<?=$form?>/filter/edit.php", params, function(response, status, xhr){
                 if(status=="error"){
                     $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
                 }else{
@@ -134,7 +157,7 @@
         }else if(action=='delete'){
             swal({
                 'title':'<b class="text-red" style="font-size:100px;"><i class="uil uil-trash-alt"></i></b>',
-                'html' :'<?=( (App::lang()=='en') ? 'Confirm to delete ' : 'ยืนยันลบ ' )?><span class="underline red">'+params.email+'</span> ?',
+                'html' : '<div class="fs-24 on-font-primary">'+params.events_name+'</div><div>ยืนยันลบกิจกรรมนี้ ใช่ หรือ ไม่ ?</div>',
                 'showCloseButton': false,
                 'showConfirmButton': true,
                 'showCancelButton': true,
@@ -149,7 +172,7 @@
             }).then(
                 function () {
                     $.ajax({
-                        url : "<?=$formby?>/scripts/delete.php",
+                        url : "<?=$form?>/scripts/delete.php",
                         type: 'POST',
                         data: params,
                         dataType: "json",

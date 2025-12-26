@@ -1,5 +1,5 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
-<?php Auth::ajax(APP_PATH.'/admin/?users'); ?>
+<?php Auth::ajax(APP_PATH.'/events'); ?>
 <?php
     // Init
     $result = array('status'=>'success', 'title'=>Lang::get('Success') );
@@ -13,19 +13,23 @@
     }else if( isset($_SESSION['login']['filter'][$filter_as]['keyword'])&&$_SESSION['login']['filter'][$filter_as]['keyword']!=$keyword ){
         $page = 1;
     }
-    // Condition
+    // Check
     $parameters = array();
-    $condition = "";
+    // Owner
+    $parameters['user_by'] = User::get('email');
+    $condition = " AND events.user_create=:user_by";
+    // Search
     $_SESSION['login']['filter'][$filter_as]['keyword'] = null;
     if( $keyword ){
         $_SESSION['login']['filter'][$filter_as]['keyword'] = $keyword;
         $parameters['keyword'] = "%".$keyword."%";
         $condition .= " AND ( events.events_name LIKE :keyword";
-            //$condition .= " OR TRIM(CONCAT(member.name,' ',COALESCE(member.surname,''))) LIKE :keyword";
+            $condition .= " OR events.participant_type LIKE :keyword";
         $condition .= " )";
     }
+    // Condition
     $_SESSION['login']['filter'][$filter_as]['condition'] = array();
-    if( isset($_POST['condition']) ){
+    /*if( isset($_POST['condition']) ){
         foreach($_POST['condition'] as $key => $value ){
             if($value){
                 if($key=="is_cmu"){
@@ -42,7 +46,7 @@
                 }
             }
         }
-    }
+    }*/
     // Total and Pages
     $sql = "SELECT COUNT(events.events_id) AS total
             FROM events
@@ -74,10 +78,19 @@
     // Run
     $start = (($page-1)*$limit);
     $sql = "SELECT events.*
-            , IF(events.events_type='LIST'
-                ,'<span class=\"badge badge-sm bg-pale-blue text-blue rounded me-1 align-self-start\"><i class=\"uil uil-check-circle\"></i>LIST</span>'
-                ,'<span class=\"badge badge-sm bg-pale-green text-green rounded me-1 align-self-start\"><i class=\"uil uil-check-circle\"></i>ALL</span>'
+            , CONCAT(DATE_FORMAT(events.start_date,'%d/%m/'), (YEAR(events.start_date)+543)) AS start_date_display
+            , DATE_FORMAT(events.start_date, '%H:%i') AS start_time_display
+            , CONCAT(DATE_FORMAT(events.end_date,'%d/%m/'), (YEAR(events.end_date)+543)) AS end_date_display
+            , DATE_FORMAT(events.end_date, '%H:%i') AS end_time_display
+            , IF(events.participant_type='LIST'
+                ,'<span class=\"badge badge-sm bg-pale-orange text-orange rounded me-1 align-self-start\"><i class=\"uil uil-users-alt\"></i>LIST</span>'
+                ,'<span class=\"badge badge-sm bg-pale-blue text-blue rounded me-1 align-self-start\"><i class=\"uil uil-globe\"></i>ALL</span>'
             ) AS events_icon
+            , IF(events.status=2,'<span class=\"badge badge-sm bg-pale-red text-red rounded me-1 align-self-start\"><i class=\"uil uil-times-circle\"></i>CLOSE</span>'
+                ,IF(events.status=1,'<span class=\"badge badge-sm bg-pale-green text-green rounded me-1 align-self-start\"><i class=\"uil uil-play-circle\"></i>OPEN</span>'
+                    ,'<span class=\"badge badge-sm bg-pale-yellow text-yellow rounded me-1 align-self-start\"><i class=\"uil uil-pen\"></i>DRAFT</span>'
+                )
+            ) AS status_icon
             , 'NORM' AS status
             FROM events
             WHERE events.events_id IS NOT NULL";
@@ -93,34 +106,35 @@
             $htmls .= '<tr class="'.$row['status'].'">';
                 $htmls .= '<td class="no" scope="row">'.$row_no.'</td>';
                 $htmls .= '<td class="type">'.$row['events_icon'].'</td>';
-                $htmls .= '<td class="name">';
+                $htmls .= '<td class="name autoline">';
                     $htmls .= '<mark class="doc row-no">'.$row_no.'</mark>';
-                    //$htmls .= '<font class="mail-o">'.$row['email'].'</font>';
+                    $htmls .= '<div class="type-o">';
+                        $htmls .= $row['events_icon'];
+                        $htmls .= '<span class="icon-o">'.$row['status_icon'].'</span>';
+                    $htmls.= '</div>';
                     $htmls .= '<font>'.$row['events_name'].'</font>';
-                    //$htmls .= $row['events_icon'];
-                    /*$htmls .= '<span class="name-o"><i class="uil uil-user"></i> '.Helper::stringTitleShort($row['fullname']).'</span>';
-                    $htmls .= '<span class="date-o"><i class="uil uil-calendar-alt"></i> '.Helper::datetimeDisplay($row['date_create'], $lang).'</span>';
-                    $htmls .= '<span class="remark-o">';
-                        if($row['is_cmu']=='Y'){
-                            $htmls .= '<span class="cmu text-green"><i class="uil uil-check-circle"></i> <b class="underline-3 style-3 green">CMU</b> Account</span>';
-                        }else{
-                            $htmls .= '<span class="cmu text-ash"><i class="uil uil-circle"></i> CMU Account</span>';
-                        }
-                    $htmls.= '</span>';*/
+                    $htmls .= '<div class="date-o">';
+                        $htmls .= '<i class="uil uil-calendar-alt"></i>'.$row['start_date_display'].' '.$row['start_time_display'];
+                        $htmls .= '<span> - '.$row['end_date_display'].' '.$row['end_time_display'].'</span>';
+                    $htmls.= '</div>';
+                    $htmls .= '<div class="status-o">';
+                        
+                    $htmls.= '</div>';
                 $htmls .= '</td>';
-                $htmls .= '<td class="date">'.Helper::datetimeDisplay($row['start_date']).'</td>';
-                $htmls .= '<td class="date">'.Helper::datetimeDisplay($row['end_date']).'</td>';
+                $htmls .= '<td class="date">';
+                    $htmls .= $row['start_date_display'];
+                    $htmls .= '<br>&rang; เวลา '.$row['start_time_display'];
+                $htmls .= '</td>';
+                $htmls .= '<td class="date">';
+                    $htmls .= $row['end_date_display'];
+                    $htmls .= '<br>&rang; เวลา '.$row['end_time_display'];
+                $htmls .= '</td>';
                 $htmls .= '<td class="status">';
-                    /*$htmls .= '<font><i class="uil uil-calendar-alt"></i> '.Helper::datetimeDisplay($row['date_create'], $lang).'</font>';
-                    if($row['is_cmu']=='Y'){
-                        $htmls .= ' <span class="badge badge-lg bg-pale-green text-green rounded me-2 align-self-start"><i class="uil uil-check-circle"></i>CMU</span>';
-                    }else{
-                        $htmls .= ' <span class="badge badge-lg bg-pale-ash text-ash rounded me-2 align-self-start"><i class="uil uil-circle"></i>CMU</span>';
-                    }*/
+                    $htmls .= $row['status_icon'];
                 $htmls .= '</td>';
                 $htmls .= '<td class="actions">';
                     $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'events_id\':\''.$row['events_id'].'\' });" type="button" class="btn btn-circle btn-outline-blue"><i class="uil uil-edit-alt"></i></button><small class=b-tip>แก้ไข</small></div>';
-                    $htmls .= '<div class="btn-box delete"><button type="button" onclick="manage_events(\'delete\', { \'events_id\':\''.$row['events_id'].'\' });" class="btn btn-circle btn-outline-danger"><i class="uil uil-trash-alt"></i></button><small class=b-tip>ลบ</small></div>';
+                    $htmls .= '<div class="btn-box delete"><button type="button" onclick="manage_events(\'delete\', { \'events_id\':\''.$row['events_id'].'\', \'events_name\':\''.$row['events_name'].'\' });" class="btn btn-circle btn-outline-danger"><i class="uil uil-trash-alt"></i></button><small class=b-tip>ลบ</small></div>';
                 $htmls .= '</td>';
             $htmls .= '</tr>';
         }
