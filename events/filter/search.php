@@ -97,7 +97,7 @@
             ) AS events_icon
             , IF(events.status=2,'<span class=\"badge badge-sm bg-pale-red text-red rounded me-1 align-self-start\"><i class=\"uil uil-times-circle\"></i>CLOSE</span>'
                 ,IF(events.status=1,'<span class=\"badge badge-sm bg-pale-green text-green rounded me-1 align-self-start\"><i class=\"uil uil-play-circle\"></i>OPEN</span>'
-                    ,'<span class=\"badge badge-sm bg-pale-yellow text-yellow rounded me-1 align-self-start\"><i class=\"uil uil-pen\"></i>DRAFT</span>'
+                    ,'<span class=\"badge badge-sm bg-pale-yellow text-yellow rounded me-1 align-self-start\"><i class=\"uil uil-circle\"></i>DRAFT</span>'
                 )
             ) AS status_icon
             , 'NORM' AS status
@@ -112,6 +112,9 @@
         $lang = App::lang();
         foreach($lists as $no => $row){
             $row_no = (($start+1)+$no);
+            if( $row['participant_type']=='LIST' ){
+                $managelists = '<span class="badge badge-sm badge-manage bg-pale-grape text-grape rounded me-1 align-self-start" onclick="manage_events(\'list\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-user-plus"></i>จัดการรายชื่อ</span>';
+            }
             $htmls .= '<tr class="'.$row['status'].'">';
                 $htmls .= '<td class="no" scope="row">'.$row_no.'</td>';
                 $htmls .= '<td class="type">'.$row['events_icon'].'</td>';
@@ -127,7 +130,7 @@
                         $htmls .= '<span> - '.$row['end_date_display'].' '.$row['end_time_display'].'</span>';
                     $htmls.= '</div>';
                     $htmls .= '<div class="status-o">';
-                        
+                        $htmls .= ( isset($managelists) ? '&rang; '.$managelists : null );
                     $htmls.= '</div>';
                 $htmls .= '</td>';
                 $htmls .= '<td class="date">';
@@ -140,6 +143,7 @@
                 $htmls .= '</td>';
                 $htmls .= '<td class="status">';
                     $htmls .= $row['status_icon'];
+                    $htmls .= ( isset($managelists) ? $managelists : null );
                 $htmls .= '</td>';
                 $htmls .= '<td class="actions">';
                     $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'events_id\':\''.$row['events_id'].'\' });" type="button" class="btn btn-circle btn-outline-blue"><i class="uil uil-edit-alt"></i></button><small class=b-tip>แก้ไข</small></div>';

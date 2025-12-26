@@ -28,6 +28,13 @@
         line-height: 12px;
         margin:0 2px 0 -2px;
     }
+    .table-filter .filter-result .badge.badge-manage {
+        cursor: pointer;
+    }
+    .table-filter .filter-result .badge.badge-manage:hover {
+        color: white !important;
+        background: #605dba !important;
+    }
     .table-filter .filter-result .name>.type-o,
     .table-filter .filter-result .name>.date-o,
     .table-filter .filter-result .name>.status-o {
@@ -237,6 +244,8 @@
                 }
             );
         }
+    }else if(action=='list'){
+        document.location='<?=$link?>/?list='+params.events_id;
     }
     $(document).ready(function(){
         $("form[name='filter'] .filter-search select").change(function(){
