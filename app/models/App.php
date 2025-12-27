@@ -147,7 +147,7 @@ class App {
                             $htmls .= '</li>';
                         }else{
                             $htmls .= '<li class="nav-item d-md-block">';
-                                $htmls .= '<a href="'.APP_HOME.'/login" class="btn btn-login btn-sm btn-soft-primary rounded-pill">Login</a>';
+                                $htmls .= '<a href="'.APP_HOME.'/login" class="btn btn-login btn-sm btn-soft-primary rounded-pill">เข้าสู่ระบบ</a>';
                             $htmls .= '</li>';
                         }
                         $htmls .= '</ul>';
@@ -188,7 +188,7 @@ class App {
                     $htmls .= '</div>';
                     $htmls .= '<div class="col-xs-12 col-sm-12 col-md-9 col-lg-6">';
                         $htmls .= '<div class="widget">';
-                            $htmls .= '<h4 class="widget-title text-white mb-3 on-font-primary"><i class="uil uil-map-marker"></i> ติดต่อเรา</h4>';
+                            $htmls .= '<h4 class="widget-title text-white mb-3"><i class="uil uil-map-marker"></i> ติดต่อเรา</h4>';
                             $htmls .= '<address class="pe-xl-15 pe-xxl-17">';
                                 $htmls .= '<div class="on-text-oneline">'.APP_FACT_TH.'</div>';
                                 $htmls .= '<div>'.APP_ADDR_TH.'</div>';
@@ -197,7 +197,7 @@ class App {
                     $htmls .= '</div>';
                     $htmls .= '<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">';
                         $htmls .= '<div class="widget widget-phone">';
-                            $htmls .= '<h4 class="widget-title text-white mb-3 on-font-primary"><i class="uil uil-phone-volume"></i> โทรศัพท์</h4>';
+                            $htmls .= '<h4 class="widget-title text-white mb-3"><i class="uil uil-phone-volume"></i> โทรศัพท์</h4>';
                             $htmls .= '<p class="mb-0 on-text-oneline">';
                                 $htmls .= '<i class="uil uil-forwaded-call"></i> '.APP_PHONE;
                             $htmls .= '</p>';
