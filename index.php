@@ -4,12 +4,26 @@
     $index['addfooter'] = true;
 ?>
 <?php include(APP_HEADER); ?>
+<style type="text/css">
+    .navbar-brand {
+        min-height: 72px;
+    }
+    .navbar-brand img.on-light {
+        height: 148px;
+    }
+    .navbar-other {
+        margin-top: -70px;
+    }
+    .navbar-stick .navbar-other {
+        margin-top: 0;
+    }
+</style>
 <section class="wrapper bg-primary angled lower-end">
-    <div class="container pt-5 pb-10">
+    <div class="container pt-5 pb-10 mt-n14">
         <div class="row gx-0 gy-10 align-items-center">
             <div class="col-lg-6 site-intro" data-cues="slideInDown" data-group="page-title" data-delay="600">
-                <h1 class="display-1 text-yellow mb-4"><?=APP_NAME?><br/>
-                <span class="typer fs-38 text-white text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,มหาวิทยาลัยเชียงใหม่,Faculty of Education,Chiang Mai University"></span><span class="cursor fs-38 text-white" data-owner="typer"></span></h1>
+                <h1 class="display-1 text-yellow pt-12 mb-4"><?=APP_NAME?><br/>
+                <span class="typer text-sky text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,Faculty of Education,มหาวิทยาลัยเชียงใหม่,Chiang Mai University"></span><span class="cursor fs-38 text-sky" data-owner="typer"></span></h1>
                 <p class="lead fs-24 lh-sm text-white mb-7 pe-lg-0 pe-xxl-15">ระบบบริการจัดการข้อมูลกิจกรรมและรายชื่อผู้เข้าร่วม สำหรับใช้ลงทะเบียนเข้าร่วมกิจกรรมต่างๆ ที่จัดโดยคณะศึกษาศาสตร์ มหาวิทยาลัยเชียงใหม่</p>
                 <div><a href="<?=APP_HOME?>/events" class="btn btn-lg btn-soft-primary rounded-pill">เริ่มต้นใช้งาน &rarr;</a></div>
             </div>
@@ -31,14 +45,14 @@
     </div>
 </section>
 <section class="wrapper image-wrapper bg-auto no-overlay bg-image bg-map" data-image-src="<?=THEME_IMG?>/map.png" style="background: url('<?=THEME_IMG?>/map.png') top center;">
-    <div class="container pt-18 pb-15">
+    <div class="container pt-17 pb-15">
         <div class="row text-center">
             <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-                <h3 class="display-4 text-primary mb-10 px-xl-10">กิจกรรมและรายชื่อผู้เข้าร่วม</h3>
+                <h3 class="display-4 text-primary mb-5 px-xl-10">กิจกรรมและรายชื่อผู้เข้าร่วม</h3>
             </div>
         </div>
         <div class="position-relative mb-7">
-            <div class="shape rounded-circle bg-soft-orange rellax w-16 h-16" data-rellax-speed="1" style="bottom: -0.5rem; right: -2.5rem; z-index: 0;"></div>
+            <div class="shape rounded-circle bg-soft-yellow rellax w-16 h-16" data-rellax-speed="1" style="bottom: -2.5rem; right: -2.5rem; z-index: 0;"></div>
             <div class="shape bg-dot blue rellax w-16 h-17" data-rellax-speed="1" style="top: -0.5rem; left: -2.5rem; z-index: 0;"></div>
             <div class="row gx-md-5 gy-5 text-center">
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
