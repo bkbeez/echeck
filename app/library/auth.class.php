@@ -13,20 +13,14 @@ class Auth {
     {
         $member = DB::one("SELECT member.*
                             , TRIM(CONCAT(COALESCE(member.title,''),member.name,' ',COALESCE(member.surname,''))) AS fullname
-                            , member_permission.role AS staff_role
                             FROM member
-                            LEFT JOIN member_permission ON member.email=member_permission.email
                             WHERE member.email=:email
                             LIMIT 1;"
                             , array('email'=>$email)
         );
         if( isset($member['id'])&&$member['id'] ){
-            if( isset($member['staff_role'])&&$member['staff_role'] ){
-                if( $member['staff_role']=='ADMIN' ){
-                    $_SESSION['login']['admin'] = 1;
-                }else{
-                    $_SESSION['login']['staff'] = $member['staff_role'];
-                }
+            if( $member['role']=='ADMIN' ){
+                $_SESSION['login']['admin'] = 1;
             }
             $_SESSION['login']['user'] = $member;
             unset($_SESSION['login']['user']['date_create']);
@@ -105,19 +99,6 @@ class Auth {
             Log::user( array('action'=>'login', 'status'=>200, 'message'=>'success') );
 
             return true;
-        }else if( isset($account['id'])&&$account['id'] ){
-            $member = array();
-            $member['id'] = $account['id'];
-            $member['email'] = $email;
-            $member['name'] = ( (isset($account['name'])&&$account['name']) ? $account['name'] : null );
-            $member['surname'] = ( (isset($account['surname'])&&$account['surname']) ? $account['surname'] : null );
-            $member['picture_default'] = ( (isset($account['picture_default'])&&$account['picture_default']) ? $account['picture_default'] : null );
-            if( DB::create("INSERT INTO `member` (`id`,`email`,`name`,`surname`,`picture_default`,`date_create`,`date_update`) VALUES (:id,:email,:name,:surname,:picture_default,NOW(),NOW());", $member) ){
-                if( $account['id']=='102030405060708090100' ){
-                    DB::create("INSERT INTO `member_permission` (`email`,`role`,`date_modify`) VALUES (:email,'ADMIN', NOW());", array('email'=>$member['email']));
-                }
-                return Auth::login($member['email']);
-            }
         }
 
         return false;
