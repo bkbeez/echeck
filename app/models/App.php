@@ -103,17 +103,17 @@ class App {
                                             $htmls .= '<ul class="dropdown-menu mainsite-dropdown'.((isset($index['page'])&&$index['page']=='admin') ? ' show':null).'">';
                                                 $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='users') ? ' active':null).'">';
                                                     $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?users">';
-                                                        $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-users-alt"></i></div>User Accounts</span>';
+                                                        $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-users-alt"></i></div>จัดการบัญชีผู้ใช้</span>';
                                                     $htmls .= '</a>';
                                                 $htmls .= '</li>';
-                                                $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='sessions') ? ' active':null).'">';
+                                                /*$htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='sessions') ? ' active':null).'">';
                                                     $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?sessions">';
                                                         $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-transaction"></i></div>View Sessions</span>';
                                                     $htmls .= '</a>';
-                                                $htmls .= '</li>';
+                                                $htmls .= '</li>';*/
                                                 $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='logs') ? ' active':null).'">';
                                                     $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?logs">';
-                                                        $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-sim-card"></i></div>View Logs</span>';
+                                                        $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-transaction"></i></div>ตรวจสอบ Logs</span>';
                                                     $htmls .= '</a>';
                                                 $htmls .= '</li>';
                                             $htmls .= '</ul>';
