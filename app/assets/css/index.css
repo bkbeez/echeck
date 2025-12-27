@@ -3,8 +3,38 @@
     src: url('../fonts/Prompt.eot');
     src: url('../fonts/Prompt.eot?#iefix') format('embedded-opentype'), url('../fonts/Prompt.woff') format('woff'), url('../fonts/Prompt.ttf') format('truetype'), url('../fonts/Prompt.svg#glyphicons-halflingsregular') format('svg');
 }
+@font-face {
+    font-family: 'CMU';
+    src: url('../fonts/CMU-Regular.eot');
+    src: url('../fonts/CMU-Regular.eot?#iefix') format('embedded-opentype'), url('../fonts/CMU-Regular.woff') format('woff'), url('../fonts/CMU-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'CMU Italic';
+    src: url('../fonts/CMU-Italic.eot');
+    src: url('../fonts/CMU-Italic.eot?#iefix') format('embedded-opentype'), url('../fonts/CMU-Italic.woff') format('woff'), url('../fonts/CMU-Italic.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'CMU Light';
+    src: url('../fonts/CMU-Light.eot');
+    src: url('../fonts/CMU-Light.eot?#iefix') format('embedded-opentype'), url('../fonts/CMU-Light.woff') format('woff'), url('../fonts/CMU-Light.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'CMU Light Italic';
+    src: url('../fonts/CMU-LightItalic.eot');
+    src: url('../fonts/CMU-LightItalic.eot?#iefix') format('embedded-opentype'), url('../fonts/CMU-LightItalic.woff') format('woff'), url('../fonts/CMU-LightItalic.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'CMU Bold';
+    src: url('../fonts/CMU-Bold.eot');
+    src: url('../fonts/CMU-Bold.eot?#iefix') format('embedded-opentype'), url('../fonts/CMU-Bold.woff') format('woff'), url('../fonts/CMU-Bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'CMU Bold Italic';
+    src: url('../fonts/CMU-BoldItalic.eot');
+    src: url('../fonts/CMU-BoldItalic.eot?#iefix') format('embedded-opentype'), url('../fonts/CMU-BoldItalic.woff') format('woff'), url('../fonts/CMU-BoldItalic.ttf') format('truetype');
+}
 .on-font-primary {
-    font-family: 'Prompt Regular';
+    font-family: 'CMU Light';
 }
 .navbar-brand>a>img {
     height:72px;
@@ -39,7 +69,7 @@
 }
 #mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name {
     color: white;
-    font-family: 'Prompt Regular';
+    font-family: 'CMU Light';
     border-bottom:2px solid transparent;
 }
 #mainsite-navbar .navbar-nav .nav-item:hover .nav-link .nav-name,
@@ -336,12 +366,15 @@
 .progress-wrap svg.progress-circle path {
     stroke: #03A9F4;
 }
+footer {
+    font-family: 'CMU Light';
+}
 footer .on-copyright {
-    text-align: center;
+    text-align: left;
 }
 footer .on-logo img {
-    height: 115px;
-    margin: -92px 0 22px 0;
+    height: 100px;
+    margin-top: -55px;
 }
 @media only all and (max-width: 991px) {
     .site-intro,
@@ -391,10 +424,9 @@ footer .on-logo img {
         text-align: left;
     }
     footer .on-copyright>p {
-        margin-top: -15px;
+        margin-top: 0;
     }
     footer .on-logo img {
-        height: 75px;
         margin-bottom: 0;
     }
     footer .widget-title {
