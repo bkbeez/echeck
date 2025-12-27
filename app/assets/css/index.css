@@ -4,6 +4,11 @@
     src: url('../fonts/Prompt.eot?#iefix') format('embedded-opentype'), url('../fonts/Prompt.woff') format('woff'), url('../fonts/Prompt.ttf') format('truetype'), url('../fonts/Prompt.svg#glyphicons-halflingsregular') format('svg');
 }
 @font-face {
+    font-family: 'Syntha';
+    src: url('../fonts/Syntha.eot');
+    src: url('../fonts/Syntha.eot?#iefix') format('embedded-opentype'), url('../fonts/Syntha.woff') format('woff'), url('../fonts/Syntha.ttf') format('truetype'), url('../fonts/Syntha.svg#glyphicons-halflingsregular') format('svg');
+}
+@font-face {
     font-family: 'CMU';
     src: url('../fonts/CMU-Regular.eot');
     src: url('../fonts/CMU-Regular.eot?#iefix') format('embedded-opentype'), url('../fonts/CMU-Regular.woff') format('woff'), url('../fonts/CMU-Regular.ttf') format('truetype');
@@ -451,4 +456,3 @@ footer .on-logo img {
         padding-left: 0;
     }
 }
-
