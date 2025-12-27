@@ -11,9 +11,10 @@
     .navbar-brand img.on-light {
         height: 148px;
     }
-    .navbar-other {
+    #mainsite-navbar, .navbar-other {
         margin-top: -70px;
     }
+    .navbar-stick #mainsite-navbar,
     .navbar-stick .navbar-other {
         margin-top: 0;
     }
