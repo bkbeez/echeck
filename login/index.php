@@ -8,18 +8,20 @@
         }
         header('Location: '.$redirect);
         exit;
-    }
-    $index['page'] = 'login';
-    if( !Helper::isLocal() ){
-        header('Location: '.APP_HOME.'/login/signingoogle.php');
-        exit;
+    }else{
+        if( Helper::isLocal() ){
+            $admin = "admin@mail.com";
+        }else{
+            header('Location: '.APP_HOME.'/login/signingoogle.php');
+            exit;
+        }
     }
 ?>
 <!DOCTYPE html>
 <html lang="<?=App::lang()?>">
     <head app-lang="<?=App::lang()?>" app-path="<?=APP_PATH?>">
         <meta charset="utf-8" />
-        <meta name="keywords" content="<?=APP_CODE?>,EDU CMU">
+        <meta name="keywords" content="<?=APP_CODE?>,EDU CMU CHECKIN">
         <meta name="description" content="<?=APP_FACT_TH.','.APP_FACT_EN?>">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
@@ -31,6 +33,7 @@
         <link rel="icon shortcut" type="image/ico" href="<?=APP_PATH?>/favicon.ico" />
         <link rel="apple-touch-icon" sizes="76x76" href="<?=APP_PATH?>/favicon.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="<?=APP_PATH?>/favicon.png">
+        <link rel="apple-touch-icon" sizes="256x204" href="<?=APP_PATH?>/favicon.png">
         <link rel="apple-touch-icon-precomposed" href="<?=APP_PATH?>/favicon.png" />
         <link rel="stylesheet" href="<?=THEME_CSS?>/plugins.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/style.css">
@@ -43,23 +46,29 @@
         <script type="text/javascript" src="<?=THEME_JS?>/index.js?<?=time()?>"></script>
         <style type="text/css">
             html,body { background: url('<?=THEME_IMG?>/map.png') top center; }
-            body .login .card {width: 480px;}
+            .login .card {width: 480px;}
+            .login form .signin-google .btn { padding:8px 0 8px 0; }
+            .login form .signin-google .btn>img { height:32px;margin:0 5px 0 0;-webkit-border-radius:50%;-moz-border-radius:50%;border-radius:50%;border:2px solid white; }
+            @media screen and (max-height:435px) {
+                .login .card-body { padding-top:5px;padding-bottom:5px; }
+            }
         </style>
     </head>
     <body>
-        <div class="container login">
+        <div class="page-loader"></div>
+        <div class="container login on-font-primary">
             <div class="row">
                 <div class="col d-flex justify-content-center align-items-center" style="height:100vh;">
                     <div class="card">
                         <div class="row gx-0">
                             <div class="col-lg-12 p-2">
                                 <div class="card-body">
-                                    <form name="LoginForm" action="<?=APP_PATH?>/login/signinlocal.php" method="POST" enctype="multipart/form-data" class="form-manage">
-                                        <figure class="text-center"><img src="<?=THEME_IMG?>/logo/logo@2x.png" style="width:200px;"/></figure>
+                                    <form name="LoginForm" action="<?=APP_PATH?>/login/loging.php" method="POST" enctype="multipart/form-data" class="form-manage">
+                                        <figure class="text-center"><img src="<?=THEME_IMG?>/logo/logo@2x.png" style="width:165px;"/></figure>
                                         <div class="blockquote-details">
                                             <img class="rounded-circle w-12" src="<?=THEME_IMG?>/avatar.png">
                                             <div class="info">
-                                                <h5 class="mb-1">Login User</h5>
+                                                <h5 class="mb-1">Choose login mode :</h5>
                                                 <div class="row gx-2">
                                                     <div class="col-md-6">
                                                         <div class="form-check mb-2">
@@ -77,23 +86,19 @@
                                             </div>
                                         </div>
                                         <div class="form-floating mt-2 mb-2 on-admin">
-                                            <div class="form-control">admin@edu.cmu.ac.th</div>
-                                            <label for="email"><?=Lang::get('Email')?></label>
+                                            <input id="admin_email" name="admin_email" value="<?=( isset($admin) ? $admin : null )?>" type="email" class="form-control" placeholder="...">
+                                            <label for="admin_email">Admin's Email</label>
                                         </div>
-                                        <div class="form-floating mt-2 mb-2 on-member" style="display:none;">
-                                            <input name="email" value="" type="email" class="form-control" placeholder="..." id="email">
-                                            <label for="email"><?=Lang::get('Email')?></label>
+                                        <div class="form-floating mt-2 mb-2 on-member">
+                                            <input id="member_email" name="member_email" value="" type="email" class="form-control" placeholder="..." disabled>
+                                            <label for="member_email">Member's Email</label>
                                         </div>
-                                        <div class="form-floating mt-2 mb-2 on-member" style="display:none;">
-                                            <input name="password" value="" type="password" class="form-control" placeholder="..." id="password">
-                                            <label for="password"><?=Lang::get('Password')?></label>
+                                        <div class="text-center mb-3">
+                                            <button type="submit" class="btn btn-primary rounded-pill w-100">LOGIN</button>
                                         </div>
-                                        <button type="submit" class="btn btn-lg btn-icon btn-icon-start btn-primary rounded-pill w-100"><i class="uil uil-user"></i> <?=Lang::get('Login')?></button>
-                                        <div class="text-center mb-3 mt-2">
-                                            <span class="text-muted"><?=Lang::get('Or sign in with')?></span>
-                                        </div>
-                                        <div class="Signin-google text-center mb-3">
-                                            <a href="<?=APP_PATH?>/login/signingoogle.php" class="btn btn-lg btn-icon btn-icon-start btn-red rounded-pill w-100"><i class="uil uil-google"></i><?=Lang::get('Sign in with Google')?></a>
+                                        <div class="divider-icon text-center my-1">Or</div>
+                                        <div class="signin-google text-center mb-3">
+                                            <button type="button" class="btn btn-red rounded-pill w-100 onclick="login_events('google');"><img src="<?=THEME_IMG?>/google.png" alt="google" style="background:white;">Sign in with Google</button>
                                         </div>
                                     </form>
                                 </div>
@@ -103,17 +108,18 @@
                 </div>
             </div>
         </div>
+        <div class="progress-wrap"><svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102"><path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" /></svg></div>
+        <script type="text/javascript" src="<?=THEME_JS?>/plugins.js"></script>
+        <script type="text/javascript" src="<?=THEME_JS?>/theme.js"></script>
     </body>
 </html>
 <script type="text/javascript">
     function login_events(self){
         if( self.value=='member' ){
-            $("form[name='LoginForm'] .on-admin").hide();
-            $("form[name='LoginForm'] .on-member").fadeIn();
-            $("form[name='LoginForm'] input[name='email']").focus();
+            $("form[name='LoginForm'] input[name='member_email']").removeAttr('disabled');
+            $("form[name='LoginForm'] input[name='member_email']").focus();
         }else{
-            $("form[name='LoginForm'] .on-member").hide();
-            $("form[name='LoginForm'] .on-admin").fadeIn();
+            $("form[name='LoginForm'] input[name='member_email']").attr('disabled', true);
         }
     }
     $(document).ready(function() {
