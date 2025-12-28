@@ -99,6 +99,18 @@ class Auth {
             Log::user( array('action'=>'login', 'status'=>200, 'message'=>'success') );
 
             return true;
+        }else if( isset($account['id'])&&$account['id'] ){
+            $member = array();
+            $member['id'] = $account['id'];
+            $member['role'] = 'USER';
+            $member['email'] = $email;
+            $member['name'] = ( (isset($account['name'])&&$account['name']) ? $account['name'] : null );
+            $member['surname'] = ( (isset($account['surname'])&&$account['surname']) ? $account['surname'] : null );
+            $member['picture_default'] = ( (isset($account['picture_default'])&&$account['picture_default']) ? $account['picture_default'] : null );
+            $member['user_by'] = $email;
+            if( DB::create("INSERT INTO `member` (`id`,`role`,`email`,`name`,`surname`,`picture_default`,`date_create`,`user_create`) VALUES (:id,:role,:email,:name,:surname,:picture_default,NOW(),:user_by);", $member) ){
+                return Auth::login($member['email']);
+            }
         }
 
         return false;
