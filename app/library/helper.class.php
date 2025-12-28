@@ -790,6 +790,51 @@ class Helper {
     }
 
     /**
+     * Random Number
+     * @param  length 
+     * @return string
+     */
+    static function randomNumber($length=6)
+    {
+        $characters = '0123456789';
+        $password = '';
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[rand(0, strlen($characters)-1)];
+        }
+        return $password;
+    }
+
+    /**
+     * Random String
+     * @param  length 
+     * @return string
+     */
+    static function randomString($length=6)
+    {
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $password = '';
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[rand(0, strlen($characters)-1)];
+        }
+        return $password;
+    }
+
+    /**
+     * Random Password
+     * @param  length 
+     * @return string
+     */
+    static function randomPassword($length=6)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $password = '';
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[rand(0, strlen($characters)-1)];
+        }
+        return $password;
+    }
+
+    /**
      * Debug
      * @param  datas, exit 
      * @return true/false[Boolean]
