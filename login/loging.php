@@ -9,7 +9,7 @@
     }
     // Begin
     $admin_email = Helper::stringSave($_POST['admin_email']);
-    $check = DB::one("SELECT id,email FROM member WHERE role='ADMIN' AND member.email=:email LIMIT 1;", array('email'=>$admin_email));
+    $check = DB::one("SELECT id,email FROM member WHERE role='ADMIN' AND email=:email LIMIT 1;", array('email'=>$admin_email));
     if( $_POST['login_as']=='admin' ){
         if( isset($check['id'])&&$check['id'] ){
             if( Auth::login($check['email']) ){
@@ -22,11 +22,12 @@
             }
         }else if( Helper::isLocal()&&$admin_email=='admin@mail.com' ){
             $member = array();
-            $member['id'] = '102030405060708090100';
+            $member['id'] = (new datetime())->format("YmdHis").Helper::randomNumber(7);
             $member['role'] = 'ADMIN';
             $member['email'] = $admin_email;
             $member['name'] = "ผู้ดูแลระบบ";
-            if( DB::create("INSERT INTO `member` (`id`,`role`,`email`,`name`,`date_create`,`date_update`) VALUES (:id,:role,:email,:name,NOW(),NOW());", $member) ){
+            $member['user_by'] = $admin_email;
+            if( DB::create("INSERT INTO `member` (`id`,`role`,`email`,`name`,`date_create`,`user_create`) VALUES (:id,:role,:email,:name,NOW(),:user_by);", $member) ){
                 if( Auth::login($member['email']) ){
                     $redirect = APP_HOME;
                     if( isset($_SESSION['login_redirect']) ){
