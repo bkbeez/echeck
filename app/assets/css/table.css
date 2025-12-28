@@ -125,12 +125,12 @@
 .table-filter .filter-result table tr td.actions {
     text-align: right;
 }
-.table-filter .filter-result table tr th.no {
+.table-filter .filter-result table tr th.col-first {
     -webkit-border-bottom-left-radius: 0.5rem;
     -moz-border-radius-bottomleft: 0.5rem;
     border-bottom-left-radius: 0.5rem;
 }
-.table-filter .filter-result table tr th.actions {
+.table-filter .filter-result table tr th.col-last {
     -webkit-border-bottom-right-radius: 0.5rem;
     -moz-border-radius-bottomright: 0.5rem;
     border-bottom-right-radius: 0.5rem;
