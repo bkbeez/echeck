@@ -84,15 +84,15 @@ jQuery.fn.tablefilter = function(option) {
                         }
                         $(itable).find(".filter-display").html(data.text);
                         $(itable).find(".filter-pagination .page-total>span").html(data.display);
-                        $(itable).find(".filter-prev button").attr("class", "btn btn-icon btn-icon-start btn-white");
-                        $(itable).find(".filter-next button").attr("class", "btn btn-icon btn-icon-end btn-white");
+                        $(itable).find(".filter-prev button").attr("class", "btn btn-sm btn-soft-ash");
+                        $(itable).find(".filter-next button").attr("class", "btn btn-sm btn-soft-ash");
                         if( parseInt(data.page)==1&&parseInt(data.page)<parseInt(data.pages) ){
-                            $(itable).find(".filter-next button").attr("class", "btn btn-icon btn-icon-end btn-primary");
+                            $(itable).find(".filter-next button").attr("class", "btn btn-sm btn-primary");
                         }else if( parseInt(data.page)>1&&parseInt(data.page)<parseInt(data.pages) ){
-                            $(itable).find(".filter-prev button").attr("class", "btn btn-icon btn-icon-start btn-primary");
-                            $(itable).find(".filter-next button").attr("class", "btn btn-icon btn-icon-end btn-primary");
+                            $(itable).find(".filter-prev button").attr("class", "btn btn-sm btn-primary");
+                            $(itable).find(".filter-next button").attr("class", "btn btn-sm btn-primary");
                         }else if( parseInt(data.page)>1&&parseInt(data.page)==parseInt(data.pages) ){
-                            $(itable).find(".filter-prev button").attr("class", "btn btn-icon btn-icon-start btn-primary");
+                            $(itable).find(".filter-prev button").attr("class", "btn btn-sm btn-primary");
                         }
                         $(itable).find("form").find("button[type='submit']").removeAttr('disabled');
                     }else{
