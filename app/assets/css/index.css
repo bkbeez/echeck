@@ -38,6 +38,12 @@
     src: url('../fonts/CMU-BoldItalic.eot');
     src: url('../fonts/CMU-BoldItalic.eot?#iefix') format('embedded-opentype'), url('../fonts/CMU-BoldItalic.woff') format('woff'), url('../fonts/CMU-BoldItalic.ttf') format('truetype');
 }
+.on-cmu-primary {
+    font-family: 'CMU';
+}
+.on-bold-primary {
+    font-family: 'CMU Bold';
+}
 .on-font-primary {
     font-family: 'CMU Light';
 }
