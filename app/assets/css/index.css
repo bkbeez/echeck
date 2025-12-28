@@ -372,10 +372,10 @@
     border-bottom-left-radius: 0;
 }
 .progress-wrap:after {
-    color: #03A9F4;
+    color: #f18b77;
 }
 .progress-wrap svg.progress-circle path {
-    stroke: #03A9F4;
+    stroke: #f18b77;
 }
 footer {
     font-family: 'CMU Light';
