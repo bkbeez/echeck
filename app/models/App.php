@@ -146,7 +146,7 @@ class App {
                                 $htmls .= '<button class="hamburger offcanvas-nav-btn"><span></span></button>';
                             $htmls .= '</li>';
                         }else{
-                            $htmls .= '<li class="nav-item d-md-block">';
+                            $htmls .= '<li class="nav-item d-md-block on-font-primary">';
                                 $htmls .= '<a href="'.APP_HOME.'/login" class="btn btn-login btn-sm btn-soft-primary rounded-pill">เข้าสู่ระบบ</a>';
                             $htmls .= '</li>';
                         }
