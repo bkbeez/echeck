@@ -5,28 +5,36 @@
 ?>
 <?php include(APP_HEADER); ?>
 <style type="text/css">
-    .navbar-brand {
-        min-height: 72px;
+    .home-logo {
+        left: 0;
+        float: left;
+        width: 180px;
+        margin: -75px 0 0 15px;
+        position: absolute;
+    }
+    .home-logo>img {
+        width: 100%;
+        -webkit-animation: logo-fadein 6s;
+           -moz-animation: logo-fadein 6s;
+            -ms-animation: logo-fadein 6s;
+             -o-animation: logo-fadein 6s;
+                animation: logo-fadein 6s;
     }
     .navbar-brand img.on-light {
-        height: 148px;
-    }
-    #mainsite-navbar, .navbar-other {
-        margin-top: -70px;
-    }
-    .navbar-stick #mainsite-navbar,
-    .navbar-stick .navbar-other {
-        margin-top: 0;
+        visibility: hidden;
     }
     .wrapper-menu-icon .lift {
         cursor: pointer;
     }
 </style>
 <section class="wrapper bg-primary angled lower-end">
-    <div class="container pt-5 pb-10 mt-n14">
+    <div class="container pt-5 pb-10 mt-n5">
+        <div class="home-logo">
+            <img src="<?=THEME_IMG?>/logo/logo-light.png" srcset="<?=THEME_IMG?>/logo/logo-light@2x.png 2x" />
+        </div>
         <div class="row gx-0 gy-10 align-items-center">
             <div class="col-lg-6 site-intro" data-cues="slideInDown" data-group="page-title" data-delay="600">
-                <h1 class="display-1 on-bold-primary text-yellow pt-12 mb-4">
+                <h1 class="display-1 on-bold-primary text-yellow pt-14 mb-4">
                     <?=APP_NAME?><br/>
                     <span class="typer text-sky text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,Faculty of Education,มหาวิทยาลัยเชียงใหม่,Chiang Mai University"></span><span class="cursor fs-38 text-sky" data-owner="typer"></span>
                 </h1>
