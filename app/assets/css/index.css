@@ -83,9 +83,10 @@
     font-family: 'CMU Light';
     border-bottom:2px solid transparent;
 }
-#mainsite-navbar .navbar-nav .nav-item:hover .nav-link .nav-name,
-#mainsite-navbar .navbar-nav .nav-item.active .nav-link .nav-name {
-    border-bottom:2px solid white;
+#mainsite-navbar .navbar-nav>.nav-item:hover>.nav-link>.nav-name,
+#mainsite-navbar .navbar-nav>.nav-item.active>.nav-link>.nav-name {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
 }
 #mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name .m-box-top {
     width: 28px;
@@ -136,22 +137,18 @@
 .navbar-stick #mainsite-navbar .navbar-nav .nav-item .nav-link .nav-name {
     color: #615eba;
 }
-.navbar-stick #mainsite-navbar .navbar-nav .nav-item:hover .nav-link .nav-name,
-.navbar-stick #mainsite-navbar .navbar-nav .nav-item.active .nav-link .nav-name {
-    border-bottom:2px solid #615eba;
+.navbar-stick #mainsite-navbar .navbar-nav>.nav-item:hover>.nav-link>.nav-name,
+.navbar-stick #mainsite-navbar .navbar-nav>.nav-item.active>.nav-link>.nav-name {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
 }
 .navbar-stick #mainsite-navbar .navbar-nav .dropdown:not(.dropdown-submenu)>.dropdown-toggle:after {
     color: #615eba;
 }
-.mainsite-dropdown .nav-item .nav-name {
-    border-bottom:2px solid transparent;
-}
-.mainsite-dropdown .nav-item:hover .nav-name,
-.mainsite-dropdown .nav-item.active .nav-name {
-    border-bottom:2px solid #615eba;
-}
-.offcanvas-nav.show .mainsite-dropdown .nav-item.active .nav-name {
-    border-bottom:2px solid white;
+.mainsite-dropdown>.nav-item:hover>a>.nav-name,
+.mainsite-dropdown>.nav-item.active>a>.nav-name {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
 }
 .mainsite-dropdown .nav-item .nav-name .m-box {
     width: 30px;
@@ -166,11 +163,9 @@
     display: block;
     text-align: center;
 }
-.mainsite-dropdown-box font .nav-name {
-    border-bottom:2px solid transparent;
-}
-.mainsite-dropdown-box font:hover .nav-name {
-    border-bottom:2px solid #615eba;
+.mainsite-dropdown-box font:hover .nav-name, {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
 }
 .mainsite-dropdown-box font .m-box {
     width: 30px;
@@ -384,8 +379,9 @@ footer .on-copyright {
     text-align: left;
 }
 footer .on-logo img {
-    height: 100px;
-    margin-top: -55px;
+    height: 62px;
+    margin-top: -35px;
+    margin-bottom: 5px;
 }
 @media only all and (max-width: 991px) {
     .site-intro,
@@ -426,10 +422,6 @@ footer .on-logo img {
     }
     .mainsite-dropdown-box .i-box {
         display: none;
-    }
-    .mainsite-dropdown-box font:hover .nav-name,
-    .mainsite-dropdown .nav-item:hover .nav-name {
-        border-bottom:2px solid white;
     }
     footer .on-copyright {
         text-align: left;
