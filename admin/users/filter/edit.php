@@ -67,7 +67,7 @@
             <input type="hidden" name="id" value="<?=((isset($data['id'])&&$data['id'])?$data['id']:null)?>"/>
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h2 class="mb-0 text-blue text-start on-text-oneline"><i class="uil uil-edit-alt fs-32" style="float:left;line-height:30px;margin-right:3px;"></i> แก้ไขผู้ใช้</h2>
+                <h2 class="mb-0 text-primary text-start on-text-oneline"><i class="uil uil-edit-alt fs-32" style="float:left;line-height:30px;margin-right:3px;"></i> แก้ไขผู้ใช้</h2>
             </div>
             <div class="modal-body">
                 <div class="alert alert-primary alert-icon mb-2">

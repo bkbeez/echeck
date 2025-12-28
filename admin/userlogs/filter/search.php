@@ -30,11 +30,11 @@
             if($value){
                 if($key=="start_date"){
                     $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
-                    $parameters[$key] = $value;
+                    $parameters[$key] = Helper::dateSave($value).' 00:00:00';
                     $condition .= " AND xlg_login.date_at>=:".$key;
                 }else if($key=="end_date"){
                     $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
-                    $parameters[$key] = $value;
+                    $parameters[$key] = Helper::dateSave($value).' 23:59:59';
                     $condition .= " AND xlg_login.date_at<=:".$key;
                 }else{
                     $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;

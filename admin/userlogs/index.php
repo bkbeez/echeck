@@ -112,14 +112,14 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <div class="form-floating mb-1">
-                                <input name="condition[start_date]" value="<?=((isset($filter['condition']['start_date'])&&$filter['condition']['start_date'])?$filter['condition']['start_date']:null)?>" type="datetime-local" class="form-control" placeholder="...">
-                                <label><?=Lang::get('DateStart')?></label>
+                                <input name="condition[start_date]" type="text" value="<?=((isset($filter['condition']['start_date'])&&$filter['condition']['start_date'])?$filter['condition']['start_date']:null)?>" class="form-control" data-provide="datepicker" data-date-language="th-th" pattern="\d{1,2}/\d{1,2}/\d{4}" autocomplete="off" placeholder="..." minlength="10" maxlength="10" onkeyup="this.value=this.value.replace(/[^0-9/:]/g,'');"/>
+                                <label>วันที่เริ่มต้น</label>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <div class="form-floating mb-1">
-                                <input name="condition[end_date]" value="<?=((isset($filter['condition']['end_date'])&&$filter['condition']['end_date'])?$filter['condition']['end_date']:null)?>" type="datetime-local" class="form-control" placeholder="...">
-                                <label><?=Lang::get('DateEnd')?></label>
+                                <input name="condition[end_date]" type="text" value="<?=((isset($filter['condition']['end_date'])&&$filter['condition']['end_date'])?$filter['condition']['end_date']:null)?>" class="form-control" data-provide="datepicker" data-date-language="th-th" pattern="\d{1,2}/\d{1,2}/\d{4}" autocomplete="off" placeholder="..." minlength="10" maxlength="10" onkeyup="this.value=this.value.replace(/[^0-9/:]/g,'');"/>
+                                <label>วันที่สิ้นสุด</label>
                             </div>
                         </div>
                     </div>
@@ -176,7 +176,10 @@
         }
     }
     $(document).ready(function(){
-        $("form[name='filter'] .filter-search input[type='datetime-local']").change(function(){
+        $("form[name='filter'] .filter-search input[name='condition[start_date]']").change(function(){
+            $("form[name='filter'] button[type='submit']").click();
+        });
+        $("form[name='filter'] .filter-search input[name='condition[end_date]']").change(function(){
             $("form[name='filter'] button[type='submit']").click();
         });
         $("form[name='filter'] .filter-search .btn-clear").click(function(){
