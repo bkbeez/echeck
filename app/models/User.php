@@ -55,32 +55,15 @@ class User extends DB {
     }
 
     /**
-     *  Set
-     *  @param  key, $value
+     *  Get
+     *  @param  $parameters
      *  @return void
      */
-    static function set($key, $value)
+    static function log($parameters)
     {
-        if( isset($_SESSION['login'])&&isset($_SESSION['login']['user'])&&isset($_SESSION['login']['user'][$key]) ){
-            $_SESSION['login']['user'][$key] = $value;
-        }
-    }
-
-    /**
-     *  Meeting
-     *  @param  key
-     *  @return void
-     */
-    static function meeting($key='id', $default=null)
-    {
-        if( isset($_SESSION['login'])&&isset($_SESSION['login']['meeting']) ){
-            if( $key=='name' ){
-                return ( isset($_SESSION['login']['meeting']['name_'.App::lang()]) ? $_SESSION['login']['meeting']['name_'.App::lang()] : $default );
-            }else if( isset($_SESSION['login']['meeting'][$key]) ){
-                return $_SESSION['login']['meeting'][$key];
-            }
-        }
-        return null;
+        $logs = $parameters;
+        $logs['user_by'] = User::get('email');
+        DB::create("INSERT INTO `member_log` (`date_at`,`member_id`,`mode`,`title`,`remark`,`user_by`) VALUES (NOW(),:member_id,:mode,:title,:remark,:user_by);", $logs);
     }
 
 }
