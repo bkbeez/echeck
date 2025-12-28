@@ -76,8 +76,9 @@
     // Run
     $start = (($page-1)*$limit);
     $sql = "SELECT xlg_login.*
+            , CONCAT(DATE_FORMAT(xlg_login.date_at,'%d/%m/'), (YEAR(xlg_login.date_at)+543),' ',DATE_FORMAT(xlg_login.date_at, '%H:%i:%s')) AS date_display
             , TRIM(CONCAT(COALESCE(member.title,''),member.name,' ',COALESCE(member.surname,''))) AS fullname
-            , CONCAT(IF(xlg_login.ip_client IS NOT NULL,CONCAT(' &rang; ',xlg_login.ip_client),'')
+            , CONCAT(IF(xlg_login.ip_client IS NOT NULL,xlg_login.ip_client,'')
                 , IF(xlg_login.device IS NOT NULL,CONCAT(' &rang; ',xlg_login.device),'')
                 , IF(xlg_login.platform IS NOT NULL,CONCAT(' &rang; ',xlg_login.platform),'')
                 , IF(xlg_login.browser IS NOT NULL,CONCAT(' &rang; ',xlg_login.browser),'')
@@ -94,19 +95,18 @@
         $lang = App::lang();
         foreach($lists as $no => $row){
             $htmls .= '<tr class="'.$row['status'].'">';
-                $htmls .= '<td class="date">'.Helper::datetimeDisplay($row['date_at'], $lang).'</td>';
+                $htmls .= '<td class="date">'.$row['date_display'].'</td>';
+                $htmls .= '<td class="mail">'.$row['email'].'</td>';
                 $htmls .= '<td class="name">';
-                    $htmls .= '<span class="date-o"><i class="uil uil-calendar-alt"></i> '.Helper::datetimeDisplay($row['date_at'], $lang).'</span>';
-                    $htmls .= '<font><i class="uil uil-envelopes"></i> '.$row['email'].'</font>';
-                    $htmls .= '<span class="remark-o">';
-                        $htmls .= '<i class="uil uil-user"></i> ';
-                        $htmls .= ( $row['fullname'] ? '<font>'.$row['fullname'].'</font>' : '<font class=text-ash><i>Unknown...</i></font>' );
-                        $htmls .= $row['remark'];
-                    $htmls .= '</span>';
+                    $htmls .= '<font class="date-o"><i class="uil uil-calendar-alt"></i> '.$row['date_display'].'</font>';
+                    $htmls .= '<font class="mail-o"><i class="uil uil-envelopes"></i> '.$row['email'].'</font>';
+                    $htmls .= ( $row['fullname'] ? '<font>'.$row['fullname'].'</font>' : '<font class=text-muted><em>Unknown...</em></font>' );
+                    $htmls .= '<span class="name-o"><i class="uil uil-user"></i> '.( $row['fullname'] ? $row['fullname'] : '<em>Unknown...</em>' ).'</span>';
+                    $htmls .= ( $row['remark'] ? '<span class="remark-o">'.$row['remark'].'</span>' : null );
                 $htmls .= '</td>';
-                $htmls .= '<td class="remark">';
-                    $htmls .= ( $row['fullname'] ? '<font>'.$row['fullname'].'</font>' : '<font class=text-ash><em>Unknown...</em></font>' );
-                    $htmls .= $row['remark'];
+                $htmls .= '<td class="remark">'.$row['remark'].'</td>';
+                $htmls .= '<td class="actions">';
+                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'detail\', { \'date_at\':\''.$row['date_at'].'\', \'email\':\''.$row['email'].'\' });" type="button" class="btn btn-sm btn-circle btn-outline-primary"><i class="uil uil-user"></i></button><small class=b-tip>ข้อมูล</small></div>';
                 $htmls .= '</td>';
             $htmls .= '</tr>';
         }
