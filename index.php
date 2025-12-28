@@ -23,8 +23,10 @@
     <div class="container pt-5 pb-10 mt-n14">
         <div class="row gx-0 gy-10 align-items-center">
             <div class="col-lg-6 site-intro" data-cues="slideInDown" data-group="page-title" data-delay="600">
-                <h1 class="display-1 text-yellow pt-12 mb-4"><?=APP_NAME?><br/>
-                <span class="typer text-sky text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,Faculty of Education,มหาวิทยาลัยเชียงใหม่,Chiang Mai University"></span><span class="cursor fs-38 text-sky" data-owner="typer"></span></h1>
+                <h1 class="display-1 on-bold-primary text-yellow pt-12 mb-4">
+                    <?=APP_NAME?><br/>
+                    <span class="typer text-sky text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,Faculty of Education,มหาวิทยาลัยเชียงใหม่,Chiang Mai University"></span><span class="cursor fs-38 text-sky" data-owner="typer"></span>
+                </h1>
                 <p class="lead fs-24 lh-sm text-white mb-7 pe-lg-0 pe-xxl-15">ระบบบริการจัดการข้อมูลกิจกรรมและรายชื่อผู้เข้าร่วม สำหรับใช้ลงทะเบียนเข้าร่วมกิจกรรมต่างๆ ที่จัดโดยคณะศึกษาศาสตร์ มหาวิทยาลัยเชียงใหม่</p>
                 <div><a href="<?=APP_HOME?>/events" class="btn btn-lg btn-soft-primary rounded-pill">เริ่มต้นใช้งาน &rarr;</a></div>
             </div>
@@ -46,10 +48,11 @@
     </div>
 </section>
 <section class="wrapper image-wrapper bg-auto no-overlay bg-image bg-map" data-image-src="<?=THEME_IMG?>/map.png" style="background: url('<?=THEME_IMG?>/map.png') top center;">
-    <div class="container pt-17 pb-15">
+    <div class="container pt-15 pb-15">
         <div class="row text-center">
+            <h2 class="fs-48 text-uppercase text-muted mb-4"><i class="uil uil-arrow-circle-down"></i></h2>
             <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-                <h3 class="display-4 text-primary mb-5 px-xl-10">กิจกรรมและรายชื่อผู้เข้าร่วม</h3>
+                <h3 class="display-4 text-primary mb-8 px-xl-10">กิจกรรมและรายชื่อผู้เข้าร่วม</h3>
             </div>
         </div>
         <div class="position-relative mb-7">
