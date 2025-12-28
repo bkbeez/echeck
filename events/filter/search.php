@@ -34,7 +34,7 @@
             if($value){
                 if($key=="participant_type"){
                     $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
-                    if($value=='ALL'){
+                    if($value=='ALLS'){
                         $condition .= " AND events.participant_type='ALL'";
                     }else if($value=='LIST'){
                         $condition .= " AND events.participant_type='LIST'";
@@ -48,6 +48,14 @@
                     }else if($value=='CLOSE'){
                         $condition .= " AND events.status=2";
                     }
+                }else if($key=="start_date"){
+                    $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
+                    $parameters[$key] = Helper::dateSave($value).' 00:00:00';
+                    $condition .= " AND events.start_date>=:".$key;
+                }else if($key=="end_date"){
+                    $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
+                    $parameters[$key] = Helper::dateSave($value).' 23:59:59';
+                    $condition .= " AND events.end_date<=:".$key;
                 }else{
                     $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
                     $parameters[$key] = $value;
@@ -146,8 +154,8 @@
                     $htmls .= ( isset($managelists) ? $managelists : null );
                 $htmls .= '</td>';
                 $htmls .= '<td class="actions">';
-                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'events_id\':\''.$row['events_id'].'\' });" type="button" class="btn btn-circle btn-outline-blue"><i class="uil uil-edit-alt"></i></button><small class=b-tip>แก้ไข</small></div>';
-                    $htmls .= '<div class="btn-box delete"><button type="button" onclick="manage_events(\'delete\', { \'events_id\':\''.$row['events_id'].'\', \'events_name\':\''.$row['events_name'].'\' });" class="btn btn-circle btn-outline-danger"><i class="uil uil-trash-alt"></i></button><small class=b-tip>ลบ</small></div>';
+                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'events_id\':\''.$row['events_id'].'\' });" type="button" class="btn btn-sm btn-circle btn-outline-primary"><i class="uil uil-edit-alt"></i></button><small class=b-tip>แก้ไข</small></div>';
+                    $htmls .= '<div class="btn-box delete"><button type="button" onclick="manage_events(\'delete\', { \'events_id\':\''.$row['events_id'].'\', \'events_name\':\''.$row['events_name'].'\' });" class="btn btn-sm btn-circle btn-outline-danger"><i class="uil uil-trash-alt"></i></button><small class=b-tip>ลบ</small></div>';
                 $htmls .= '</td>';
             $htmls .= '</tr>';
         }

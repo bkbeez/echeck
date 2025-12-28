@@ -1,28 +1,28 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php Auth::ajax(APP_PATH.'/events'); ?>
-<?php //Helper::debug($_POST, 1);
+<?php
     if( !isset($_POST['events_id'])||!$_POST['events_id'] ){
-        Status::error( 'กรุณาตรวจสอบอีกครั้ง !!!', array('title'=>"ไม่พบรหัสกิจกรรม") );
+        Status::error( 'ไม่พบรหัสกิจกรรม !!!' );
     }else if( !isset($_POST['events_name'])||!$_POST['events_name'] ){
-        Status::error( 'กรุณากรอกชื่อกิจกรรม !!!', array('title'=>"ไม่พบชื่อกิจกรรม", 'onfocus'=>"events_name") );
+        Status::error( 'กรุณากรอกชื่อ !!!', array('onfocus'=>"events_name") );
     }else if( !isset($_POST['participant_type'])||!$_POST['participant_type'] ){
-        Status::error( 'กรุณาเลือกประเภทกิจกรรม !!!', array('title'=>"ไม่พบประเภทกิจกรรม", 'onselect'=>"participant_type") );
+        Status::error( 'กรุณาเลือกประเภท !!!', array('onselect'=>"participant_type") );
     }else if( !isset($_POST['start_date'])||!$_POST['start_date'] ){
-        Status::error( 'กรุณากรอกวันที่เริ่มต้นกิจกรรม !!!', array('title'=>"วันที่เริ่มต้นกิจกรรม", 'onfocus'=>"start_date") );
+        Status::error( 'กรุณากรอกวันที่ !!!', array('onfocus'=>"start_date") );
     }else if( !Helper::validDate($_POST['start_date']) ){
-        Status::error( 'กรุณาเช็ควันที่เริ่มต้นกิจกรรม !!!', array('title'=>"วันที่ไม่ถูกต้อง", 'onfocus'=>"start_date") );
+        Status::error( 'วันที่ไม่ถูกต้อง !!!', array('onfocus'=>"start_date") );
     }else if( !isset($_POST['start_time'])||!$_POST['start_time'] ){
-        Status::error( 'กรุณากรอกเวลาเริ่มต้นกิจกรรม !!!', array('title'=>"เวลาเริ่มต้นกิจกรรม", 'onfocus'=>"start_time") );
+        Status::error( 'กรุณากรอกเวลา !!!', array('onfocus'=>"start_time") );
     }else if( !Helper::validTime($_POST['start_time']) ){
-        Status::error( 'กรุณาเช็คเวลาเริ่มต้นกิจกรรม !!!', array('title'=>"เวลาไม่ถูกต้อง", 'onfocus'=>"start_time") );
+        Status::error( 'เวลาไม่ถูกต้อง !!!', array('onfocus'=>"start_time") );
     }else if( !isset($_POST['end_date'])||!$_POST['end_date'] ){
-        Status::error( 'กรุณากรอกวันที่สิ้นสุดกิจกรรม !!!', array('title'=>"วันที่สิ้นสุดกิจกรรม", 'onfocus'=>"end_date") );
+        Status::error( 'กรุณากรอกวันที่ !!!', array('onfocus'=>"end_date") );
     }else if( !Helper::validDate($_POST['end_date']) ){
-        Status::error( 'กรุณาเช็ควันที่สิ้นสุดกิจกรรม !!!', array('title'=>"วันที่ไม่ถูกต้อง", 'onfocus'=>"end_date") );
+        Status::error( 'วันที่ไม่ถูกต้อง !!!', array('onfocus'=>"end_date") );
     }else if( !isset($_POST['end_time'])||!$_POST['end_time'] ){
-        Status::error( 'กรุณากรอกเวลาสิ้นสุดกิจกรรม !!!', array('title'=>"เวลาสิ้นสุดกิจกรรม", 'onfocus'=>"end_time") );
+        Status::error( 'กรุณากรอกเวลา !!!', array('onfocus'=>"end_time") );
     }else if( !Helper::validTime($_POST['end_time']) ){
-        Status::error( 'กรุณาเช็คเวลาเริ่มต้นกิจกรรม !!!', array('title'=>"เวลาไม่ถูกต้อง", 'onfocus'=>"end_time") );
+        Status::error( 'เวลาไม่ถูกต้อง !!!', array('onfocus'=>"end_time") );
     }
     // Begin
     $today = new datetime();
@@ -51,7 +51,7 @@
     $datas .= "=:user_update";
     $parameters['user_update'] = User::get('email');
     if( DB::update("UPDATE `events` SET $datas WHERE events_id=:events_id;", $parameters) ){
-        Status::success( "บันทึกกิจกรรมเรียบร้อยแล้ว", $parameters );
+        Status::success( "ข้อมูลถูกเปลี่ยนแปลงเรียบร้อยแล้ว", array('title'=>"บันทึกเรียบร้อยแล้ว") );
     }
     Status::error( "กรุณาลองใหม่อีกครั้ง !!!", array('title'=>"ไม่สามารถบันทึกได้") );
 ?>

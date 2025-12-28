@@ -14,16 +14,36 @@
         );
     }
 ?>
+<style type="text/css">
+    .modal-dialog .modal-header {
+        min-height:100px;
+        background: #eeeef6;
+    }
+    .modal-dialog .modal-body {
+        margin-top: -30px;
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+    .modal-dialog .modal-body>.alert {
+        padding: 5px 15px;
+    }
+    .modal-dialog .modal-footer button>i {
+        float: left;
+        font-size: 24px;
+        line-height: 24px;
+        margin-right: 3px;
+    }
+</style>
 <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-manage">
         <form name="RecordForm" action="<?=$form?>/scripts/update.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
             <input type="hidden" name="events_id" value="<?=((isset($data['events_id'])&&$data['events_id'])?$data['events_id']:null)?>">
-            <div class="modal-header" style="min-height:100px;background:#eef6f9;">
+            <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h2 class="mb-0 text-green text-start on-text-oneline"><i class="uil uil-edit-alt fs-32" style="float:left;line-height:30px;margin-right:3px;"></i> แก้ไขข้อมูล</h2>
+                <h2 class="mb-0 text-primary text-start on-text-oneline"><i class="uil uil-edit-alt fs-32" style="float:left;line-height:30px;margin-right:3px;"></i> แก้ไขข้อมูล</h2>
             </div>
-            <div class="modal-body" style="margin-top:-30px;padding-left:35px;padding-right:35px;">
-                <div class="alert alert-info alert-icon mb-2" style="padding:5px 15px;">
+            <div class="modal-body">
+                <div class="alert alert-primary alert-icon mb-2">
                     <div class="form-floating form-select-wrapper mb-1">
                         <select id="participant_type" name="participant_type" class="form-select" aria-label="...">
                             <option value="ALL"<?=((!isset($data['participant_type'])||$data['participant_type']=='ALL')?' selected':null)?>>[ALL] ทั่วไป</option>
@@ -36,7 +56,7 @@
                         <label for="events_name">ชื่อกิจกรรม <span class="text-red">*</span></label>
                     </div>
                 </div>
-                <div class="alert alert-info alert-icon mb-2" style="padding:5px 15px;">
+                <div class="alert alert-primary alert-icon mb-2">
                     <p class="lead text-dark mb-1 text-start on-text-oneline">เริ่มต้นกิจกรรม</p>
                     <div class="row gx-1">
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
@@ -53,7 +73,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="alert alert-info alert-icon mb-2" style="padding:5px 15px;">
+                <div class="alert alert-primary alert-icon mb-2">
                     <p class="lead text-dark mb-1 text-start on-text-oneline">สิ้นสุดกิจกรรม</p>
                     <div class="row gx-1">
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
@@ -75,10 +95,10 @@
                 <div class="confirm-box"></div>
                 <div class="row gx-1 row-button">
                     <div class="col-lg-6 col-md-6 pt-1">
-                        <button type="button" class="btn btn-lg btn-icon btn-icon-start btn-green rounded-pill w-100" onclick="record_events('confirm');"><i class="uil uil-save"></i>บันทึก</button>
+                        <button type="button" class="btn btn-lg btn-green rounded-pill w-100" onclick="record_events('confirm');"><i class="uil uil-save"></i>บันทึก</button>
                     </div>
                     <div class="col-lg-6 col-md-6 pt-1">
-                        <button type="button" class="btn btn-lg btn-icon btn-icon-start btn-outline-danger rounded-pill w-100" data-bs-dismiss="modal"><i class="uil uil-cancel"></i>ละทิ้ง</button>
+                        <button type="button" class="btn btn-lg btn-outline-danger rounded-pill w-100" data-bs-dismiss="modal"><i class="uil uil-cancel"></i>ละทิ้ง</button>
                     </div>
                 </div>
             </div>
@@ -87,7 +107,7 @@
 </div>
 <script type="text/javascript">
     function record_events(action, params){
-        $("form[name='RecordForm'] .on-status, form[name='RecordForm'] .on-focus").html('');
+        $("form[name='RecordForm'] label>span>font").remove();
         if(action=='info'){
             if( $(params.self).attr('display')=='N' ){
                 $(params.self).attr('display', 'Y');
@@ -103,7 +123,7 @@
                 $("form[name='RecordForm'] .confirm-box").html('').css('margin-top','0');
                 $("form[name='RecordForm'] .row-button").show();
             }else{
-                var htmls  = '<div class="fs-19 mb-2 text-center on-text-normal"><?=( (App::lang()=='en') ? 'Are you sure to change ?' : 'ยืนยันการเปลี่ยนแปลง ?' )?></div>';                    
+                var htmls  = '<div class="fs-19 mb-2 text-center on-text-normal">ยืนยันบันทึกการเปลี่ยนแปลงนี้ ใช่ หรือ ไม่ ?</div>';                    
                     htmls += '<button type="submit" class="btn btn-lg btn-icon btn-icon-start btn-success rounded-pill"><i class="uil uil-check-circle"></i><?=Lang::get('Yes')?></button>';
                     htmls += '&nbsp;';
                     htmls += '<button type="button" class="btn btn-lg btn-icon btn-icon-start btn-outline-danger rounded-pill" onclick="record_events(\'confirm\', { \'on\':\'N\' });"><i class="uil uil-times-circle"></i><?=Lang::get('No')?></button>';
@@ -115,7 +135,7 @@
     $(document).ready(function() {
         $("form[name='RecordForm']").ajaxForm({
             beforeSubmit: function (formData, jqForm, options) {
-                $("form[name='RecordForm'] .on-status, form[name='RecordForm'] .on-focus").html('');
+                $("form[name='RecordForm'] label>span>font").remove();
                 runStart();
             },
             success: function(rs) {
@@ -126,51 +146,23 @@
                     var htmls ='<div class="d-flex flex-row text-start" style="margin-top:15px;">';
                         htmls +='<div style="margin-top:-5px;"><span class="icon btn btn-circle btn-lg btn-success pe-none me-4"><i class="uil uil-check"></i></span></div>';
                         htmls +='<div class="text-primary" style="font-weight:normal;">';
-                            htmls +='<h4 class="mb-0 text-green on-text-oneline" style="color:#3a2e74;">'+data.title+'</h4>';
+                            htmls +='<h4 class="mb-0 text-green on-text-oneline on-font-primary" style="color:#3a2e74;">'+data.title+'</h4>';
                             htmls +='<p class="fs-14 text-green">'+data.text+'</p>';
                         htmls +='</div>';
                     htmls +='</div>';
                     $("form[name='RecordForm'] .modal-footer").html(htmls);
-                    $("form[name='RecordForm'] .modal-footer").fadeOut(1000, function(){
+                    $("form[name='RecordForm'] .modal-footer").fadeOut(1500, function(){
                         $("#ManageDialog").modal('hide');
                         $("form[name='filter'] input[name='state']").val(null);
                         $("form[name='filter'] button[type='submit']").click();
                     });
                 }else{
-                    if( data.swal!=undefined ){
-                        swal({
-                            'type' : data.status,
-                            'title': data.title,
-                            'html' : data.text,
-                            'showCloseButton': false,
-                            'showCancelButton': false,
-                            'focusConfirm': false,
-                            'allowEscapeKey': false,
-                            'allowOutsideClick': false,
-                            'confirmButtonClass': 'btn btn-outline-danger',
-                            'confirmButtonText':'<span><?=Lang::get('Understand')?></span>',
-                            'buttonsStyling': false
-                        }).then(
-                            function () {
-                                swal.close();
-                            },
-                            function (dismiss) {
-                                if (dismiss === 'cancel') {
-                                    swal.close();
-                                }
-                            }
-                        );
-                    }else{
-                        if( $("form[name='RecordForm'] .on-"+data.onfocus).length>0 ){
-                            $("form[name='RecordForm'] .on-"+data.onfocus).html('<font class="fs-12 on-text-normal-i text-red">'+data.text+'</font>');
-                        }else{
-                            $("form[name='RecordForm'] .on-status").html('<font class="on-text-normal-i text-red">'+data.text+'</font>');
-                        }
-                        $("form[name='RecordForm'] .confirm-box").html('').css('margin-top','0');
-                        $("form[name='RecordForm'] .row-button").show();
-                        if( data.onfocus!=undefined&&data.onfocus ){
-                            $("form[name='RecordForm'] input[name='"+data.onfocus+"']").focus();
-                        }
+                    if( data.onfocus!=undefined&&data.onfocus ){
+                        $("form[name='RecordForm'] input[name='"+data.onfocus+"']").focus();
+                        $("form[name='RecordForm'] label[for='"+data.onfocus+"']>span").html('<font class="fs-12 on-text-normal-i text-red">'+data.text+'</font>');
+                    }else if( data.onselect!=undefined&&data.onselect ){
+                        $("form[name='RecordForm'] select[name='"+data.onselect+"']").focus();
+                        $("form[name='RecordForm'] label[for='"+data.onselect+"']>span").html('<font class="fs-12 on-text-normal-i text-red">'+data.text+'</font>');
                     }
                 }
             }
