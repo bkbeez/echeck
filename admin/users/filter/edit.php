@@ -44,7 +44,7 @@
 <style type="text/css">
     .modal-dialog .modal-header {
         min-height:100px;
-        background: #eeeef6;
+        background: #edf9f6;
     }
     .modal-dialog .modal-body {
         margin-top: -30px;
@@ -70,14 +70,14 @@
                 <h2 class="mb-0 text-primary text-start on-text-oneline"><i class="uil uil-edit-alt" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> แก้ไขผู้ใช้</h2>
             </div>
             <div class="modal-body">
-                <div class="alert alert-primary alert-icon mb-2">
+                <div class="alert alert-success alert-icon mb-2">
                     <?=$rolehtmls?>
                     <div class="form-floating mb-1">
                         <input id="email" name="email" value="<?=((isset($data['email'])&&$data['email'])?$data['email']:null)?>" type="email" class="form-control" placeholder="..." readonly>
                         <label for="email">อีเมล <span class="text-red">*</span></label>
                     </div>
                 </div>
-                <div class="alert alert-primary alert-icon mb-2">
+                <div class="alert alert-success alert-icon mb-2">
                     <p class="lead text-dark mb-1 text-start on-text-oneline">ข้อมูลผู้ใช้</p>
                     <div class="form-floating mb-1">
                         <input id="title" name="title" value="<?=((isset($data['title'])&&$data['title'])?$data['title']:null)?>" type="text" class="form-control" placeholder="...">
@@ -95,13 +95,13 @@
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
                             <div class="form-check mb-2">
                                 <input id="is_cmu_y" class="form-check-input" type="radio" name="is_cmu" value="Y"<?=((isset($data['is_cmu'])&&$data['is_cmu']=='Y')?' checked':null)?> onchange="record_events('cmu', { 'self':this });">
-                                <label for="is_cmu_y" class="form-check-label form-payslip-select">มีบัญชี CMU Mail</label>
+                                <label for="is_cmu_y" class="form-check-label form-payslip-select text-dark">มีบัญชี CMU Mail</label>
                             </div>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
                             <div class="form-check mb-2">
                                 <input id="is_cmu_n" class="form-check-input" type="radio" name="is_cmu" value="N"<?=((isset($data['is_cmu'])&&$data['is_cmu']=='N')?' checked':null)?> onchange="record_events('cmu', { 'self':this });">
-                                <label for="is_cmu_n" class="form-check-label form-payslip-select">ไม่มีบัญชี CMU Mail</label>
+                                <label for="is_cmu_n" class="form-check-label form-payslip-select text-dark"><span class="underline-3 style-3 text-red red">ไม่มี</span>บัญชี CMU Mail</label>
                             </div>
                         </div>
                     </div>
@@ -110,19 +110,19 @@
                         <label for="email_cmu">CMU Mail <span class="text-red">*</span></label>
                     </div>
                 </div>
-                <div class="alert alert-primary alert-icon mb-2">
+                <div class="alert alert-success alert-icon mb-2">
                     <p class="lead text-dark mb-1 text-start on-text-oneline">สถานะผู้ใช้</p>
                     <div class="row gx-1">
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
                             <div class="form-check mb-2">
                                 <input id="status_1" class="form-check-input" type="radio" name="status" value="1"<?=((isset($data['status'])&&$data['status']==1)?' checked':null)?>>
-                                <label for="status_1" class="form-check-label form-payslip-select">พร้อมใช้งาน</label>
+                                <label for="status_1" class="form-check-label form-payslip-select text-dark">พร้อมใช้งาน</label>
                             </div>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
                             <div class="form-check mb-2">
                                 <input id="status_2" class="form-check-input" type="radio" name="status" value="2"<?=((isset($data['status'])&&$data['status']==2)?' checked':null)?>>
-                                <label for="status_2" class="form-check-label form-payslip-select">ระงับใช้งาน</label>
+                                <label for="status_2" class="form-check-label form-payslip-select text-dark"><span class="underline-3 style-3 text-red red">ระงับ</span>ใช้งาน</label>
                             </div>
                         </div>
                     </div>

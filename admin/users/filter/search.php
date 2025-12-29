@@ -21,7 +21,7 @@
         $_SESSION['login']['filter'][$filter_as]['keyword'] = $keyword;
         $parameters['keyword'] = "%".$keyword."%";
         $condition .= " AND ( member.email LIKE :keyword";
-            $condition .= " OR TRIM(CONCAT(member.name,' ',COALESCE(member.surname,''))) LIKE :keyword";
+            $condition .= " OR TRIM(CONCAT(COALESCE(member.title,''),member.name,' ',COALESCE(member.surname,''))) LIKE :keyword";
         $condition .= " )";
     }
     $_SESSION['login']['filter'][$filter_as]['condition'] = array();
