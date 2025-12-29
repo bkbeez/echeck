@@ -1,26 +1,46 @@
 <?php if(!isset($index['page'])||$index['page']!='events'){ header("location:".((isset($_SERVER['SERVER_PORT'])&&$_SERVER['SERVER_PORT']==443)?'https://':'http://').$_SERVER["HTTP_HOST"]); exit(); } ?>
 <?php
-    $filter_as = strtolower($index['page'].'_event_as');
+    $filter_as = strtolower($index['page'].'_eventlist_as');
     $filter = ( isset($_SESSION['login']['filter'][$filter_as]) ? $_SESSION['login']['filter'][$filter_as] : null );
+    /*if( $events_id ){
+        $data = DB::one("SELECT events.*
+                        , DATE_FORMAT(events.start_date, '%H:%i') AS start_time
+                        , DATE_FORMAT(events.end_date, '%H:%i') AS end_time
+                        FROM events
+                        WHERE events.events_id=:events_id
+                        LIMIT 1;"
+                        , array('events_id'=>$events_id)
+        );
+    }*/
 ?>
 <style type="text/css">
+    .table-filter .filter-pageby button {
+        padding-left: 6px;
+        padding-right: 12px;
+    }
+    .table-filter .filter-pageby button>i {
+        float: left;
+        font-size: 32px;
+        line-height: 24px;
+        margin-right: 3px;
+    }
     .table-filter .filter-result {
         background: white;
     }
     .table-filter .filter-result .type {
-        width: 65px;
+        width: 100px;
     }
     .table-filter .filter-result .name {
+        width: 25%;
+    }
+    .table-filter .filter-result .organize {
         width: auto;
     }
-    .table-filter .filter-result .date {
-        width: 120px;
-    }
     .table-filter .filter-result .status {
-        width: 120px;
+        width: 25%;
     }
     .table-filter .filter-result .name>.type-o,
-    .table-filter .filter-result .name>.date-o,
+    .table-filter .filter-result .name>.organize-o,
     .table-filter .filter-result .name>.status-o {
         display: none;
     }
@@ -34,34 +54,11 @@
         line-height: 12px;
         margin:0 2px 0 -2px;
     }
-    .table-filter .filter-result .badge.badge-list {
-        padding-left: 8px;
-        padding-right: 6px;
-    }
-    .table-filter .filter-result .badge.badge-shared {
-        min-width: 62px;
-        cursor: pointer;
-    }
-    .table-filter .filter-result .badge.badge-status {
-        cursor: pointer;
-    }
-    .table-filter .filter-result .badge.badge-shared:hover {
-        background: #747ed1 !important;
-    }
-    .table-filter .filter-result .badge.badge-status.bg-orange:hover {
-        background: orange !important;
-    }
-    .table-filter .filter-result .badge.badge-status.bg-green:hover {
-        background: green !important;
-    }
-    .table-filter .filter-result .badge.badge-status.bg-red:hover {
-        background: red !important;
-    }
     @media only all and (max-width: 991px) {
-        .table-filter .filter-result .date {
+        .table-filter .filter-result .organize {
             display: none;
         }
-        .table-filter .filter-result .name>.date-o {
+        .table-filter .filter-result .name>.organize-o {
             display: block;
         }
     }
@@ -81,24 +78,26 @@
             margin-top: -4px;
         }
     }
+    @media only all and (max-width: 585px) {
+        .table-filter .filter-pageby button {
+            padding-right: 5px;
+        }
+        .table-filter .filter-pageby button>span {
+            display: none;
+        }
+    }
 </style>
 <section class="table-filter">
-    <form name="filter" action="<?=$form?>/filter/search.php" method="POST" enctype="multipart/form-data" target="_blank">
+    <form name="filter" action="<?=$form?>/lists/search.php" method="POST" enctype="multipart/form-data" target="_blank">
         <input type="hidden" name="state" value="loading" />
         <input type="hidden" name="filter_as" value="<?=$filter_as?>" />
+        <input type="hidden" name="events_id" value="<?=( (isset($_GET['list'])&&$_GET['list']) ? $_GET['list'] : null )?>" />
         <section class="wrapper bg-primary">
             <div class="container">
                 <div class="filter-search">
                     <div class="row">
                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-6 filter-pageby">
-                            <select name="limit" class="form-select mb-1">
-                                <option value="50"<?=((!isset($filter['limit'])||intval($filter['limit'])==50)?' selected':null)?>>50</option>
-                                <option value="100"<?=((isset($filter['limit'])&&intval($filter['limit'])==100)?' selected':null)?>>100</option>
-                                <option value="250"<?=((isset($filter['limit'])&&intval($filter['limit'])==250)?' selected':null)?>>250</option>
-                                <option value="500"<?=((isset($filter['limit'])&&intval($filter['limit'])==500)?' selected':null)?>>500</option>
-                                <option value="750"<?=((isset($filter['limit'])&&intval($filter['limit'])==750)?' selected':null)?>>750</option>
-                                <option value="1000"<?=((isset($filter['limit'])&&intval($filter['limit'])==1000)?' selected':null)?>>1000</option>
-                            </select>
+                            <button type="button" class="btn btn-navy" onclick="document.location='<?=$index['back']?>';"><i class="uil uil-arrow-circle-left"></i><span>กลับหน้ารายการ</span></button>
                         </div>
                         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-6 filter-keyword">
                             <div class="mc-field-group input-group form-floating mb-1">
@@ -106,36 +105,25 @@
                                 <label for="keyword"><?=Lang::get('Keyword')?></label>
                                 <button type="submit" class="btn btn-soft-violet btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
                                 <button type="button" class="btn btn-soft-primary btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-filter-slash"></i></button>
-                                <button type="button" class="btn btn-purple btn-adding" title="Create New" onclick="manage_events('new', { 'link':'<?=$link?>' });"><i class="uil uil-plus"></i><span> กิจกรรมใหม่</span></button>
+                                <button type="button" class="btn btn-purple btn-adding" title="Create New" onclick="manage_events('new', { 'link':'<?=$link?>' });"><i class="uil uil-plus"></i><span> รายชื่อใหม่</span></button>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-                            <select name="condition[participant_type]" class="form-select mb-1">
-                                <option value="ALL"<?=((!isset($filter['condition']['participant_type'])||$filter['condition']['participant_type']=='ALL')?' selected':null)?>>แสดงทุกประเภท...</option>
-                                <option value="ALLS"<?=((isset($filter['condition']['participant_type'])&&$filter['condition']['participant_type']=='ALLS')?' selected':null)?>>[ALL] ทั่วไป</option>
-                                <option value="LIST"<?=((isset($filter['condition']['participant_type'])&&$filter['condition']['participant_type']=='LIST')?' selected':null)?>>[LIST] เฉพาะผู้ที่มีรายชื่อ</option>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <select name="condition[type]" class="form-select mb-1">
+                                <option value="ALL"<?=((!isset($filter['condition']['type'])||$filter['condition']['type']=='ALL')?' selected':null)?>>แสดงทุกประเภท...</option>
+                                <option value="EMPLOYEE"<?=((isset($filter['condition']['type'])&&$filter['condition']['type']=='EMPLOYEE')?' selected':null)?>>[EMPLOYEE] พนักงาน</option>
+                                <option value="STUDENT"<?=((isset($filter['condition']['type'])&&$filter['condition']['type']=='STUDENT')?' selected':null)?>>[STUDENT] นักศึกษา</option>
+                                <option value="OTHER"<?=((isset($filter['condition']['type'])&&$filter['condition']['type']=='OTHER')?' selected':null)?>>[OTHER] บุคคลทั่วไป</option>
                             </select>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                            <div class="form-floating mb-1">
-                                <input name="condition[start_date]" type="text" value="<?=((isset($filter['condition']['start_date'])&&$filter['condition']['start_date'])?$filter['condition']['start_date']:null)?>" class="form-control" data-provide="datepicker" data-date-language="th-th" pattern="\d{1,2}/\d{1,2}/\d{4}" autocomplete="off" placeholder="..." minlength="10" maxlength="10" onkeyup="this.value=this.value.replace(/[^0-9/:]/g,'');"/>
-                                <label>วันที่เริ่มต้น</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                            <div class="form-floating mb-1">
-                                <input name="condition[end_date]" type="text" value="<?=((isset($filter['condition']['end_date'])&&$filter['condition']['end_date'])?$filter['condition']['end_date']:null)?>" class="form-control" data-provide="datepicker" data-date-language="th-th" pattern="\d{1,2}/\d{1,2}/\d{4}" autocomplete="off" placeholder="..." minlength="10" maxlength="10" onkeyup="this.value=this.value.replace(/[^0-9/:]/g,'');"/>
-                                <label>วันที่สิ้นสุด</label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             <select name="condition[status]" class="form-select mb-1">
                                 <option value="ALL"<?=((!isset($filter['condition']['status'])||$filter['condition']['status']=='ALL')?' selected':null)?>>แสดงทุกสถานะ...</option>
-                                <option value="DRAFT"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='DRAFT')?' selected':null)?>>[DRAFT] ร่าง</option>
-                                <option value="OPEN"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='OPEN')?' selected':null)?>>[OPEN] เปิดลงทะเบียน</option>
-                                <option value="CLOSE"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='CLOSE')?' selected':null)?>>[CLOSE] ปิดลงทะเบียน</option>
+                                <option value="CHECKED"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='CHECKED')?' selected':null)?>>ลงทะเบียนแล้ว</option>
+                                <option value="UNCHECK"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='UNCHECK')?' selected':null)?>>ยังไมไ่ด้ลงทะเบียน</option>
+                                <option value="CANCELLED"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='CANCELLED')?' selected':null)?>>ยกเลิกการลงทะเบียน</option>
                             </select>
                         </div>
                     </div>
@@ -150,11 +138,10 @@
                             <tr>
                                 <th scope="col" class="no col-first">#</th>
                                 <th scope="col" class="type">ประเภท</th>
-                                <th scope="col" class="name">กิจกรรม</th>
-                                <th scope="col" class="date">เริ่มต้นกิจกรรม</th>
-                                <th scope="col" class="date">สิ้นสุดกิจกรรม</th>
-                                <th scope="col" class="status">&nbsp;</th>
-                                <th scope="col" class="actions act-3 col-last">&nbsp;</th>
+                                <th scope="col" class="name">ชื่อ-สกุล</th>
+                                <th scope="col" class="organize">สังกัด</th>
+                                <th scope="col" class="status">สถานะ</th>
+                                <th scope="col" class="actions act-2 col-last">&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -184,7 +171,8 @@
     function manage_events(action, params){
         if(action=='new'){
             params['form_as'] = '<?=$form?>';
-            $("#ManageDialog").load("<?=$form?>/filter/new.php", params, function(response, status, xhr){
+            params['events_id'] = $("form[name='filter'] input[name='events_id']").val();
+            $("#ManageDialog").load("<?=$form?>/lists/new.php", params, function(response, status, xhr){
                 if(status=="error"){
                     $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
                 }else{
@@ -193,25 +181,7 @@
             });
         }else if(action=='edit'){
             params['form_as'] = '<?=$form?>';
-            $("#ManageDialog").load("<?=$form?>/filter/edit.php", params, function(response, status, xhr){
-                if(status=="error"){
-                    $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
-                }else{
-                    $("#ManageDialog").modal('show');
-                }
-            });
-        }else if(action=='share'){
-            params['form_as'] = '<?=$form?>';
-            $("#ManageDialog").load("<?=$form?>/filter/share.php", params, function(response, status, xhr){
-                if(status=="error"){
-                    $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
-                }else{
-                    $("#ManageDialog").modal('show');
-                }
-            });
-        }else if(action=='status'){
-            params['form_as'] = '<?=$form?>';
-            $("#ManageDialog").load("<?=$form?>/filter/status.php", params, function(response, status, xhr){
+            $("#ManageDialog").load("<?=$form?>/lists/edit.php", params, function(response, status, xhr){
                 if(status=="error"){
                     $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
                 }else{
@@ -221,7 +191,7 @@
         }else if(action=='delete'){
             swal({
                 'title':'<b class="text-red" style="font-size:100px;"><i class="uil uil-trash-alt"></i></b>',
-                'html' : '<div class="fs-24 text-red on-font-primary mb-2">'+params.events_name+'</div><div>ยืนยันลบกิจกรรมนี้ ใช่ หรือ ไม่ ?</div>',
+                'html' : '<div class="fs-24 text-red on-font-primary mb-2">'+params.fullname+'</div><div>ยืนยันลบรายชื่อนี้ ใช่ หรือ ไม่ ?</div>',
                 'showCloseButton': false,
                 'showConfirmButton': true,
                 'showCancelButton': true,
@@ -236,7 +206,7 @@
             }).then(
                 function () {
                     $.ajax({
-                        url : "<?=$form?>/scripts/delete.php",
+                        url : "<?=$form?>/scripts/lists/delete.php",
                         type: 'POST',
                         data: params,
                         dataType: "json",
@@ -292,8 +262,6 @@
                     }
                 }
             );
-        }else if(action=='list'){
-            document.location='<?=$link?>/?list='+params.events_id;
         }
     }
     $(document).ready(function(){

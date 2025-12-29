@@ -12,8 +12,7 @@
     if( isset($_GET['list']) ){
         $index['view'] = 'lists';
         $index['back'] = $link;
-        $index['addfooter'] = true;
-        $loadpage = 'participants/index.php';
+        $loadpage = 'lists/index.php';
     }else{
         $index['view'] = 'lists';
         $loadpage = 'filter/index.php';

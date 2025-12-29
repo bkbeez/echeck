@@ -21,10 +21,10 @@
                         $htmls .= '<div class="delete">';
                             $htmls .= '<div class="delete-box">';
                                 $htmls .= 'ยืนยันยกเลิกแชร์<br>';
-                                $htmls .= '<span class="btn btn-success btn-sm" onclick="record_events(\'unshare\', { \'self\':this, \'on\':\'Y\', \'events_id\':\''.$list['events_id'].'\', \'email\':\''.$list['email'].'\' });">ใช่</span>';
-                                $htmls .= '<span class="btn btn-outline-danger btn-sm" onclick="record_events(\'unshare\', { \'self\':this, \'on\':\'N\' });">ไม่</span>';
+                                $htmls .= '<span class="btn btn-success btn-sm" onclick="record_events(\'delete\', { \'self\':this, \'on\':\'Y\', \'events_id\':\''.$list['events_id'].'\', \'email\':\''.$list['email'].'\' });">ใช่</span>';
+                                $htmls .= '<span class="btn btn-outline-danger btn-sm" onclick="record_events(\'delete\', { \'self\':this, \'on\':\'N\' });">ไม่</span>';
                             $htmls .= '</div>';
-                            $htmls .= '<button type="button" class="btn btn-outline-danger" onclick="record_events(\'unshare\', { \'self\':this });"><spam class="uil uil-user-minus"></spam></button>';
+                            $htmls .= '<button type="button" class="btn btn-outline-danger" onclick="record_events(\'delete\', { \'self\':this });"><spam class="uil uil-user-minus"></spam></button>';
                         $htmls .= '</div>';
                         $htmls .= '<div class="picture">';
                             $htmls .= '<img src="'.( (isset($list['picture'])&&$list['picture']) ? $list['picture'] : THEME_IMG.'/avatar.png' ).'" onerror="this.onerror=null;this.src=\''.THEME_IMG.'/avatar.png\';"/>';
@@ -134,7 +134,7 @@
 </style>
 <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-manage">
-        <form name="RecordForm" action="<?=$form?>/scripts/share.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
+        <form name="RecordForm" action="<?=$form?>/scripts/share/create.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
             <input type="hidden" name="events_id" value="<?=( (isset($_POST['events_id'])&&$_POST['events_id']) ? $_POST['events_id'] : null )?>">
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -165,7 +165,7 @@
 <script type="text/javascript">
     function record_events(action, params){
         $("form[name='RecordForm'] label>span>font").remove();
-        if(action=='unshare'){
+        if(action=='delete'){
             if( params.on!=undefined ){
                 if( params.on=='N' ){
                     $(params.self).parent().parent().parent().parent().find('.on-status').remove();
@@ -174,7 +174,7 @@
                     $(params.self).parent().parent().find('button').fadeIn();
                 }else{
                     $.ajax({
-                        url : "<?=$form?>/scripts/unshare.php",
+                        url : "<?=$form?>/scripts/share/delete.php",
                         type: 'POST',
                         data:{'events_id':params.events_id, 'email':params.email },
                         dataType: "json",

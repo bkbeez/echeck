@@ -23,7 +23,6 @@
         Status::error( 'เวลาไม่ถูกต้อง !!!', array('onfocus'=>"end_time") );
     }
     // Begin
-    $today = new datetime();
     $parameters = array();
     $parameters['events_id'] = $_POST['events_id'];
     $datas  = '`events_name`';
