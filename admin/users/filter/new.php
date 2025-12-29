@@ -37,7 +37,7 @@
         <form name="RecordForm" action="<?=$form?>/scripts/create.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h2 class="mb-0 text-blue text-start on-text-oneline"><i class="uil uil-plus fs-32" style="float:left;line-height:30px;margin-right:3px;"></i> ผู้ใช้ใหม่</h2>
+                <h2 class="mb-0 text-blue text-start on-text-oneline"><i class="uil uil-plus" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> ผู้ใช้ใหม่</h2>
             </div>
             <div class="modal-body">
                 <div class="alert alert-warning alert-icon mb-2">
