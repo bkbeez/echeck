@@ -13,10 +13,10 @@
         padding-left: 22px;
     }
     .table-filter .filter-result .mail {
-        width: 25%;
+        width: 20%;
     }
     .table-filter .filter-result .name {
-        width: 25%;
+        width: 20%;
     }
     .table-filter .filter-result .remark {
         width: auto;
@@ -46,7 +46,7 @@
     }
     @media only all and (max-width: 991px) {
         .table-filter .filter-result .mail {
-            width: 35%;
+            width: 25%;
         }
         .table-filter .filter-result .name {
             width: auto;

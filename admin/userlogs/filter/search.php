@@ -97,14 +97,14 @@
             $htmls .= '<tr class="'.$row['status'].'">';
                 $htmls .= '<td class="date">'.$row['date_display'].'</td>';
                 $htmls .= '<td class="mail">'.$row['email'].'</td>';
-                $htmls .= '<td class="name">';
+                $htmls .= '<td class="name autoline">';
                     $htmls .= '<font class="date-o"><i class="uil uil-calendar-alt"></i> '.$row['date_display'].'</font>';
                     $htmls .= '<font class="mail-o"><i class="uil uil-envelopes"></i> '.$row['email'].'</font>';
                     $htmls .= ( $row['fullname'] ? '<font>'.$row['fullname'].'</font>' : '<font class=text-muted><em>Unknown...</em></font>' );
                     $htmls .= '<span class="name-o"><i class="uil uil-user"></i> '.( $row['fullname'] ? $row['fullname'] : '<em>Unknown...</em>' ).'</span>';
-                    $htmls .= ( $row['remark'] ? '<span class="remark-o">'.$row['remark'].'</span>' : null );
+                    $htmls .= ( $row['remark'] ? '<div class="remark-o">'.$row['remark'].'</div>' : null );
                 $htmls .= '</td>';
-                $htmls .= '<td class="remark">'.$row['remark'].'</td>';
+                $htmls .= '<td class="remark autoline">'.$row['remark'].'</td>';
                 $htmls .= '<td class="actions">';
                     $htmls .= '<div class="btn-box"><button onclick="manage_events(\'detail\', { \'date_at\':\''.$row['date_at'].'\', \'email\':\''.$row['email'].'\' });" type="button" class="btn btn-sm btn-circle btn-outline-primary"><i class="uil uil-user"></i></button><small class=b-tip>ข้อมูล</small></div>';
                 $htmls .= '</td>';
