@@ -116,11 +116,11 @@
         $lang = App::lang();
         foreach($lists as $no => $row){
             $row_no = (($start+1)+$no);
-            $manage = '<span class="badge badge-shared badge-sm bg-pale-grape text-grape rounded me-1 align-self-start" onclick="manage_events(\'share\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-users-alt"></i><sup>'.$row['shares'].' แชร์</sup></span>';
+            $manage = '<span class="badge badge-shared badge-sm bg-pale-grape text-grape rounded me-1 align-self-start" onclick="manage_events(\'share\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-users-alt"></i><sup><b>'.$row['shares'].'</b> แชร์</sup></span>';
             if( $row['participant_type']=='LIST' ){
-                $manage .= '<span class="badge badge-manage badge-sm bg-grape text-white rounded me-1 align-self-start" onclick="manage_events(\'participant\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-edit-alt"></i><sup>'.$row['participants'].' รายชื่อ</sup>/span>';
+                $manage .= '<span class="badge badge-manage badge-sm bg-grape text-white rounded me-1 align-self-start" onclick="manage_events(\'participant\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-list-ul"></i><sup>'.$row['participants'].' รายชื่อ</sup></span>';
             }
-            $status = '<span class="badge badge-status badge-sm bg-pale-yellow text-yellow rounded me-1 align-self-start" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-circle"></i>DRAFT</span>';
+            $status = '<span class="badge badge-status badge-sm bg-pale-dark text-dark rounded me-1 align-self-start" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-circle"></i>DRAFT</span>';
             if( $row['status']==1 ){
                 $status = '<span class="badge badge-status badge-sm bg-pale-green text-green rounded me-1 align-self-start" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-play-circle"></i>OPEN</span>';
             }else if( $row['status']==2 ){
@@ -140,7 +140,7 @@
                         $htmls .= '<i class="uil uil-calendar-alt"></i>'.$row['start_date_display'].' '.$row['start_time_display'];
                         $htmls .= '<span> - '.$row['end_date_display'].' '.$row['end_time_display'].'</span>';
                     $htmls.= '</div>';
-                    $htmls .= '<div class="status-o">&rang; '.$manage.'</div>';
+                    $htmls .= '<div class="status-o">'.$manage.'</div>';
                 $htmls .= '</td>';
                 $htmls .= '<td class="date">';
                     $htmls .= $row['start_date_display'];

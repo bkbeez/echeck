@@ -17,7 +17,7 @@
         width: 120px;
     }
     .table-filter .filter-result .status {
-        width: 15%;
+        width: 125px;
     }
     .table-filter .filter-result .badge.badge-shared,
     .table-filter .filter-result .badge.badge-manage,

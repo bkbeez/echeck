@@ -27,10 +27,8 @@
     // Begin
     $today = new datetime();
     $parameters = array();
-    $datas  = '`events_id`';
-    $datas .= "=:events_id";
     $parameters['events_id'] = $_POST['events_id'];
-    $datas .= ',`events_name`';
+    $datas  = '`events_name`';
     $datas .= "=:events_name";
     $parameters['events_name'] = Helper::stringSave($_POST['events_name']);
     $datas .= ',`participant_type`';

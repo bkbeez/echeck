@@ -140,7 +140,7 @@
                         htmls +='</div>';
                     htmls +='</div>';
                     $("form[name='RecordForm'] .modal-footer").html(htmls);
-                    $("form[name='RecordForm'] .modal-footer").fadeOut(1500, function(){
+                    $("form[name='RecordForm'] .modal-footer").fadeOut(1000, function(){
                         $("#ManageDialog").modal('hide');
                         $("form[name='filter'] input[name='state']").val(null);
                         $("form[name='filter'] button[type='submit']").click();
