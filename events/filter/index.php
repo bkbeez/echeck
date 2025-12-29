@@ -275,7 +275,7 @@
                     }
                 }
             );
-        }else if(action=='list'){
+        }else if(action=='participant'){
             document.location='<?=$link?>/?list='+params.events_id;
         }
     }

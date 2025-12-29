@@ -4,14 +4,6 @@
     $htmls = '<h3 class="text-muted text-center">EMPTY</h3>';
     $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );
     if( isset($_POST['events_id'])&&$_POST['events_id'] ){
-        $data = DB::one("SELECT events.*
-                        , DATE_FORMAT(events.start_date, '%H:%i') AS start_time
-                        , DATE_FORMAT(events.end_date, '%H:%i') AS end_time
-                        FROM events
-                        WHERE events.events_id=:events_id
-                        LIMIT 1;"
-                        , array('events_id'=>$_POST['events_id'])
-        );
         $sharedlists = DB::sql("SELECT events_shared.*
                                 , TRIM(CONCAT(COALESCE(member.title,''),member.name,' ',COALESCE(member.surname,''))) AS fullname
                                 , COALESCE(member.picture, member.picture_default) AS picture
@@ -143,7 +135,7 @@
 <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-manage">
         <form name="RecordForm" action="<?=$form?>/scripts/share.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
-            <input type="hidden" name="events_id" value="<?=((isset($data['events_id'])&&$data['events_id'])?$data['events_id']:null)?>">
+            <input type="hidden" name="events_id" value="<?=( (isset($_POST['events_id'])&&$_POST['events_id']) ? $_POST['events_id'] : null )?>">
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 <h2 class="mb-0 text-dark text-start on-text-oneline"><i class="uil uil-users-alt" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> ผู้ใช้ที่ได้รับแชร์</h2>

@@ -9,19 +9,14 @@
         exit;
     }
     $loadpage = null;
-    if( isset($_GET['participants']) ){
-        $loadpage = 'participants';
+    if( isset($_GET['list']) ){
+        $loadpage = 'participants/index.php';
         $index['view'] = $loadpage;
+        $index['addfooter'] = true;
+        $index['back'] = $link;
     }else{
         $index['view'] = 'lists';
         $loadpage = 'filter/index.php';
-        if( isset($_GET['new']) ){
-            $loadpage = 'filter/new.php';
-            $index['back'] = $link;
-        }else if( isset($_GET['edit']) ){
-            $loadpage = 'filter/edit.php';
-            $index['back'] = $link;
-        }
     }
 ?>
 <?php include(APP_HEADER); ?>
