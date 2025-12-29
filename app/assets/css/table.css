@@ -80,10 +80,10 @@
     white-space: unset !important;
 }
 .table-filter .filter-result .actions.act-2 {
-    width: 95px;
+    width: 75px;
 }
 .table-filter .filter-result .actions.act-3 {
-    width: 140px;
+    width: 110px;
 }
 .table-filter .filter-result .actions .btn-box {
     display: inline-block;
