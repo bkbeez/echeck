@@ -17,13 +17,13 @@
     $datas .= "=:user_update";
     $parameters['user_update'] = User::get('email');
     if( DB::update("UPDATE `events` SET $datas WHERE events_id=:events_id;", $parameters) ){
-        $badge = 'badge badge-status badge-sm bg-pale-dark text-dark rounded me-1 align-self-start';
+        $badge = 'badge badge-status badge-sm bg-orange text-white rounded me-1 align-self-start';
         $htmls = '<i class="uil uil-circle"></i>DRAFT';
         if( $parameters['status']==1 ){
-            $badge = 'badge badge-status badge-sm bg-pale-green text-green rounded me-1 align-self-start';
-            $htmls = '<i class="uil uil-play-circle"></i>OPEN';
+            $badge = 'badge badge-status badge-sm bg-green text-white rounded me-1 align-self-start';
+            $htmls = '<i class="uil uil-check-circle"></i>OPEN';
         }else if( $parameters['status']==2 ){
-            $badge = 'badge badge-status badge-sm bg-pale-red text-red rounded me-1 align-self-start';
+            $badge = 'badge badge-status badge-sm bg-red text-white rounded me-1 align-self-start';
             $htmls = '<i class="uil uil-times-circle"></i>CLOSE';
         }
         Status::success( "เปลี่ยนสถานะกิจกรรมเรียบร้อยแล้ว", array('title'=>"บันทึกเรียบร้อยแล้ว", 'events_id'=>$parameters['events_id'], 'badge'=>$badge, 'htmls'=>$htmls) );

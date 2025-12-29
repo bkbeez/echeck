@@ -17,15 +17,7 @@
         width: 120px;
     }
     .table-filter .filter-result .status {
-        width: 125px;
-    }
-    .table-filter .filter-result .badge.badge-shared,
-    .table-filter .filter-result .badge.badge-manage,
-    .table-filter .filter-result .badge.badge-status {
-        cursor: pointer;
-    }
-    .table-filter .filter-result .badge.badge-manage:hover {
-        background: #747ed1 !important;
+        width: 120px;
     }
     .table-filter .filter-result .name>.type-o,
     .table-filter .filter-result .name>.date-o,
@@ -41,6 +33,29 @@
         font-size: 16px;
         line-height: 12px;
         margin:0 2px 0 -2px;
+    }
+    .table-filter .filter-result .badge.badge-list {
+        padding-left: 8px;
+        padding-right: 6px;
+    }
+    .table-filter .filter-result .badge.badge-shared {
+        min-width: 62px;
+        cursor: pointer;
+    }
+    .table-filter .filter-result .badge.badge-status {
+        cursor: pointer;
+    }
+    .table-filter .filter-result .badge.badge-shared:hover {
+        background: #747ed1 !important;
+    }
+    .table-filter .filter-result .badge.badge-status.bg-orange:hover {
+        background: orange !important;
+    }
+    .table-filter .filter-result .badge.badge-status.bg-green:hover {
+        background: green !important;
+    }
+    .table-filter .filter-result .badge.badge-status.bg-red:hover {
+        background: red !important;
     }
     @media only all and (max-width: 991px) {
         .table-filter .filter-result .date {
@@ -59,9 +74,11 @@
         .table-filter .filter-result .name>.status-o {
             display: block;
         }
-        .table-filter .filter-result .name>.date-o>span {
-            display: block;
-            padding-left: 2px;
+        .table-filter .filter-result .actions.act-3 {
+            width: 75px;
+        }
+        .table-filter .filter-result .actions .btn-box.delete {
+            margin-top: -4px;
         }
     }
 </style>
@@ -137,7 +154,7 @@
                                 <th scope="col" class="date">เริ่มต้นกิจกรรม</th>
                                 <th scope="col" class="date">สิ้นสุดกิจกรรม</th>
                                 <th scope="col" class="status">&nbsp;</th>
-                                <th scope="col" class="actions act-2 col-last">&nbsp;</th>
+                                <th scope="col" class="actions act-3 col-last">&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -275,7 +292,7 @@
                     }
                 }
             );
-        }else if(action=='participant'){
+        }else if(action=='list'){
             document.location='<?=$link?>/?list='+params.events_id;
         }
     }

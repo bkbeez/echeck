@@ -123,7 +123,7 @@
     }
     .modal-dialog .modal-footer {
         min-height: 0;
-        padding: 10px 27px;
+        padding: 0 27px 10px 27px;
     }
     .modal-dialog .modal-footer button>i {
         float: left;
@@ -138,14 +138,9 @@
             <input type="hidden" name="events_id" value="<?=( (isset($_POST['events_id'])&&$_POST['events_id']) ? $_POST['events_id'] : null )?>">
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h2 class="mb-0 text-dark text-start on-text-oneline"><i class="uil uil-users-alt" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> ผู้ใช้ที่ได้รับแชร์</h2>
+                <h2 class="mb-0 text-dark text-start on-text-oneline"><i class="uil uil-share-alt" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> แชร์ <small class="fs-16 on-text-normal"><em>ผู้ใช้ที่ได้รับอนุญาตจัดการกิจกรรมได้</em></small></h2>
             </div>
             <div class="modal-body">
-                <div class="alert alert-primary text-center mb-2">
-                    <div class="mb-1">
-                        <div class="form-control text-red on-text-display">*** สามารถแก้ไขและจัดการรายชื่อผู้เข้าร่วมได้ ***</div>
-                    </div>
-                </div>
                 <div class="alert alert-primary mb-2 share-lists"><?=$htmls?></div>
             </div>
             <div class="modal-body" style="margin-top:0;">
