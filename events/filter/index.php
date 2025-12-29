@@ -135,7 +135,7 @@
                                 <th scope="col" class="name">กิจกรรม</th>
                                 <th scope="col" class="date">เริ่มต้นกิจกรรม</th>
                                 <th scope="col" class="date">สิ้นสุดกิจกรรม</th>
-                                <th scope="col" class="status">สถานะ</th>
+                                <th scope="col" class="status">&nbsp;</th>
                                 <th scope="col" class="actions act-2 col-last">&nbsp;</th>
                             </tr>
                         </thead>
