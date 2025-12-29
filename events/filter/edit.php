@@ -40,7 +40,7 @@
             <input type="hidden" name="events_id" value="<?=((isset($data['events_id'])&&$data['events_id'])?$data['events_id']:null)?>">
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h2 class="mb-0 text-primary text-start on-text-oneline"><i class="uil uil-edit-alt fs-32" style="float:left;line-height:30px;margin-right:3px;"></i> แก้ไขข้อมูล</h2>
+                <h2 class="mb-0 text-primary text-start on-text-oneline"><i class="uil uil-edit-alt" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> แก้ไขข้อมูล</h2>
             </div>
             <div class="modal-body">
                 <div class="alert alert-primary alert-icon mb-2">
@@ -72,8 +72,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="alert alert-primary alert-icon mb-2">
                     <p class="lead text-dark mb-1 text-start on-text-oneline">สิ้นสุดกิจกรรม</p>
                     <div class="row gx-1">
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
@@ -86,6 +84,30 @@
                             <div class="form-floating mb-1">
                                 <input id="end_time" name="end_time" value="<?=((isset($data['end_time'])&&$data['end_time'])?$data['end_time']:null)?>" type="text" class="form-control" placeholder="..." minlength="5" maxlength="5" onkeyup="this.value=this.value.replace(/[^0-9:]/g,'');"/>
                                 <label for="end_time">เวลา [hh:mm] <span class=text-red>*</span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-primary alert-icon mb-2">
+                    <p class="lead text-dark mb-1 text-start on-text-oneline">สถานะกิจกรรม</p>
+                    <div class="row gx-1">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mx-auto">
+                            <div class="form-check mb-2">
+                                <input id="status_0" class="form-check-input" type="radio" name="status" value="0"<?=((isset($data['status'])&&$data['status']<=0)?' checked':null)?>>
+                                <label for="status_0" class="form-check-label form-payslip-select text-orange">[DRAFT] ร่าง</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
+                            <div class="form-check mb-2">
+                                <input id="status_1" class="form-check-input" type="radio" name="status" value="1"<?=((isset($data['status'])&&$data['status']==1)?' checked':null)?>>
+                                <label for="status_1" class="form-check-label form-payslip-select text-green">[OPEN] เปิดลงทะเบียน</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
+                            <div class="form-check mb-2">
+                                <input id="status_2" class="form-check-input" type="radio" name="status" value="2"<?=((isset($data['status'])&&$data['status']==2)?' checked':null)?>>
+                                <label for="status_2" class="form-check-label form-payslip-select text-red">[CLOSE] ปิดลงทะเบียน</label>
                             </div>
                         </div>
                     </div>

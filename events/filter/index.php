@@ -185,7 +185,7 @@
         }else if(action=='delete'){
             swal({
                 'title':'<b class="text-red" style="font-size:100px;"><i class="uil uil-trash-alt"></i></b>',
-                'html' : '<div class="fs-24 on-font-primary">'+params.events_name+'</div><div>ยืนยันลบกิจกรรมนี้ ใช่ หรือ ไม่ ?</div>',
+                'html' : '<div class="fs-24 text-red on-font-primary mb-2">'+params.events_name+'</div><div>ยืนยันลบกิจกรรมนี้ ใช่ หรือ ไม่ ?</div>',
                 'showCloseButton': false,
                 'showConfirmButton': true,
                 'showCancelButton': true,
@@ -193,9 +193,9 @@
                 'allowEscapeKey': false,
                 'allowOutsideClick': false,
                 'confirmButtonClass': 'btn btn-icon btn-icon-start btn-success rounded-pill',
-                'confirmButtonText':'<font class="fs-16"><i class="uil uil-check-circle"></i> <?=Lang::get('Yes')?></font>',
+                'confirmButtonText':'<font class="fs-16"><i class="uil uil-check-circle"></i>ใช่</font>',
                 'cancelButtonClass': 'btn btn-icon btn-icon-start btn-outline-danger rounded-pill',
-                'cancelButtonText':'<font class="fs-16"><i class="uil uil-times-circle"></i> <?=Lang::get('No')?></font>',
+                'cancelButtonText':'<font class="fs-16"><i class="uil uil-times-circle"></i>ไม่</font>',
                 'buttonsStyling': false
             }).then(
                 function () {
@@ -212,7 +212,7 @@
                         if(data.status=='success'){
                             swal({
                                 'type': data.status,
-                                'title': data.title,
+                                'title': '<span class="on-font-primary">'+data.title+'</span>',
                                 'html': data.text,
                                 'showConfirmButton': false,
                                 'timer': 1500
@@ -227,7 +227,7 @@
                         }else{
                             swal({
                                 'type' : data.status,
-                                'title': data.title,
+                                'title': '<span class="on-font-primary">'+data.title+'</span>',
                                 'html' : data.text,
                                 'showCloseButton': false,
                                 'showCancelButton': false,
@@ -235,7 +235,7 @@
                                 'allowEscapeKey': false,
                                 'allowOutsideClick': false,
                                 'confirmButtonClass': 'btn btn-outline-danger',
-                                'confirmButtonText':'<span><?=Lang::get('Understand')?></span>',
+                                'confirmButtonText':'<span>รับทราบ</span>',
                                 'buttonsStyling': false
                             }).then(
                                 function () {

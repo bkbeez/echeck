@@ -45,6 +45,9 @@
     if( (new datetime($parameters['start_date']))>=(new datetime($parameters['end_date'])) ){
         Status::error( 'เริ่มต้นกิจกรรม <= สิ้นสุดกิจกรรม !!!', array('title'=>"วันที่-เวลาไม่ถูกต้อง", 'onfocus'=>"end_date") );
     }
+    $datas .= ',`status`';
+    $datas .= "=:status";
+    $parameters['status'] = ( (isset($_POST['status'])&&$_POST['status']) ? $_POST['status'] : 0 );
     $datas .= ',`date_update`';
     $datas .= "=NOW()";
     $datas .= ',`user_update`';
