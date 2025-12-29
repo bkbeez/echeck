@@ -35,56 +35,31 @@
 </style>
 <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content modal-manage">
-        <form name="RecordForm" action="<?=$form?>/scripts/update.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
+        <form name="RecordForm" action="<?=$form?>/scripts/status.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
             <input type="hidden" name="events_id" value="<?=((isset($data['events_id'])&&$data['events_id'])?$data['events_id']:null)?>">
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h2 class="mb-0 text-primary text-start on-text-oneline"><i class="uil uil-edit-alt" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> แก้ไขกิจกรรม</h2>
+                <h2 class="mb-0 text-dark text-start on-text-oneline"><i class="uil uil-circle" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> สถานะกิจกรรม</h2>
             </div>
             <div class="modal-body">
                 <div class="alert alert-success mb-2">
-                    <div class="form-floating form-select-wrapper mb-1">
-                        <select id="participant_type" name="participant_type" class="form-select" aria-label="...">
-                            <option value="ALL"<?=((!isset($data['participant_type'])||$data['participant_type']=='ALL')?' selected':null)?>>[ALL] ทั่วไป</option>
-                            <option value="LIST"<?=((isset($data['participant_type'])&&$data['participant_type']=='LIST')?' selected':null)?>>[LIST] เฉพาะผู้ที่มีรายชื่อ</option>
-                        </select>
-                        <label for="participant_type">ประเภทผู้เข้าร่วม <span class="text-red">*</span></label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <textarea id="events_name" name="events_name" class="form-control" placeholder="..." style="height:89px;" required><?=((isset($data['events_name'])&&$data['events_name'])?$data['events_name']:null)?></textarea>
-                        <label for="events_name">ชื่อกิจกรรม <span class="text-red">*</span></label>
-                    </div>
-                </div>
-                <div class="alert alert-success mb-2">
-                    <p class="lead text-dark mb-1 text-start on-text-oneline">เริ่มต้นกิจกรรม</p>
                     <div class="row gx-1">
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
-                            <div class="form-floating mb-1">
-                                <input id="start_date" name="start_date" type="text" value="<?=((isset($data['start_date'])&&$data['start_date'])?Helper::date($data['start_date']):null)?>" class="form-control" data-provide="datepicker" data-date-language="th-th" pattern="\d{1,2}/\d{1,2}/\d{4}" autocomplete="off" placeholder="..." minlength="10" maxlength="10" onkeyup="this.value=this.value.replace(/[^0-9/:]/g,'');"/>
-                                <label for="start_date">วันที่ [dd/mm/yyyy] <span class=text-red>*</span></label>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mx-auto">
+                            <div class="form-check mb-2">
+                                <input id="status_0" class="form-check-input" type="radio" name="status" value="0"<?=((isset($data['status'])&&$data['status']<=0)?' checked':null)?>>
+                                <label for="status_0" class="form-check-label form-payslip-select text-dark"><span class="underline-3 style-3 text-dark dark">DRAFT</span> ร่าง</label>
                             </div>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
-                            <div class="form-floating mb-1">
-                                <input id="start_time" name="start_time" value="<?=((isset($data['start_time'])&&$data['start_time'])?$data['start_time']:null)?>" type="text" class="form-control" placeholder="..." minlength="5" maxlength="5" onkeyup="this.value=this.value.replace(/[^0-9:]/g,'');"/>
-                                <label for="start_time">เวลา [hh:mm] <span class=text-red>*</span></label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="alert alert-success mb-2">
-                    <p class="lead text-dark mb-1 text-start on-text-oneline">สิ้นสุดกิจกรรม</p>
-                    <div class="row gx-1">
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
-                            <div class="form-floating mb-1">
-                                <input id="end_date" name="end_date" type="text" value="<?=((isset($data['end_date'])&&$data['end_date'])?Helper::date($data['end_date']):null)?>" class="form-control" data-provide="datepicker" data-date-language="th-th" pattern="\d{1,2}/\d{1,2}/\d{4}" autocomplete="off" placeholder="..." minlength="10" maxlength="10" onkeyup="this.value=this.value.replace(/[^0-9/:]/g,'');"/>
-                                <label for="end_date">วันที่ [dd/mm/yyyy] <span class=text-red>*</span></label>
+                            <div class="form-check mb-2">
+                                <input id="status_1" class="form-check-input" type="radio" name="status" value="1"<?=((isset($data['status'])&&$data['status']==1)?' checked':null)?>>
+                                <label for="status_1" class="form-check-label form-payslip-select text-dark"><span class="underline-3 style-3 text-green green">OPEN</span> เปิดลงทะเบียน</label>
                             </div>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
-                            <div class="form-floating mb-1">
-                                <input id="end_time" name="end_time" value="<?=((isset($data['end_time'])&&$data['end_time'])?$data['end_time']:null)?>" type="text" class="form-control" placeholder="..." minlength="5" maxlength="5" onkeyup="this.value=this.value.replace(/[^0-9:]/g,'');"/>
-                                <label for="end_time">เวลา [hh:mm] <span class=text-red>*</span></label>
+                            <div class="form-check mb-2">
+                                <input id="status_2" class="form-check-input" type="radio" name="status" value="2"<?=((isset($data['status'])&&$data['status']==2)?' checked':null)?>>
+                                <label for="status_2" class="form-check-label form-payslip-select text-dark"><span class="underline-3 style-3 text-red red">CLOSE</span> ปิดลงทะเบียน</label>
                             </div>
                         </div>
                     </div>
@@ -112,7 +87,7 @@
                 $("form[name='RecordForm'] .confirm-box").html('').css('margin-top','0');
                 $("form[name='RecordForm'] .row-button").show();
             }else{
-                var htmls  = '<div class="fs-19 mb-2 text-center on-text-normal">ยืนยันบันทึกการเปลี่ยนแปลงนี้ ใช่ หรือ ไม่ ?</div>';                    
+                var htmls  = '<div class="fs-19 mb-2 text-center on-text-normal">ยืนยันเปลี่ยนสถานะกิจกรรม ใช่ หรือ ไม่ ?</div>';                    
                     htmls += '<button type="submit" class="btn btn-lg btn-icon btn-icon-start btn-success rounded-pill"><i class="uil uil-check-circle"></i>ใช่</button>';
                     htmls += '&nbsp;';
                     htmls += '<button type="button" class="btn btn-lg btn-icon btn-icon-start btn-outline-danger rounded-pill" onclick="record_events(\'confirm\', { \'on\':\'N\' });"><i class="uil uil-times-circle"></i>ไม่</button>';

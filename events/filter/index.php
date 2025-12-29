@@ -19,12 +19,13 @@
     .table-filter .filter-result .status {
         width: 15%;
     }
-    .table-filter .filter-result .badge.badge-manage {
+    .table-filter .filter-result .badge.badge-shared,
+    .table-filter .filter-result .badge.badge-manage,
+    .table-filter .filter-result .badge.badge-status {
         cursor: pointer;
     }
     .table-filter .filter-result .badge.badge-manage:hover {
-        color: white !important;
-        background: #605dba !important;
+        background: #747ed1 !important;
     }
     .table-filter .filter-result .name>.type-o,
     .table-filter .filter-result .name>.date-o,
@@ -176,6 +177,24 @@
         }else if(action=='edit'){
             params['form_as'] = '<?=$form?>';
             $("#ManageDialog").load("<?=$form?>/filter/edit.php", params, function(response, status, xhr){
+                if(status=="error"){
+                    $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
+                }else{
+                    $("#ManageDialog").modal('show');
+                }
+            });
+        }else if(action=='share'){
+            params['form_as'] = '<?=$form?>';
+            $("#ManageDialog").load("<?=$form?>/filter/share.php", params, function(response, status, xhr){
+                if(status=="error"){
+                    $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
+                }else{
+                    $("#ManageDialog").modal('show');
+                }
+            });
+        }else if(action=='status'){
+            params['form_as'] = '<?=$form?>';
+            $("#ManageDialog").load("<?=$form?>/filter/status.php", params, function(response, status, xhr){
                 if(status=="error"){
                     $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
                 }else{

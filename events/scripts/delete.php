@@ -1,8 +1,8 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php Auth::ajax(APP_PATH.'/events'); ?>
 <?php
-    if(!isset($_POST['events_id'])||!$_POST['events_id']){
-        Status::error( Lang::get('NotFound').Lang::get('events_id').' !!!' );
+    if( !isset($_POST['events_id'])||!$_POST['events_id'] ){
+        Status::error( 'ไม่พบรหัสกิจกรรม !!!' );
     }
     // Begin
     $parameters = array();

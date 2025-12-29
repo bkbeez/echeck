@@ -61,6 +61,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="alert alert-warning alert-icon mb-2">
                     <p class="lead text-dark mb-1 text-start on-text-oneline">สิ้นสุดกิจกรรม</p>
                     <div class="row gx-1">
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 mx-auto">
