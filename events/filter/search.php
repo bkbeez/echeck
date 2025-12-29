@@ -17,9 +17,9 @@
     $parameters = array();
     // Owner and Shared
     $parameters['user_by'] = User::get('email');
-    $condition = " AND events.user_create=:user_by";
-        //$condition .= " OR events.events_id IN (SELECT events_shared.events_id FROM events_shared WHERE events_shared.email=:email)";
-    //$condition .= " )";
+    $condition = " AND ( events.user_create=:user_by";
+        $condition .= " OR events.events_id IN (SELECT events_shared.events_id FROM events_shared WHERE events_shared.email=:user_by)";
+    $condition .= " )";
     // Search
     $_SESSION['login']['filter'][$filter_as]['keyword'] = null;
     if( $keyword ){
