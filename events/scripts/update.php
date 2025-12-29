@@ -5,8 +5,6 @@
         Status::error( 'ไม่พบรหัสกิจกรรม !!!' );
     }else if( !isset($_POST['events_name'])||!$_POST['events_name'] ){
         Status::error( 'กรุณากรอกชื่อ !!!', array('onfocus'=>"events_name") );
-    }else if( !isset($_POST['participant_type'])||!$_POST['participant_type'] ){
-        Status::error( 'กรุณาเลือกประเภท !!!', array('onselect'=>"participant_type") );
     }else if( !isset($_POST['start_date'])||!$_POST['start_date'] ){
         Status::error( 'กรุณากรอกวันที่ !!!', array('onfocus'=>"start_date") );
     }else if( !Helper::validDate($_POST['start_date']) ){
@@ -31,9 +29,6 @@
     $datas  = '`events_name`';
     $datas .= "=:events_name";
     $parameters['events_name'] = Helper::stringSave($_POST['events_name']);
-    $datas .= ',`participant_type`';
-    $datas .= "=:participant_type";
-    $parameters['participant_type'] = $_POST['participant_type'];
     $datas .= ',`start_date`';
     $datas .= "=:start_date";
     $parameters['start_date'] = Helper::dateSave($_POST['start_date']).' '.$_POST['start_time'].':00';

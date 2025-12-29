@@ -38,7 +38,7 @@
                             <option value="ALL" selected>[ALL] ทั่วไป</option>
                             <option value="LIST">[LIST] เฉพาะผู้ที่มีรายชื่อ</option>
                         </select>
-                        <label for="participant_type">ประเภทผู้เข้าร่วม <span class="text-red">*</span></label>
+                        <label for="participant_type">ประเภทผู้เข้าร่วม <span class="text-red">* ( เปลี่ยนภายหลังไม่ได้ )</span></label>
                     </div>
                     <div class="form-floating mb-1">
                         <textarea id="events_name" name="events_name" class="form-control" placeholder="..." style="height:89px;" required></textarea>

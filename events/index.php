@@ -10,10 +10,10 @@
     }
     $loadpage = null;
     if( isset($_GET['list']) ){
-        $loadpage = 'participants/index.php';
-        $index['view'] = $loadpage;
-        $index['addfooter'] = true;
+        $index['view'] = 'lists';
         $index['back'] = $link;
+        $index['addfooter'] = true;
+        $loadpage = 'participants/index.php';
     }else{
         $index['view'] = 'lists';
         $loadpage = 'filter/index.php';

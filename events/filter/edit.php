@@ -4,6 +4,10 @@
     $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );
     if( isset($_POST['events_id'])&&$_POST['events_id'] ){
         $data = DB::one("SELECT events.*
+                        , IF(events.participant_type='LIST'
+                            ,'<span class=\"badge badge-sm bg-pale-orange text-orange rounded me-1 align-self-start\"><i class=\"uil uil-clipboard-alt\"></i>LIST</span>เฉพาะผู้ที่มีรายชื่อ'
+                            ,'<span class=\"badge badge-sm bg-pale-blue text-blue rounded me-1 align-self-start\"><i class=\"uil uil-clipboard\"></i>ALL</span>ทั่วไป'
+                        ) AS events_icon
                         , DATE_FORMAT(events.start_date, '%H:%i') AS start_time
                         , DATE_FORMAT(events.end_date, '%H:%i') AS end_time
                         FROM events
@@ -43,12 +47,9 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-success mb-2">
-                    <div class="form-floating form-select-wrapper mb-1">
-                        <select id="participant_type" name="participant_type" class="form-select" aria-label="...">
-                            <option value="ALL"<?=((!isset($data['participant_type'])||$data['participant_type']=='ALL')?' selected':null)?>>[ALL] ทั่วไป</option>
-                            <option value="LIST"<?=((isset($data['participant_type'])&&$data['participant_type']=='LIST')?' selected':null)?>>[LIST] เฉพาะผู้ที่มีรายชื่อ</option>
-                        </select>
-                        <label for="participant_type">ประเภทผู้เข้าร่วม <span class="text-red">*</span></label>
+                    <div class="form-floating mb-1">
+                        <div class="form-control readonly on-text-display"><?=((isset($data['events_icon'])&&$data['events_icon'])?$data['events_icon']:'-')?></div>
+                        <label>ประเภทผู้เข้าร่วม</label>
                     </div>
                     <div class="form-floating mb-1">
                         <textarea id="events_name" name="events_name" class="form-control" placeholder="..." style="height:89px;" required><?=((isset($data['events_name'])&&$data['events_name'])?$data['events_name']:null)?></textarea>
