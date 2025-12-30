@@ -2,7 +2,8 @@
 <?php
     $filter_as = strtolower($index['page'].'_eventlist_as');
     $filter = ( isset($_SESSION['login']['filter'][$filter_as]) ? $_SESSION['login']['filter'][$filter_as] : null );
-    /*if( $events_id ){
+    $events_id = ( (isset($_GET['list'])&&$_GET['list']) ? $_GET['list'] : null );
+    if( $events_id ){
         $data = DB::one("SELECT events.*
                         , DATE_FORMAT(events.start_date, '%H:%i') AS start_time
                         , DATE_FORMAT(events.end_date, '%H:%i') AS end_time
@@ -11,14 +12,14 @@
                         LIMIT 1;"
                         , array('events_id'=>$events_id)
         );
-    }*/
+    }
 ?>
 <style type="text/css">
-    .table-filter .filter-pageby button {
+    .display-6 button {
         padding-left: 6px;
         padding-right: 12px;
     }
-    .table-filter .filter-pageby button>i {
+    .display-6 button>i {
         float: left;
         font-size: 32px;
         line-height: 24px;
@@ -89,16 +90,17 @@
 </style>
 <section class="wrapper bg-primary">
     <div class="container pt-1 pb-1">
+        <h2 class="display-6 text-yellow mb-2"> <button type="button" class="btn btn-navy" onclick="document.location='<?=$index['back']?>';"><i class="uil uil-arrow-circle-left"></i><span>กลับ</span></button> <?=((isset($data['events_name'])&&$data['events_name'])?$data['events_name']:'ไม่ทราบ... .. .')?></h2>
         <div class="row-tabs row gx-2 gy-2">
             <div class="col-4">
                 <div class="card bg-green active shadow-lg">
-                    <a href="<?=$link?>">
+                    <a href="javascript:void(0);" onclick="manage_events('employee', { 'link':'<?=$link?>' });">
                         <div class="card-body p-2">
                             <div class="d-flex flex-row">
-                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-user-plus text-green"></i></span></div>
+                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-plus text-green"></i></span></div>
                                 <div class="info-box">
-                                    <h4 class="text-white mt-1 mb-0">Dashboard</h4>
-                                    <p class="text-white mb-0">APP Users & API Users</p>
+                                    <h4 class="text-white mt-1 mb-0">Employee</h4>
+                                    <p class="text-white mb-0">เพิ่มรายชื่อพนักงาน</p>
                                 </div>
                             </div>
                         </div>
@@ -107,13 +109,13 @@
             </div>
             <div class="col-4">
                 <div class="card bg-orange text-white shadow-lg">
-                    <a href="<?=$link?>">
+                    <a href="javascript:void(0);" onclick="manage_events('student', { 'link':'<?=$link?>' });">
                         <div class="card-body p-2">
                             <div class="d-flex flex-row">
-                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-user-plus text-orange"></i></span></div>
+                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-plus text-orange"></i></span></div>
                                 <div class="info-box">
-                                    <h4 class="text-white mt-1 mb-0">Permission</h4>
-                                    <p class="text-white mb-0">Permission Options</p>
+                                    <h4 class="text-white mt-1 mb-0">Student</h4>
+                                    <p class="text-white mb-0">เพิ่มรายชื่อนักศึกษา</p>
                                 </div>
                             </div>
                         </div>
@@ -122,35 +124,17 @@
             </div>
             <div class="col-4">
                 <div class="card bg-purple text-white shadow-lg">
-                    <a href="<?=$link?>">
+                    <a href="javascript:void(0);" onclick="manage_events('new', { 'link':'<?=$link?>' });">
                         <div class="card-body p-2">
                             <div class="d-flex flex-row">
-                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-user-plus text-purple"></i></span></div>
+                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-plus text-purple"></i></span></div>
                                 <div class="info-box">
-                                    <h4 class="text-white mt-1 mb-0">Working</h4>
-                                    <p class="text-white mb-0">Work Attendances</p>
+                                    <h4 class="text-white mt-1 mb-0">Other</h4>
+                                    <p class="text-white mb-0">เพิ่มรายชื่ออื่นๆ</p>
                                 </div>
                             </div>
                         </div>
                     </a>
-                </div>
-            </div>
-        </div>
-        <div class="card image-wrapper mt-2" style="border:2px solid #fefefe;">
-            <div class="card-body" style="padding:10px 0 5px 0;">
-                <div class="row align-items-center counter-wrapper gx-0 gy-0 text-center text-white">
-                    <div class="col-4">
-                        <h3 class="set-totals counter-sm text-white fs-28 mb-0" style="visibility:visible;">0</h3>
-                        <p class="on-text-oneline text-white">Total Users</p>
-                    </div>
-                    <div class="col-4">
-                        <h3 class="set-list1s counter-sm text-white fs-28 mb-0" style="visibility:visible;">0</h3>
-                        <p class="on-text-oneline text-yellow">APP Users</p>
-                    </div>
-                    <div class="col-4">
-                        <h3 class="set-list2s counter-sm text-white fs-28 mb-0" style="visibility:visible;">0</h3>
-                        <p class="on-text-oneline text-orange">API Users</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -160,13 +144,20 @@
     <form name="filter" action="<?=$form?>/lists/search.php" method="POST" enctype="multipart/form-data" target="_blank">
         <input type="hidden" name="state" value="loading" />
         <input type="hidden" name="filter_as" value="<?=$filter_as?>" />
-        <input type="hidden" name="events_id" value="<?=( (isset($_GET['list'])&&$_GET['list']) ? $_GET['list'] : null )?>" />
+        <input type="hidden" name="events_id" value="<?=$events_id?>" />
         <section class="wrapper bg-primary">
             <div class="container">
                 <div class="filter-search">
                     <div class="row">
                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-6 filter-pageby">
-                            <button type="button" class="btn btn-navy" onclick="document.location='<?=$index['back']?>';"><i class="uil uil-arrow-circle-left"></i><span>กลับหน้ารายการ</span></button>
+                            <select name="limit" class="form-select mb-1">
+                                <option value="50"<?=((!isset($filter['limit'])||intval($filter['limit'])==50)?' selected':null)?>>50</option>
+                                <option value="100"<?=((isset($filter['limit'])&&intval($filter['limit'])==100)?' selected':null)?>>100</option>
+                                <option value="250"<?=((isset($filter['limit'])&&intval($filter['limit'])==250)?' selected':null)?>>250</option>
+                                <option value="500"<?=((isset($filter['limit'])&&intval($filter['limit'])==500)?' selected':null)?>>500</option>
+                                <option value="750"<?=((isset($filter['limit'])&&intval($filter['limit'])==750)?' selected':null)?>>750</option>
+                                <option value="1000"<?=((isset($filter['limit'])&&intval($filter['limit'])==1000)?' selected':null)?>>1000</option>
+                            </select>
                         </div>
                         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-6 filter-keyword">
                             <div class="mc-field-group input-group form-floating mb-1">
@@ -174,7 +165,6 @@
                                 <label for="keyword"><?=Lang::get('Keyword')?></label>
                                 <button type="submit" class="btn btn-soft-violet btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
                                 <button type="button" class="btn btn-soft-primary btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-filter-slash"></i></button>
-                                <button type="button" class="btn btn-purple btn-adding" title="Create New" onclick="manage_events('new', { 'link':'<?=$link?>' });"><i class="uil uil-plus"></i><span> รายชื่อใหม่</span></button>
                             </div>
                         </div>
                     </div>
