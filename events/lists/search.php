@@ -97,7 +97,7 @@
     // Run
     $start = (($page-1)*$limit);
     $sql = "SELECT events_lists.*
-            , IF(events_lists.type='EMPLOYEE', '<span class=\"badge badge-sm bg-pale-blue text-blue rounded me-1 align-self-start\"><i class=\"uil uil-user\"></i>EMPLOYEE</span>'
+            , IF(events_lists.type='EMPLOYEE', '<span class=\"badge badge-sm bg-pale-green text-green rounded me-1 align-self-start\"><i class=\"uil uil-user\"></i>EMPLOYEE</span>'
                 ,IF(events_lists.type='STUDENT', '<span class=\"badge badge-sm bg-pale-orange text-orange rounded me-1 align-self-start\"><i class=\"uil uil-user\"></i>STUDENT</span>'
                     ,'<span class=\"badge badge-sm bg-pale-dark text-dark rounded me-1 align-self-start\"><i class=\"uil uil-user\"></i>OTHER</span>'
                 )

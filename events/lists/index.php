@@ -87,6 +87,75 @@
         }
     }
 </style>
+<section class="wrapper bg-primary">
+    <div class="container pt-1 pb-1">
+        <div class="row-tabs row gx-2 gy-2">
+            <div class="col-4">
+                <div class="card bg-green active shadow-lg">
+                    <a href="<?=$link?>">
+                        <div class="card-body p-2">
+                            <div class="d-flex flex-row">
+                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-user-plus text-green"></i></span></div>
+                                <div class="info-box">
+                                    <h4 class="text-white mt-1 mb-0">Dashboard</h4>
+                                    <p class="text-white mb-0">APP Users & API Users</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card bg-orange text-white shadow-lg">
+                    <a href="<?=$link?>">
+                        <div class="card-body p-2">
+                            <div class="d-flex flex-row">
+                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-user-plus text-orange"></i></span></div>
+                                <div class="info-box">
+                                    <h4 class="text-white mt-1 mb-0">Permission</h4>
+                                    <p class="text-white mb-0">Permission Options</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card bg-purple text-white shadow-lg">
+                    <a href="<?=$link?>">
+                        <div class="card-body p-2">
+                            <div class="d-flex flex-row">
+                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-user-plus text-purple"></i></span></div>
+                                <div class="info-box">
+                                    <h4 class="text-white mt-1 mb-0">Working</h4>
+                                    <p class="text-white mb-0">Work Attendances</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card image-wrapper mt-2" style="border:2px solid #fefefe;">
+            <div class="card-body" style="padding:10px 0 5px 0;">
+                <div class="row align-items-center counter-wrapper gx-0 gy-0 text-center text-white">
+                    <div class="col-4">
+                        <h3 class="set-totals counter-sm text-white fs-28 mb-0" style="visibility:visible;">0</h3>
+                        <p class="on-text-oneline text-white">Total Users</p>
+                    </div>
+                    <div class="col-4">
+                        <h3 class="set-list1s counter-sm text-white fs-28 mb-0" style="visibility:visible;">0</h3>
+                        <p class="on-text-oneline text-yellow">APP Users</p>
+                    </div>
+                    <div class="col-4">
+                        <h3 class="set-list2s counter-sm text-white fs-28 mb-0" style="visibility:visible;">0</h3>
+                        <p class="on-text-oneline text-orange">API Users</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="table-filter">
     <form name="filter" action="<?=$form?>/lists/search.php" method="POST" enctype="multipart/form-data" target="_blank">
         <input type="hidden" name="state" value="loading" />
@@ -166,10 +235,20 @@
         <input type="hidden" name="pages" value="<?=((isset($filter['pages'])&&$filter['pages'])?$filter['pages']:0)?>" />
     </form>
 </section>
-<div id="ManageDialog" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="false" aria-modal="true"></div>
+<div id="ManageDialog" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="false" aria-modal="true"></div>
 <script type="text/javascript">
     function manage_events(action, params){
-        if(action=='new'){
+        if(action=='employee'){
+            params['form_as'] = '<?=$form?>';
+            params['events_id'] = $("form[name='filter'] input[name='events_id']").val();
+            $("#ManageDialog").load("<?=$form?>/lists/employee.php", params, function(response, status, xhr){
+                if(status=="error"){
+                    $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
+                }else{
+                    $("#ManageDialog").modal('show');
+                }
+            });
+        }else if(action=='new'){
             params['form_as'] = '<?=$form?>';
             params['events_id'] = $("form[name='filter'] input[name='events_id']").val();
             $("#ManageDialog").load("<?=$form?>/lists/new.php", params, function(response, status, xhr){

@@ -57,6 +57,18 @@
     .table-filter .filter-result .badge.badge-status.bg-red:hover {
         background: red !important;
     }
+    .on-top-down {
+      width: 100px;
+      height: 100px;
+      position: relative;
+      animation: mymove 0.8s infinite;
+    }
+    @keyframes mymove {
+      0%   {top: 0px;}
+      25%  {top: 3px;}
+      75%  {top: 7px}
+      100% {top: 9px;}
+    }
     @media only all and (max-width: 991px) {
         .table-filter .filter-result .date {
             display: none;
@@ -153,7 +165,7 @@
                                 <th scope="col" class="name">กิจกรรม</th>
                                 <th scope="col" class="date">เริ่มต้นกิจกรรม</th>
                                 <th scope="col" class="date">สิ้นสุดกิจกรรม</th>
-                                <th scope="col" class="status">&nbsp;</th>
+                                <th scope="col" class="status"><span class="on-top-down">&darr;</span> คลิก</th>
                                 <th scope="col" class="actions act-3 col-last">&nbsp;</th>
                             </tr>
                         </thead>
