@@ -58,16 +58,16 @@
         background: red !important;
     }
     .on-top-down {
-      width: 100px;
-      height: 100px;
-      position: relative;
-      animation: mymove 0.8s infinite;
+        width: 100px;
+        height: 100px;
+        position: relative;
+        animation: mymove 0.8s infinite;
     }
     @keyframes mymove {
-      0%   {top: 0px;}
-      25%  {top: 3px;}
-      75%  {top: 7px}
-      100% {top: 9px;}
+        0%   {top: 0px;}
+        25%  {top: 3px;}
+        75%  {top: 7px}
+        100% {top: 9px;}
     }
     @media only all and (max-width: 991px) {
         .table-filter .filter-result .date {

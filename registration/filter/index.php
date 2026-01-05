@@ -1,0 +1,174 @@
+<?php
+    if(!isset($index['page'])||$index['page']!='registration'){ header("location:".((isset($_SERVER['SERVER_PORT'])&&$_SERVER['SERVER_PORT']==443)?'https://':'http://').$_SERVER["HTTP_HOST"]); exit(); } 
+?>
+<?php 
+    $filter_as = strtolower($index['page'].'_event_as');
+    $filter = ( isset($_SESSION['login']['filter'][$filter_as]) ? $_SESSION['login']['filter'][$filter_as] : null );
+?>
+<style type="text/css">
+    .table-filter .filter-result {
+        background: white;
+    }
+    .table-filter .filter-result .type {
+        width: 65px;
+    }
+    .table-filter .filter-result .name {
+        width: auto;
+    }
+    .table-filter .filter-result .date {
+        width: 120px;
+    }
+    .table-filter .filter-result .status {
+        width: 120px;
+    }
+    .table-filter .filter-result .name>.type-o,
+    .table-filter .filter-result .name>.date-o,
+    .table-filter .filter-result .name>.status-o {
+        display: none;
+    }
+    .table-filter .filter-result .badge {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+    .table-filter .filter-result .badge>i {
+        float: left;
+        font-size: 16px;
+        line-height: 12px;
+        margin:0 2px 0 -2px;
+    }
+    .table-filter .filter-result .badge.badge-list {
+        padding-left: 8px;
+        padding-right: 6px;
+    }
+    .table-filter .filter-result .badge.badge-shared {
+        min-width: 62px;
+        cursor: pointer;
+    }
+    .table-filter .filter-result .badge.badge-status {
+        cursor: pointer;
+    }
+    .table-filter .filter-result .badge.badge-shared:hover {
+        background: #747ed1 !important;
+    }
+    .table-filter .filter-result .badge.badge-status.bg-orange:hover {
+        background: orange !important;
+    }
+    .table-filter .filter-result .badge.badge-status.bg-green:hover {
+        background: green !important;
+    }
+    .table-filter .filter-result .badge.badge-status.bg-red:hover {
+        background: red !important;
+    }
+    .on-top-down {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        animation: mymove 0.8s infinite;
+    }
+    @keyframes mymove {
+        0%   {top: 0px;}
+        25%  {top: 3px;}
+        75%  {top: 7px}
+        100% {top: 9px;}
+    }
+    @media only all and (max-width: 991px) {
+        .table-filter .filter-result .date {
+            display: none;
+        }
+        .table-filter .filter-result .name>.date-o {
+            display: block;
+        }
+    }
+    @media only all and (max-width: 768px) {
+        .table-filter .filter-result .type,
+        .table-filter .filter-result .status {
+            display: none;
+        }
+        .table-filter .filter-result .name>.type-o,
+        .table-filter .filter-result .name>.status-o {
+            display: block;
+        }
+        .table-filter .filter-result .actions.act-3 {
+            width: 75px;
+        }
+        .table-filter .filter-result .actions .btn-box.delete {
+            margin-top: -4px;
+        }
+    }
+    .filter-title-white {
+        color: #ffffff; 
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+</style>
+<section class="table-filter">
+    <form name="filter" action="<?=$form?>/filter/search.php" method="POST" enctype="multipart/form-data" target="_blank">
+        <input type="hidden" name="state" value="loading" />
+        <input type="hidden" name="filter_as" value="<?=$filter_as?>" />
+        <section class="wrapper bg-primary">
+            <div class="container">
+                <div class="filter-box">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h3 class="filter-title-white"><?=Lang::get('เลือกกิจกรรม เพื่อลงทะบียน')?></h3>
+                        </div>
+                        <div class="filter-search">
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-6 filter-pageby">
+                                <select name="limit" class="form-select mb-1">
+                                    <option value="50"<?=((!isset($filter['limit'])||intval($filter['limit'])==50)?' selected':null)?>>50</option>
+                                    <option value="100"<?=((isset($filter['limit'])&&intval($filter['limit'])==100)?' selected':null)?>>100</option>
+                                    <option value="250"<?=((isset($filter['limit'])&&intval($filter['limit'])==250)?' selected':null)?>>250</option>
+                                    <option value="500"<?=((isset($filter['limit'])&&intval($filter['limit'])==500)?' selected':null)?>>500</option>
+                                    <option value="750"<?=((isset($filter['limit'])&&intval($filter['limit'])==750)?' selected':null)?>>750</option>
+                                    <option value="1000"<?=((isset($filter['limit'])&&intval($filter['limit'])==1000)?' selected':null)?>>1000</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-6 filter-keyword">
+                                <div class="mc-field-group input-group form-floating mb-1">
+                                    <input id="keyword" name="keyword" type="text" value="<?=((isset($filter['keyword'])&&$filter['keyword'])?$filter['keyword']:null)?>" class="form-control" placeholder="...">
+                                    <label for="keyword"><?=Lang::get('Keyword')?></label>
+                                    <button type="submit" class="btn btn-soft-violet btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
+                                    <button type="button" class="btn btn-soft-primary btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-filter-slash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="wrapper">
+            <div class="container">
+                <div class="filter-result">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="no col-first">#</th>
+                                <th scope="col" class="name">กิจกรรม</th>
+                                <th scope="col" class="status"><span class="on-top-down">&darr;</span> คลิก</th>
+                                <th scope="col" class="actions act-3 col-last">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="filter-display"><span class="badge bg-pale-ash text-dark rounded-pill">- <?=Lang::get('NotFoundResult')?> -</span></div>
+                <div class="filter-pagination">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 filter-prev">
+                            <button type="button" class="btn btn-sm<?=((isset($filter['page'])&&$filter['page']==1)?' btn-soft-ash':' btn-primary')?>"><i class="uil uil-angle-left-b"></i><span> <?=Lang::get('Prev')?></span></button>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 filter-page">
+                            <center><select name="page" class="page-on form-select"><?php if(isset($filter['pages'])&&$filter['pages']){ ?><?php for($page=1;$page<=intval($filter['pages']);$page++){ ?><option value="<?=$page?>" <?=((isset($filter['page'])&&intval($filter['page'])==$page)?'selected':null)?>><?=$page?></option><?php } ?><?php }else{ ?><option value="1">1</option><?php } ?></select><div class="page-total gb">/<span>1</span></div></center>
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 filter-next">
+                            <button type="button" class="btn btn-sm btn-icon btn-icon-end<?=((isset($filter['page'])&&isset($filter['pages'])&&$filter['page']==$filter['pages'])?' btn-soft-ash':' btn-primary')?>"><span><?=Lang::get('Next')?> </span><i class="uil uil-angle-right-b"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <input type="hidden" name="pages" value="<?=((isset($filter['pages'])&&$filter['pages'])?$filter['pages']:0)?>" />
+    </form>
+</section>
+<div id="ManageDialog" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="false" aria-modal="true"></div>
+
