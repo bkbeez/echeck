@@ -83,13 +83,13 @@
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
-                    <div class="position-relative lift" onclick="document.location='<?=APP_HOME.'/participants'?>';">
+                    <div class="position-relative lift" onclick="document.location='<?=APP_HOME.'/registration'?>';">
                         <div class="shape rounded bg-soft-blue rellax d-md-block" data-rellax-speed="0" style="bottom:-0.75rem;right:-0.75rem;width:98%;height:98%;z-index:0;transform:translate3d(0px, 0px, 0px);"></div>
                         <div class="card">
                             <div class="card-body">
                                 <div class="icon btn btn-circle btn-lg btn-blue pe-none mb-3"><i class="uil uil-users-alt"></i></div>
-                                <h4>รายชื่อผู้เข้าร่วม</h4>
-                                <a href="<?=APP_HOME.'/participants'?>" class="more hover link-blue">เข้าใช้งาน</a>
+                                <h4>ลงทะเบียนกิจกรรม</h4>
+                                <a href="<?=APP_HOME.'/registration'?>" class="more hover link-blue">เข้าใช้งาน</a>
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,6 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
-    $index['page'] = 'registration';
+    $index['page'] = 'events';
     $link = APP_PATH.'/'.$index['page'];
     $form = APP_PATH.'/'.$index['page'];
     if( !Auth::check() ){

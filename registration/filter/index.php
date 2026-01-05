@@ -100,6 +100,22 @@
         font-weight: bold;
         margin-bottom: 15px;
     }
+    .btn-register {
+        background-color: #0dbf36ff;
+        color: white;
+        transition: all 0.3s;
+        font-weight: bold;
+    }
+
+    .btn-register:hover {
+        background-color: #218838;
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .table-filter .btn-sm {
+        padding: 0.25rem 0.8rem;
+        font-size: 0.85rem;
+    }
 </style>
 <section class="table-filter">
     <form name="filter" action="<?=$form?>/filter/search.php" method="POST" enctype="multipart/form-data" target="_blank">
@@ -113,22 +129,53 @@
                             <h3 class="filter-title-white"><?=Lang::get('เลือกกิจกรรม เพื่อลงทะบียน')?></h3>
                         </div>
                         <div class="filter-search">
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-6 filter-pageby">
-                                <select name="limit" class="form-select mb-1">
-                                    <option value="50"<?=((!isset($filter['limit'])||intval($filter['limit'])==50)?' selected':null)?>>50</option>
-                                    <option value="100"<?=((isset($filter['limit'])&&intval($filter['limit'])==100)?' selected':null)?>>100</option>
-                                    <option value="250"<?=((isset($filter['limit'])&&intval($filter['limit'])==250)?' selected':null)?>>250</option>
-                                    <option value="500"<?=((isset($filter['limit'])&&intval($filter['limit'])==500)?' selected':null)?>>500</option>
-                                    <option value="750"<?=((isset($filter['limit'])&&intval($filter['limit'])==750)?' selected':null)?>>750</option>
-                                    <option value="1000"<?=((isset($filter['limit'])&&intval($filter['limit'])==1000)?' selected':null)?>>1000</option>
-                                </select>
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-6 filter-pageby">
+                                    <select name="limit" class="form-select mb-1">
+                                        <option value="50"<?=((!isset($filter['limit'])||intval($filter['limit'])==50)?' selected':null)?>>50</option>
+                                        <option value="100"<?=((isset($filter['limit'])&&intval($filter['limit'])==100)?' selected':null)?>>100</option>
+                                        <option value="250"<?=((isset($filter['limit'])&&intval($filter['limit'])==250)?' selected':null)?>>250</option>
+                                        <option value="500"<?=((isset($filter['limit'])&&intval($filter['limit'])==500)?' selected':null)?>>500</option>
+                                        <option value="750"<?=((isset($filter['limit'])&&intval($filter['limit'])==750)?' selected':null)?>>750</option>
+                                        <option value="1000"<?=((isset($filter['limit'])&&intval($filter['limit'])==1000)?' selected':null)?>>1000</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-6 filter-keyword">
+                                    <div class="mc-field-group input-group form-floating mb-1">
+                                        <input id="keyword" name="keyword" type="text" value="<?=((isset($filter['keyword'])&&$filter['keyword'])?$filter['keyword']:null)?>" class="form-control" placeholder="...">
+                                        <label for="keyword"><?=Lang::get('Keyword')?></label>
+                                        <button type="submit" class="btn btn-soft-violet btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
+                                        <button type="button" class="btn btn-soft-primary btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-filter-slash"></i></button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-6 filter-keyword">
-                                <div class="mc-field-group input-group form-floating mb-1">
-                                    <input id="keyword" name="keyword" type="text" value="<?=((isset($filter['keyword'])&&$filter['keyword'])?$filter['keyword']:null)?>" class="form-control" placeholder="...">
-                                    <label for="keyword"><?=Lang::get('Keyword')?></label>
-                                    <button type="submit" class="btn btn-soft-violet btn-search" title="<?=Lang::get('Search')?>"><i class="uil uil-search"></i></button>
-                                    <button type="button" class="btn btn-soft-primary btn-clear" title="<?=Lang::get('Clear')?>"><i class="uil uil-filter-slash"></i></button>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                    <select name="condition[participant_type]" class="form-select mb-1">
+                                        <option value="ALL"<?=((!isset($filter['condition']['participant_type'])||$filter['condition']['participant_type']=='ALL')?' selected':null)?>>แสดงทุกประเภท...</option>
+                                        <option value="ALLS"<?=((isset($filter['condition']['participant_type'])&&$filter['condition']['participant_type']=='ALLS')?' selected':null)?>>[ALL] ทั่วไป</option>
+                                        <option value="LIST"<?=((isset($filter['condition']['participant_type'])&&$filter['condition']['participant_type']=='LIST')?' selected':null)?>>[LIST] เฉพาะผู้ที่มีรายชื่อ</option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                                    <div class="form-floating mb-1">
+                                        <input name="condition[start_date]" type="text" value="<?=((isset($filter['condition']['start_date'])&&$filter['condition']['start_date'])?$filter['condition']['start_date']:null)?>" class="form-control" data-provide="datepicker" data-date-language="th-th" pattern="\d{1,2}/\d{1,2}/\d{4}" autocomplete="off" placeholder="..." minlength="10" maxlength="10" onkeyup="this.value=this.value.replace(/[^0-9/:]/g,'');"/>
+                                        <label>วันที่เริ่มต้น</label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                                    <div class="form-floating mb-1">
+                                        <input name="condition[end_date]" type="text" value="<?=((isset($filter['condition']['end_date'])&&$filter['condition']['end_date'])?$filter['condition']['end_date']:null)?>" class="form-control" data-provide="datepicker" data-date-language="th-th" pattern="\d{1,2}/\d{1,2}/\d{4}" autocomplete="off" placeholder="..." minlength="10" maxlength="10" onkeyup="this.value=this.value.replace(/[^0-9/:]/g,'');"/>
+                                        <label>วันที่สิ้นสุด</label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                                    <select name="condition[status]" class="form-select mb-1">
+                                        <option value="ALL"<?=((!isset($filter['condition']['status'])||$filter['condition']['status']=='ALL')?' selected':null)?>>แสดงทุกสถานะ...</option>
+                                        <option value="DRAFT"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='DRAFT')?' selected':null)?>>[DRAFT] ร่าง</option>
+                                        <option value="OPEN"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='OPEN')?' selected':null)?>>[OPEN] เปิดลงทะเบียน</option>
+                                        <option value="CLOSE"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='CLOSE')?' selected':null)?>>[CLOSE] ปิดลงทะเบียน</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -144,7 +191,9 @@
                             <tr>
                                 <th scope="col" class="no col-first">#</th>
                                 <th scope="col" class="name">กิจกรรม</th>
-                                <th scope="col" class="status"><span class="on-top-down">&darr;</span> คลิก</th>
+                                <th scope="col" class="status text-center" style="width: 180px;">
+                                    <span class="on-top-down">&darr;</span> <?=Lang::get('ลงทะเบียนที่นี่')?>
+                                </th>
                                 <th scope="col" class="actions act-3 col-last">&nbsp;</th>
                             </tr>
                         </thead>
@@ -171,4 +220,35 @@
     </form>
 </section>
 <div id="ManageDialog" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="false" aria-modal="true"></div>
+<style>
 
+</style>
+<script type="text/javascript">
+function register_event(events_id){
+    $("#ManageDialog").load("<?=$form?>/filter/register.php", { 'events_id': events_id, 'form_as': '<?=$form?>' }, function(response, status, xhr){
+        if(status=="error"){
+            alert("เกิดข้อผิดพลาด");
+        }
+    });
+}
+$(document).ready(function(){
+    $("form[name='filter'] .filter-search select").change(function(){
+        $("form[name='filter'] button[type='submit']").click();
+    });
+    $("form[name='filter'] .filter-search input[name='condition[start_date]']").change(function(){
+        $("form[name='filter'] button[type='submit']").click();
+    });
+    $("form[name='filter'] .filter-search input[name='condition[end_date]']").change(function(){
+        $("form[name='filter'] button[type='submit']").click();
+    });
+    $("form[name='filter'] .filter-search .btn-clear").click(function(){
+        $("form[name='filter'] input[name='pages']").val(0);
+        $("form[name='filter'] input[name='keyword']").val(null);
+        $("form[name='filter'] .filter-search select").val('ALL');
+        $("form[name='filter'] .filter-search .form-control").val(null);
+        $("form[name='filter'] .filter-pagination select").val(1);
+        $("form[name='filter'] button[type='submit']").click();
+    });
+    $(".table-filter").tablefilter({'keyword':'auto'});
+});
+</script>
