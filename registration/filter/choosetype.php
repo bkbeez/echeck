@@ -103,11 +103,14 @@
             <div class="container">
                 <div class="filter-box">
                     <div class="row">
+                        
                         <div class="col-md-12 text-center">
                             <h3 class="filter-title-white"><?=Lang::get('เลือกประเภทการลงทะเบียน')?></h3>
                         </div>
                         <div class="filter-menu text-center">
-                            <button type="button" class="btn btn-register" onclick="register_event('all')"><?=Lang::get('ลงทะเบียนผู้เข้าร่วมทั้งหมด')?></button>
+                            <button type="button" class="btn btn-register" onclick="register_event('all')"><i class=""><?=Lang::get('ลงทะเบียนผู้เข้าร่วมทั้งหมด')?></i></button>
+                            <button type="button" class="btn btn-register" onclick="register_event('all')"<?= Lang::get('แสงดผลการลงทะเบียน (Dashboard Checkin)') ?>?></button>
+                            <button type="button" class="btn btn-register" onclick="register_event('all')"<?= Lang::get('') ?>?></button>
                             <button type="button" class="btn btn-register" onclick="register_event('all')"<?= Lang::get('') ?>?></button>
                         </div>
                     </div>

@@ -14,6 +14,7 @@
         $page = 1;
     }
     // Check
+    $condition = "";
     $parameters = array();
     // Owner and Shared
     $parameters['user_by'] = User::get('email');
