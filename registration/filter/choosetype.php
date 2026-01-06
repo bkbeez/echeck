@@ -96,4 +96,33 @@
         }
     }
 </style>
-
+<section class="table-filter">
+    <form name="filter" action="<?=$form?>/filter/search.php" method="POST" enctype="multipart/form-data" target="_blank">
+        <input type="hidden" name="filter_as" value="<?=$filter_as?>" />
+        <section class="wrapper bg-primary">
+            <div class="container">
+                <div class="filter-box">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h3 class="filter-title-white"><?=Lang::get('เลือกประเภทการลงทะเบียน')?></h3>
+                        </div>
+                        <div class="filter-menu text-center">
+                            <button type="button" class="btn btn-register" onclick="register_event('all')"><?=Lang::get('ลงทะเบียนผู้เข้าร่วมทั้งหมด')?></button>
+                            <button type="button" class="btn btn-register" onclick="register_event('all')"<?= Lang::get('') ?>?></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <input type="hidden" name="pages" value="<?=((isset($filter['pages'])&&$filter['pages'])?$filter['pages']:0)?>" />
+</section>
+<div id="ManageDialog" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="false" aria-modal="true"></div>
+<script type="text/javascript">
+    function register_event(events_id){
+        $("#ManageDialog").load("<?=$form?>/choosetype/index.php", { 'events_id': events_id }, function(response, status, xhr){
+            if(status=="error"){
+                alert("เกิดข้อผิดพลาด");
+            }
+        });
+    }
+</script>

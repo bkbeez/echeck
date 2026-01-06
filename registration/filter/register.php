@@ -1,127 +1,98 @@
-<?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
-<?php Auth::ajax(APP_PATH.'/admin/?users'); ?>
 <?php
-    $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );
+    if(!isset($index['page'])||$index['page']!='registration'){ header("location:".((isset($_SERVER['SERVER_PORT'])&&$_SERVER['SERVER_PORT']==443)?'https://':'http://').$_SERVER["HTTP_HOST"]); exit(); } 
 ?>
-<style type="text/css">
-    .modal-dialog .modal-header {
-        min-height: 100px;
-        background: #fef7ed;
-    }
-    .modal-dialog .modal-body {
-        margin-top: -30px;
-        padding-left: 35px;
-        padding-right: 35px;
-    }
-    .modal-dialog .modal-body>.alert {
-        padding: 5px 15px;
-    }
-    .modal-dialog .modal-footer button>i {
-        float: left;
-        font-size: 24px;
-        line-height: 24px;
-        margin-right: 3px;
-    }
-</style>
-<div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content modal-manage">
-        <form name="RecordForm" action="<?=$form?>/scripts/register.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
-            <input type="hidden" name="events_id" value="<?=((isset($_POST['events_id'])&&$_POST['events_id'])?$_POST['events_id']:null)?>"/>
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h2 class="mb-0 text-blue text-start on-text-oneline"><i class="uil uil-user-plus" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> ลงทะเบียนกิจกรรม</h2>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-warning alert-icon mb-2">
-                    <div class="form-floating form-select-wrapper mb-1">
-                        <select id="type" name="type" class="form-select" aria-label="...">
-                            <option value="EMPLOYEE" selected>พนักงาน</option>
-                            <option value="STUDENT">นักศึกษา</option>
-                            <option value="OTHER">บุคคลทั่วไป</option>
-                        </select>
-                        <label for="type">ประเภทผู้เข้าร่วม <span class="text-red">*</span></label>
-                    </div>
+<?php $index['page'] = 'registration'; ?>
+<?php
+$form = APP_PATH.'/registration';
+$events_id = isset($_GET['events_id']) ? $_GET['events_id'] : (isset($_POST['events_id']) ? $_POST['events_id'] : '');
+$type = isset($_GET['type']) ? $_GET['type'] : (isset($_POST['type']) ? $_POST['type'] : '');
+?>
+<?php
+if($_SERVER['REQUEST_METHOD'] == 'GET' && $events_id && $type){
+    include(APP_HEADER);
+    echo '<section class="wrapper"><div class="container"><div class="row justify-content-center"><div class="col-md-8">';
+    echo '<div id="registerModal" class="modal fade show" style="display:block;" data-bs-backdrop="static" data-bs-keyboard="false">';
+}else{
+    echo '<div class="modal-dialog">';
+}
+?>
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">ลงทะเบียนกิจกรรม</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+        <div class="modal-body">
+            <form id="registerForm">
+            <input type="hidden" name="events_id" value="<?=$events_id?>">
+            <input type="hidden" name="type" value="<?=$type?>">
+                <div class="row">
+                    <?php if($type == 'student'){ ?>
+                        <div class="col-md-12 mb-3">
+                            <label>รหัสนักศึกษา</label>
+                            <input type="text" name="student_id" class="form-control" required>
+                        </div>
+                    <?php } ?>
+                        <div class="col-md-6 mb-3">
+                            <label>คำนำหน้า</label>
+                            <select name="prefix" class="form-control" required>
+                                <option value="">เลือก</option>
+                                <option value="นาย">นาย</option>
+                                <option value="นาง">นาง</option>
+                                <option value="นางสาว">นางสาว</option>
+                                <option value="ดร.">ดร.</option>
+                                <option value="ผศ.">ผศ.</option>
+                                <option value="รศ.">รศ.</option>
+                                <option value="ศ.">ศ.</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>ชื่อ</label>
+                            <input type="text" name="first_name" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label>นามสกุล</label>
+                            <input type="text" name="last_name" class="form-control" required>
+                        </div>
+                            <div class="col-md-6 mb-3">
+                            <label>อีเมล</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+                        <?php if($type != 'student'){ ?>
+                        <div class="col-md-12 mb-3">
+                            <label>องค์กร/หน่วยงาน</label>
+                            <input type="text" name="organization" class="form-control">
+                        </div>
+                    <?php } ?>
                 </div>
-                <div class="alert alert-warning alert-icon mb-2">
-                    <p class="lead text-dark mb-1 text-start on-text-oneline">ข้อมูลผู้เข้าร่วม</p>
-                    <div class="form-floating mb-1">
-                        <input id="email" name="email" value="<?=User::get('email')?>" type="email" class="form-control" placeholder="...">
-                        <label for="email">อีเมล <span class="text-red">*</span></label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <input id="prefix" name="prefix" value="" type="text" class="form-control" placeholder="...">
-                        <label for="prefix">คำนำหน้า</label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <input id="firstname" name="firstname" value="<?=User::get('firstname')?>" type="text" class="form-control" placeholder="...">
-                        <label for="firstname">ชื่อ <span class="text-red">*</span></label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <input id="lastname" name="lastname" value="<?=User::get('lastname')?>" type="text" class="form-control" placeholder="...">
-                        <label for="lastname">สกุล</label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <input id="organization" name="organization" value="<?=User::get('organization')?>" type="text" class="form-control" placeholder="...">
-                        <label for="organization">สังกัด <span class="text-red">*</span></label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <input id="department" name="department" value="" type="text" class="form-control" placeholder="...">
-                        <label for="department">ฝ่าย/แผนก</label>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer text-center">
-                <div class="row gx-1 row-button">
-                    <div class="col-lg-6 col-md-6 pt-1">
-                        <button type="submit" class="btn btn-lg btn-blue rounded-pill w-100"><i class="uil uil-check-circle"></i>ลงทะเบียน</button>
-                    </div>
-                    <div class="col-lg-6 col-md-6 pt-1">
-                        <button type="button" class="btn btn-lg btn-outline-danger rounded-pill w-100" data-bs-dismiss="modal"><i class="uil uil-times-circle"></i>ยกเลิก</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+        <button type="button" class="btn btn-primary" onclick="submit_register()">ลงทะเบียน</button>
     </div>
 </div>
+<?php
+if($_SERVER['REQUEST_METHOD'] == 'GET' && $events_id && $type){
+    echo '</div></div></div></div></section>';
+    include(APP_FOOTER);
+}else{
+    echo '</div>';
+}
+?>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $("form[name='RecordForm']").ajaxForm({
-            beforeSubmit: function (formData, jqForm, options) {
-                $("form[name='RecordForm'] label>span>font").remove();
-                runStart();
-            },
-            success: function(rs) {
-                runStop();
-                var data = JSON.parse(rs);
-                if(data.status=='success'){
-                    $("form[name='RecordForm'] .modal-header, form[name='RecordForm'] .modal-body, hr").hide();
-                    var htmls ='<div class="d-flex flex-row text-start" style="margin-top:15px;">';
-                        htmls +='<div style="margin-top:-5px;"><span class="icon btn btn-circle btn-lg btn-success pe-none me-4"><i class="uil uil-check"></i></span></div>';
-                        htmls +='<div class="text-primary" style="font-weight:normal;">';
-                            htmls += data.title;
-                        htmls +='</div>';
-                    htmls +='</div>';
-                    $("form[name='RecordForm'] .modal-footer").html(htmls);
-                    setTimeout(function(){
-                        $("#ManageDialog").modal('hide');
-                        // Reload the page or update the table
-                        location.reload();
-                    }, 2000);
-                }else{
-                    if(data.onfocus){
-                        $("#"+data.onfocus).focus();
-                        $("#"+data.onfocus).parent().find("label").append("<font class='text-red'> "+data.message+"</font>");
-                    }else if(data.onselect){
-                        $("#"+data.onselect).parent().find("label").append("<font class='text-red'> "+data.message+"</font>");
-                    }else{
-                        alert(data.message);
-                    }
-                }
-            },
-            error: function() {
-                runStop();
-                alert("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+function submit_register(){
+    $.post("<?=$form?>/scripts/register.php", $("#registerForm").serialize(), function(data){
+        try {
+            var response = JSON.parse(data);
+            if(response.status == 'success'){
+                alert(response.title);
+                window.location.href = "<?=$form?>";
+            } else {
+                alert(response.title);
             }
-        });
+        } catch(e) {
+            alert("เกิดข้อผิดพลาด");
+        }
     });
+}
 </script>

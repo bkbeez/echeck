@@ -4,7 +4,7 @@
     $link = APP_PATH.'/'.$index['page'];
     $form = APP_PATH.'/'.$index['page'];
     if( !Auth::check() ){
-        $_SESSION['login_redirect'] = APP_HOME.'/'.$index['page']; 
+        $_SESSION['login_redirect'] = APP_HOME.'/'.$index['page'];
         header('Location: '.APP_HOME.'/login');
         exit;
     }
@@ -14,7 +14,7 @@
         $index['back'] = $link;
         $loadpage = 'lists/index.php';
     }else{
-        $index['view'] = 'lists';
+        $index['view'] = 'filter';
         $loadpage = 'filter/index.php';
     }
 ?>

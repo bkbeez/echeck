@@ -225,11 +225,7 @@
 </style>
 <script type="text/javascript">
 function register_event(events_id){
-    $("#ManageDialog").load("<?=$form?>/filter/register.php", { 'events_id': events_id, 'form_as': '<?=$form?>' }, function(response, status, xhr){
-        if(status=="error"){
-            alert("เกิดข้อผิดพลาด");
-        }
-    });
+    window.location.href = "<?=$form?>/choosetype/index.php?events_id=" + events_id;
 }
 $(document).ready(function(){
     $("form[name='filter'] .filter-search select").change(function(){

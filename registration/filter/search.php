@@ -130,7 +130,7 @@
                     $htmls .= '</td>';
                     $htmls .= '<td class="status text-center">';
                         if($row['status'] == 1){
-                            $htmls .= '<button class="btn btn-register" onclick="register_event(\'/checkin/index.php'.$row['events_id'].'\')">ลงทะเบียน</button>';
+                            $htmls .= '<button class="btn btn-register" onclick="register_event(\'choosetype.php/index.php'.$row['events_id'].'\')">ลงทะเบียน</button>';
                         } else {
                             $htmls .= '<span class="badge bg-secondary">ปิดลงทะเบียน</span>';
                         }
@@ -159,8 +159,8 @@
                             $htmls .= '<span class="icon-o">'.$status.$manage.'</span>';
                         $htmls.= '</div>';
                         $htmls .= '<font>'.$row['events_name'].'</font>';
-                        if( $row['participants']>0||$row['participant_type']=='LIST' ){
-                            $htmls .= ' <span class="badge badge-list badge-sm bg-pale-grape text-grape rounded me-1 align-self-start" onclick="manage_events(\'participant\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-users-alt"></i><sup><b class="fs-13">'.$row['participants'].'</b> รายชื่อ</sup></span>';
+                        if( $row['list']>0||$row['participant_type']=='LIST' ){
+                            $htmls .= ' <span class="badge badge-list badge-sm bg-pale-grape text-grape rounded me-1 align-self-start" onclick="manage_events(\'list\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-users-alt"></i><sup><b class="fs-13">'.$row['list'].'</b> รายชื่อ</sup></span>';
                         }
                         $htmls .= '<div class="date-o">';
                             $htmls .= '<i class="uil uil-calendar-alt"></i> ';
