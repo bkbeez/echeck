@@ -1,7 +1,7 @@
 <?php
     if(!isset($index['page'])||$index['page']!='registration'){ header("location:".((isset($_SERVER['SERVER_PORT'])&&$_SERVER['SERVER_PORT']==443)?'https://':'http://').$_SERVER["HTTP_HOST"]); exit(); } 
 ?>
-<?php 
+<?php
     $filter_as = strtolower($index['page'].'_event_as');
     $filter = ( isset($_SESSION['login']['filter'][$filter_as]) ? $_SESSION['login']['filter'][$filter_as] : null );
 ?>
@@ -157,18 +157,6 @@
                                         <option value="LIST"<?=((isset($filter['condition']['participant_type'])&&$filter['condition']['participant_type']=='LIST')?' selected':null)?>>[LIST] เฉพาะผู้ที่มีรายชื่อ</option>
                                     </select>
                                 </div>
-                                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                                    <div class="form-floating mb-1">
-                                        <input name="condition[start_date]" type="text" value="<?=((isset($filter['condition']['start_date'])&&$filter['condition']['start_date'])?$filter['condition']['start_date']:null)?>" class="form-control" data-provide="datepicker" data-date-language="th-th" pattern="\d{1,2}/\d{1,2}/\d{4}" autocomplete="off" placeholder="..." minlength="10" maxlength="10" onkeyup="this.value=this.value.replace(/[^0-9/:]/g,'');"/>
-                                        <label>วันที่เริ่มต้น</label>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-                                    <div class="form-floating mb-1">
-                                        <input name="condition[end_date]" type="text" value="<?=((isset($filter['condition']['end_date'])&&$filter['condition']['end_date'])?$filter['condition']['end_date']:null)?>" class="form-control" data-provide="datepicker" data-date-language="th-th" pattern="\d{1,2}/\d{1,2}/\d{4}" autocomplete="off" placeholder="..." minlength="10" maxlength="10" onkeyup="this.value=this.value.replace(/[^0-9/:]/g,'');"/>
-                                        <label>วันที่สิ้นสุด</label>
-                                    </div>
-                                </div>
                                 <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
                                     <select name="condition[status]" class="form-select mb-1">
                                         <option value="ALL"<?=((!isset($filter['condition']['status'])||$filter['condition']['status']=='ALL')?' selected':null)?>>แสดงทุกสถานะ...</option>
@@ -224,8 +212,17 @@
 
 </style>
 <script type="text/javascript">
-function register_event(events_id){
-    window.location.href = "<?=$form?>/choosetype/index.php?events_id=" + events_id;
+function manage_events(action, params){
+    if(action=='checkin'){
+        params['form_as']='<?=$form?>';
+        $("#ManageDialog").load("<?=$form?>/filter/checkin.php", params, function(response, status, xhr){
+                if(status=="error"){
+                    $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
+                }else{
+                    $("#ManageDialog").modal('show');
+                }
+            });
+    }
 }
 $(document).ready(function(){
     $("form[name='filter'] .filter-search select").change(function(){

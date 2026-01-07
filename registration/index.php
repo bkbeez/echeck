@@ -9,10 +9,10 @@
         exit;
     }
     $loadpage = null;
-    if( isset($_GET['list']) ){
-        $index['view'] = 'lists';
+    if( isset($_GET['choosetype']) ){
+        $index['view'] = 'choosetype';
         $index['back'] = $link;
-        $loadpage = 'lists/index.php';
+        $loadpage = 'choosetype/index.php';
     }else{
         $index['view'] = 'filter';
         $loadpage = 'filter/index.php';
