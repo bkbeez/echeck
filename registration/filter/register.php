@@ -154,7 +154,6 @@
 </div>
 
 <script type="text/javascript">
-    // ฟังก์ชันสลับ Tab (รายชื่อ / QR Code)
     function changeTab(mode) {
         $('.tab-btn').removeClass('active');
         if(mode === 'list') {
