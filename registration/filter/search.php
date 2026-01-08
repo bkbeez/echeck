@@ -60,13 +60,14 @@
         $btns = '';
         
         if($row['status'] == 1) {
-    $status_btn = '<span class="badge bg-green text-white rounded"><i class="uil uil-play"></i> เปิดให้ลงทะเบียน</span>';
-    $btns .= '<button onclick="manage_events(\'register\', {events_id:\''.$row['events_id'].'\'});"
-                class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm"
-                style="width: 45px; height: 45px;"
-                title="สแกน QR Code">
-                <i class="uil uil-qrcode-scan" style="font-size: 22px;"></i>
-                </button>';
+        $status_btn = '<span class="badge bg-green text-white rounded"><i class="uil uil-play"></i> เปิดให้ลงทะเบียน</span>';
+        $btns .= '<button onclick="manage_events(\'register\', {events_id:\''.$row['events_id'].'\'});" 
+            class="btn btn-primary rounded-3 d-flex align-items-center justify-content-center shadow-sm px-3" 
+            style="height: 38px; min-width: 120px; border: none; transition: all 0.3s ease; gap: 8px;" 
+            title="ลงทะเบียนกิจกรรม">
+            <i class="uil uil-qrcode-scan" style="font-size: 1.2rem;"></i>
+            <span style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0;">ลงทะเบียน</span>
+            </button>';
         } else if($row['status'] == 2) {
             $status_btn = '<span class="badge bg-red text-white rounded">ปิดกิจกรรม</span>';
             $btns = '<button disabled class="btn btn-sm btn-secondary w-100 rounded-pill">ปิดระบบแล้ว</button>';
@@ -82,25 +83,27 @@
         $htmls .= ' <div class="small text-muted"><i class="uil uil-clock"></i> เริ่ม: '.$row['start_date_display'].' '.$row['start_time_display'].'</div>';
         $htmls .= ' <div class="mt-1">'.$status_btn.'</div>';
         $htmls .= '</td>';
-        
+        $htmls .= '<td class="text-center">';
+        $htmls .= $btns;
+        $htmls .= '</td>';
         $htmls .= '<td class="text-center">';
         $htmls .= ' <div class="fs-14 fw-bold text-primary">'.$row['registered_count'].'</div>';
         $htmls .= ' <div class="small text-muted">คนลงทะเบียน</div>';
         $htmls .= '</td>';
-
-        $htmls .= '<td class="actions">';
-        $htmls .= ' <div class="d-flex justify-content-center align-items-center">';
-        $htmls .= $btns;
-        $htmls .= ' </div>';
+        $htmls .= '<td class="text-center">';
+        $htmls .= ' <div class="fs-14 fw-bold text-primary"></div>';
         $htmls .= '</td>';
         $htmls .= '</tr>';
+
+
+
+        
     }
 } else {
-    $htmls = '<tr><td colspan="4" class="text-center p-4">ไม่พบกิจกรรมที่สามารถเช็คอินได้</td></tr>';
+    $htmls = '<tr><td colspan="4" class="text-center p-4">ไม่พบกิจกรรมที่เปิดให้ลงทะเบียน</td></tr>';
 }
 
     $result['htmls'] = $htmls;
     echo json_encode($result);
     exit();
 ?>
-

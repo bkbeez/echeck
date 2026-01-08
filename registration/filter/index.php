@@ -60,10 +60,11 @@
         background: red !important;
     }
     .on-top-down {
-        width: 100px;
-        height: 100px;
-        position: relative;
-        animation: mymove 0.8s infinite;
+        display: inline-block;
+        font-weight: bold;
+        color: #5d5fef;
+        font-size: 22px;
+        animation: bounce 1s infinite;
     }
     @keyframes mymove {
         0%   {top: 0px;}
@@ -94,10 +95,14 @@
         .table-filter .filter-result .actions .btn-box.delete {
             margin-top: -4px;
         }
-    .btn-primary.rounded-circle:hover {
-        transform: scale(1.1);
-        transition: transform 0.2s;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+    .btn-primary.rounded-3 {
+        background-color: #5d5fef;
+        border: none;
+    }
+    .btn-primary.rounded-3:hover {
+        background-color: #4a4cd9;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(93, 95, 239, 0.4) !important;
     }
 }
 </style>
@@ -110,7 +115,12 @@
                 <div class="filter-box">
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <h3 class="filter-title-white"><?=Lang::get('เลือกกิจกรรม เพื่อลงทะเบียน')?></h3>
+                            <h3 class="filter-title-white d-flex align-items-center justify-content-center text-white">
+                                <i class="uil uil-calendar-alt me-2" style="font-size: 32px; color: #ffffff;"></i>
+                                <span style="font-weight: 600; letter-spacing: 0.5px; color: #ffffff;">
+                                    <?=Lang::get('เลือกกิจกรรม เพื่อลงทะเบียน')?>
+                                </span>
+                            </h3>
                         </div>
                         <div class="filter-search">
                             <div class="row">
@@ -163,10 +173,15 @@
                             <tr>
                                 <th scope="col" class="no col-first">#</th>
                                 <th scope="col" class="name">กิจกรรม</th>
-                                <th scope="col" class="status text-center" style="width: 180px;">
+                                <th scope="col" class="actions text-strrt" style="width: 180px;">
                                     <span class="on-top-down">&darr;</span> <?=Lang::get('ลงทะเบียนที่นี่')?>
                                 </th>
-                                <th scope="col" class="actions act-3 col-last">&nbsp;</th>
+                                <th scope="col" class="status text-start" style="width: 180px;">
+                                    <span class="on-top-down">&darr;</span> <?=Lang::get('จำนวนผู้ลงทะเบียน')?>
+                                </th>
+                                <th scope="col" class="status text-start" style="width: 180px;">
+                                    <span class="on-top-down">&darr;</span> <?=Lang::get('คลิก')?>
+                                </th>
                             </tr>
                         </thead>
                         <tbody></tbody>

@@ -7,7 +7,6 @@
     $lists = DB::sql("SELECT * FROM events_lists WHERE events_id = :id ORDER BY firstname ASC", ['id'=>$events_id]);
 ?>
 <style type="text/css">
-    /* จัดการ Modal Layout */
     .modal-manage .modal-content {
         border-radius: 20px;
         overflow: hidden;
@@ -91,13 +90,24 @@
         font-size: 0.9rem;
         font-weight: 500;
     }
+    .icon-qrcode-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 2px solid #5d5fef;
+        color: #5d5fef;
+        margin-right: 10px;
+    }
 </style>
 <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content modal-manage shadow-lg">
         <div class="modal-header">
             <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
             <div class="regis-title">ลงทะเบียน</div>
-            <div class="event-info">ชื่อกิจกรรม : <span class="text-primary"><?=($event['events_name'] ?? 'ไม่ได้ระบุ')?></span></div>
+            <div class="event-info text-start">ชื่อกิจกรรม : <span class="text-primary"><?=($event['events_name'] ?? 'ไม่ได้ระบุ')?></span></div>
             <div class="tab-container">
                 <button type="button" class="tab-btn active" id="btn-list" onclick="changeTab('list')">รายชื่อ</button>
                 <button type="button" class="tab-btn" id="btn-qr" onclick="changeTab('qr')">QR Code</button>
@@ -144,10 +154,9 @@
             </div>
             <div id="pane-qr" style="display: none;" class="text-center py-5">
                 <div class="mb-4">
-                    <i class="uil uil-qrcode-scan" style="font-size: 100px; color: #0d6efd;"></i>
+                    <i class="uil uil-qrcode-scan" style="font-size: 100px; color: #5d5fef;"></i>
                 </div>
                 <h5 class="fw-bold">สแกนเพื่อเช็คอิน</h5>
-                <p class="text-muted">กำลังเตรียมระบบเปิดกล้องสแกน...</p>
             </div>
         </div>
     </div>
