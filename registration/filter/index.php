@@ -94,28 +94,12 @@
         .table-filter .filter-result .actions .btn-box.delete {
             margin-top: -4px;
         }
+    .btn-primary.rounded-circle:hover {
+        transform: scale(1.1);
+        transition: transform 0.2s;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
     }
-    .filter-title-white {
-        color: #ffffff; 
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
-    .btn-register {
-        background-color: #0dbf36ff;
-        color: white;
-        transition: all 0.3s;
-        font-weight: bold;
-    }
-
-    .btn-register:hover {
-        background-color: #218838;
-        transform: scale(1.05);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-    .table-filter .btn-sm {
-        padding: 0.25rem 0.8rem;
-        font-size: 0.85rem;
-    }
+}
 </style>
 <section class="table-filter">
     <form name="filter" action="<?=$form?>/filter/search.php" method="POST" enctype="multipart/form-data" target="_blank">
@@ -213,9 +197,9 @@
 </style>
 <script type="text/javascript">
 function manage_events(action, params){
-    if(action=='checkin'){
+    if(action=='register'){
         params['form_as']='<?=$form?>';
-        $("#ManageDialog").load("<?=$form?>/filter/checkin.php", params, function(response, status, xhr){
+        $("#ManageDialog").load("<?=$form?>/filter/register.php", params, function(response, status, xhr){
                 if(status=="error"){
                     $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
                 }else{
@@ -244,4 +228,5 @@ $(document).ready(function(){
     });
     $(".table-filter").tablefilter({'keyword':'auto'});
 });
+
 </script>
