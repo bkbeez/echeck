@@ -219,9 +219,9 @@
                 <thead>
                     <tr>
                         <th width="5%">#</th>
-                        <th width="30%" class="text-start">ชื่อ-นามสกุล</th>
+                        <th width="20%" class="text-start">ชื่อ-นามสกุล</th>
                         <th width="20%">ตำแหน่ง/หน่วยงาน</th>
-                        <th width="10%">ประเภท</th>
+                        <th width="15%">ประเภท</th>
                         <th width="15%">วันที่ลงทะเบียน</th>
                         <th width="10%">สถานะ</th>
                         <th width="10%">จัดการ</th>
