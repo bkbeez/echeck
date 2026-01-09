@@ -95,16 +95,26 @@
         .table-filter .filter-result .actions .btn-box.delete {
             margin-top: -4px;
         }
-    .btn-primary.rounded-3 {
-        background-color: #5d5fef;
-        border: none;
+        .btn-primary.rounded-3 {
+            background-color: #5d5fef;
+            border: none;
+        }
+        .btn-primary.rounded-3:hover {
+            background-color: #4a4cd9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(93, 95, 239, 0.4) !important;
+        }
     }
-    .btn-primary.rounded-3:hover {
-        background-color: #4a4cd9;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(93, 95, 239, 0.4) !important;
+    .btn-soft-orange {
+        background-color: rgba(255, 165, 0, 0.1);
+        color: #ff8c00;
+        border: 1px solid rgba(255, 165, 0, 0.2);
     }
-}
+    .btn-soft-orange:hover {
+        background-color: #ff8c00;
+        color: #ffffff;
+    }
+    .me-2 { margin-right: 0.5rem !important; }
 </style>
 <section class="table-filter">
     <form name="filter" action="<?=$form?>/filter/search.php" method="POST" enctype="multipart/form-data" target="_blank">
@@ -221,6 +231,15 @@ function manage_events(action, params){
                     $("#ManageDialog").modal('show');
                 }
             });
+    }else if(action=='edit'){
+        params['form_as']='<?=$form?>';
+        $("#ManageDialog").load("<?=$form?>/filter/edit.php", params, function(response, status, xhr){
+                if(status=="error"){
+                    $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
+                }else{
+                    $("#ManageDialog").modal('show');
+                }
+        });
     }
 }
 $(document).ready(function(){

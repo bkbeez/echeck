@@ -75,7 +75,6 @@
             $status_btn = '<span class="badge bg-orange text-white rounded">แบบร่าง</span>';
             $btns = '<button disabled class="btn btn-sm btn-secondary w-100 rounded-pill">ยังไม่เปิด</button>';
         }
-
         $htmls .= '<tr>';
         $htmls .= '<td class="text-center">'.$row_no.'</td>';
         $htmls .= '<td>';
@@ -91,7 +90,10 @@
         $htmls .= ' <div class="small text-muted">คนลงทะเบียน</div>';
         $htmls .= '</td>';
         $htmls .= '<td class="text-center">';
-        $htmls .= ' <div class="fs-14 fw-bold text-primary"></div>';
+        $htmls .= '<button type="button" class="btn btn-sm btn-soft-orange me-2" onclick="manage_events(\'edit\', {events_id: \''.$row['events_id'].'\'}) " title="แก้ไขผู้ลงทะเบียน">
+                    <i class="uil uil-edit"></i></button>';
+        $htmls .= '<button type="button" class="btn btn-sm btn-primary rounded-3" onclick="manage_events(\'register\', {events_id: '.$row['events_id'].'})">
+                    <i class="uil uil-signin"></i></button>';
         $htmls .= '</td>';
         $htmls .= '</tr>';
 
