@@ -9,21 +9,21 @@
 ?>
 
 <style>
-    /* สไตล์ Modal หลัก: เน้นความคลีนและโค้งมน */
+
     .modal-manage .modal-content { 
         border-radius: 24px; 
         border: none;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.08); /* เงาบางๆ ทันสมัย */
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
         background-color: #ffffff;
         overflow: hidden;
     }
 
-    /* Header: ใช้สีม่วงโทน Soft หรือ Gradient บางๆ */
+
     .modal-manage .modal-header-custom {
         background: #fdfdff;
         padding: 25px 30px;
         color: #1a1b1f;
-        text-align: left; /* เปลี่ยนเป็นชิดซ้ายให้ดู Professional */
+        text-align: left;
         position: relative;
         border-bottom: 1px solid #f0f0f5;
     }
@@ -35,7 +35,6 @@
         margin-bottom: 5px;
     }
 
-    /* แถบค้นหาและ Filter */
     .search-group-wrapper {
         padding: 20px 30px;
         background: #fff;
@@ -75,7 +74,6 @@
         border: none;
     }
 
-    /* สไตล์ตาราง: เรียบง่าย แถวสูง ดูไม่อึดอัด */
     .table-responsive-custom {
         padding: 0 20px 20px 20px;
     }
@@ -115,7 +113,6 @@
         font-size: 0.95rem;
     }
 
-    /* Badge สถานะ: สีพาสเทล */
     .badge-status-index {
         background: #ecfdf3;
         color: #10b981;
@@ -124,8 +121,7 @@
         font-size: 0.8rem;
         font-weight: 600;
     }
-
-    /* ปุ่มลบ: เน้นความมินิมอล */
+    
     .btn-delete-soft {
         color: #ed2e7e;
         background: transparent;

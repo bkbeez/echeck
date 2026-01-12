@@ -182,12 +182,12 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="no col-first">#</th>
-                                <th scope="col" class="name">กิจกรรม</th>
-                                <th scope="col" class="actions text-strrt" style="width: 180px;">
-                                    <span class="on-top-down">&darr;</span> <?=Lang::get('ลงทะเบียนที่นี่')?>
-                                </th>
-                                <th scope="col" class="status text-start" style="width: 180px;">
+                                <th scope="col" class="name" style="width: 250px;">กิจกรรม</th>
+                                <th scope="col" class="status text-start" style="width: 120px;">
                                     <span class="on-top-down">&darr;</span> <?=Lang::get('จำนวนผู้ลงทะเบียน')?>
+                                </th>
+                                <th scope="col" class="actions text-strrt" style="width: 120px;">
+                                    <span class="on-top-down">&darr;</span> <?=Lang::get('ลงทะเบียนที่นี่')?>
                                 </th>
                                 <th scope="col" class="status text-start" style="width: 180px;">
                                     <span class="on-top-down">&darr;</span> <?=Lang::get('คลิก')?>
@@ -240,8 +240,13 @@ function manage_events(action, params){
                     $("#ManageDialog").modal('show');
                 }
         });
+    }else if(action=='pdf'){
+    window.open('<?=$form?>/filter/pdf.php?events_id=' + params['events_id'], '_blank');
+    }else if(action=='excel'){
+        window.open('<?=$form?>/filter/excel.php?events_id=' + params['events_id'], '_blank');
     }
 }
+
 $(document).ready(function(){
     $("form[name='filter'] .filter-search select").change(function(){
         $("form[name='filter'] button[type='submit']").click();
@@ -262,5 +267,4 @@ $(document).ready(function(){
     });
     $(".table-filter").tablefilter({'keyword':'auto'});
 });
-
 </script>
