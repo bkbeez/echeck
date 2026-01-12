@@ -143,7 +143,7 @@
                     </div>
                     <div class="row gx-1 row-button">
                         <div class="col-6 pt-1">
-                            <button type="submit" class="btn btn-lg btn-success btn-gift rounded fs-20 w-100"><i class="uil uil-check-circle" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> ลงทะเบียน</button>
+                            <button type="submit" class="btn btn-lg btn-success btn-gift rounded fs-20 w-100"><i class="uil uil-check-circle" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> เข้าร่วม</button>
                         </div>
                         <div class="col-6 pt-1">
                             <button type="button" class="btn btn-lg btn-danger rounded fs-20 w-100" onclick="check_events('cancel');"><i class="uil uil-times-circle" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> ยกเลิก</button>
