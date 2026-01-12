@@ -79,14 +79,14 @@
         $htmls = '<div class="d-flex flex-row on-success">';
             $htmls .= '<div style="display:none;"><div class="icon text-success me-2 mt-n3" style="font-size:52px;line-height:75px;"><i class="uil uil-check-circle"></i></div></div>';
             $htmls .= '<div style="display:none;">';
-                $htmls .= '<h5 class="mb-0 text-success on-font-primary">ลงทะเบียนแล้ว</h5>';
+                $htmls .= '<h5 class="mb-0 text-success on-font-primary">เข้าร่วมแล้ว</h5>';
                 $htmls .= '<p class="on-text-normal text-success" style="margin-top:-2px;line-height:18px;">';
                     $htmls .= '<i class="uil uil-calendar-alt"></i> '.Helper::date($parameters['date_checkin']).' '.$today->format("H:i:s");
                     $htmls .= '<br><i class="uil uil-envelopes"></i> '.$parameters['user_checkin'];
                 $htmls .= '</p>';
             $htmls .= '</div>';
         $htmls .= '</div>';
-        Status::success( "ลงทะเบียนเข้าร่วมเรียบร้อยแล้ว", array('title'=>"ลงทะเบียนแล้ว", 'htmls'=>$htmls) );
+        Status::success( "ลงทะเบียนเข้าร่วมเรียบร้อยแล้ว", array('title'=>"เข้าร่วมแล้ว", 'htmls'=>$htmls) );
     }
     Status::error( "ตรวจสอบข้อมูลของท่าน จากนั้นลองใหม่อีกครั้ง <i>!!!</i>", array('title'=>"ลงทะเบียนไม่ได้") );
 ?>
