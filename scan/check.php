@@ -2,7 +2,7 @@
 <?php
     $event = DB::one("SELECT events.*
                     , CONCAT(DATE_FORMAT(events.start_date,'%d/%m/'), (YEAR(events.start_date)+543),' เวลา ',DATE_FORMAT(events.start_date, '%H:%i')) AS start_date_display
-                    , CONCAT(DATE_FORMAT(events.end_date,'%d/%m/'), (YEAR(events.end_date)+543),' เวลา ',DATE_FORMAT(events.start_date, '%H:%i')) AS end_date_display
+                    , CONCAT(DATE_FORMAT(events.end_date,'%d/%m/'), (YEAR(events.end_date)+543),' เวลา ',DATE_FORMAT(events.end_date, '%H:%i')) AS end_date_display
                     FROM events
                     WHERE events.events_id=:events_id
                     LIMIT 1;"
@@ -91,7 +91,7 @@
 </style>
 <section class="wrapper bg-primary">
     <div class="container">
-        <h3 class="on-font-primary text-white text-center pb-3"><?=( (isset($data['events_name'])&&$data['events_name']) ? $data['events_name'] : 'กิจกรรม' )?></h3>
+        <h3 class="on-font-primary text-white text-center pb-3"><?=( (isset($event['events_name'])&&$event['events_name']) ? $event['events_name'] : 'กิจกรรม' )?></h3>
     </div>
 </section>
 <section class="wrapper today-body">

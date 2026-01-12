@@ -13,9 +13,17 @@
             $input = json_decode($json_payload, true);
             if(json_last_error() === JSON_ERROR_NONE){
                 if( isset($input['events_id'])&&$input['events_id'] ){
-                    $info = DB::one("SELECT * FROM events WHERE events_id=:events_id LIMIT 1;", array('events_id'=>$input['events_id']));
+                    $event = DB::one("SELECT events.*
+                                    , CONCAT(DATE_FORMAT(events.start_date,'%d/%m/'), (YEAR(events.start_date)+543),' เวลา ',DATE_FORMAT(events.start_date, '%H:%i')) AS start_date_display
+                                    , CONCAT(DATE_FORMAT(events.end_date,'%d/%m/'), (YEAR(events.end_date)+543),' เวลา ',DATE_FORMAT(events.end_date, '%H:%i')) AS end_date_display
+                                    FROM events
+                                    WHERE events.events_id=:events_id
+                                    LIMIT 1;"
+                                    , array('events_id'=>$input['events_id'])
+                    );
+
                     http_response_code(200);
-                    echo json_encode(['status' => 'success', 'info'=>$info]);
+                    echo json_encode(['status' => 'success', 'info'=>$event]);
                     exit();
                 }else{
                     http_response_code(400);
