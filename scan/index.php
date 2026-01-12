@@ -9,8 +9,8 @@
         header('Location: '.APP_HOME.'/login');
         exit;
     }
-    if( isset($_POST['result']) ){
-        $result = $_POST['result'];
+    if( isset($_POST['events_id']) ){
+        $events_id = $_POST['events_id'];
         include('check.php');
     }else{
         include('scan.php');

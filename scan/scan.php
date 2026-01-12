@@ -1,7 +1,4 @@
 <?php if(!isset($index['page'])||$index['page']!='scan'){ header("location:".((isset($_SERVER['SERVER_PORT'])&&$_SERVER['SERVER_PORT']==443)?'https://':'http://').$_SERVER["HTTP_HOST"]); exit(); } ?>
-<?php
-    $link = APP_PATH.'/'.$index['page'];
-?>
 <?php include(APP_HEADER); ?>
 <style type="text/css">
     body { background:url('<?=THEME_IMG?>/map.png') center center; }
@@ -175,7 +172,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3"></div>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <div class="card bg-primary mt-n4">
+                <div class="card bg-primary mt-n4 mb-3">
                     <div class="card-body text-white text-center" style="padding:5px 0 15px 0 !important;">
                         <span class="badge bg-pale-primary text-primary rounded-pill" style="padding-top:3px;line-height:20px;">Choose - Camera</span> &rarr; <span class="badge bg-pale-primary text-primary rounded-pill" style="padding-top:3px;line-height:20px;">Start</span>
                         <br><small class="text-white">* Use main camera or back camera</small>
@@ -217,7 +214,6 @@
             }
         }).done(function(rs) {
             runStop();
-            console.log(rs);
             if(rs.status=='success'){
                 $("body").append(rs.htmls);
                 $("form[name='OpenForm'] input[type='submit']").click();
@@ -232,7 +228,7 @@
                     'allowEscapeKey': false,
                     'allowOutsideClick': false,
                     'confirmButtonClass': 'btn btn-outline-danger',
-                    'confirmButtonText':'<span><?=Lang::get('Understand')?></span>',
+                    'confirmButtonText':'<span>รับทราบ</span>',
                     'buttonsStyling': false
                 }).then(
                     function () {
