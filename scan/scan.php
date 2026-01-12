@@ -177,7 +177,8 @@
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <div class="card bg-primary mt-n4">
                     <div class="card-body text-white text-center" style="padding:5px 0 15px 0 !important;">
-                        <span class="badge bg-pale-primary text-primary rounded-pill fs-15">ขอสิทธิ์ใช้กล้อง</span> &rang; <span class="badge bg-pale-primary text-primary rounded-pill fs-15">เลือกกล้องหลัง</span> &rang; <span class="badge bg-pale-primary text-primary rounded-pill fs-15">เริ่มสแกน</span>
+                        <span class="badge bg-pale-primary text-primary rounded-pill" style="padding-top:3px;line-height:20px;">Choose - Camera</span> &rarr; <span class="badge bg-pale-primary text-primary rounded-pill" style="padding-top:3px;line-height:20px;">Start</span>
+                        <br><small class="text-white">* Use main camera or back camera</small>
                     </div>
                 </div>
             </div>
