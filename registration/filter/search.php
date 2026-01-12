@@ -90,11 +90,11 @@
         $htmls .= $btns;
         $htmls .= '</td>';
         $htmls .= '<td class="text-center">';
-        $htmls .= '<button type="button" class="btn btn-sm btn-soft-orange me-1" onclick="manage_events(\'edit\', {events_id: \''.$row['events_id'].'\'}) " title="แก้ไขผู้ลงทะเบียน">
+        $htmls .= '<button type="button" class="btn btn-soft-orange rounded-circle me-1 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;" onclick="manage_events(\'edit\', {events_id: \''.$row['events_id'].'\'}) " title="แก้ไขผู้ลงทะเบียน">
                     <i class="uil uil-edit"></i></button>';
-        $htmls .= '<button type="button" class="btn btn-sm btn-danger text-white rounded-3 me-1" onclick="manage_events(\'pdf\', {events_id: \''.$row['events_id'].'\'})" title="พิมพ์รายงาน PDF">
+        $htmls .= '<button type="button" class="btn btn-danger text-white rounded-circle me-1 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;" onclick="manage_events(\'pdf\', {events_id: \''.$row['events_id'].'\'})" title="พิมพ์รายงาน PDF">
                     <i class="uil uil-print"></i></button>';
-        $htmls .= '<button type="button" class="btn btn-sm btn-success rounded-3" onclick="manage_events(\'excel\', {events_id: \''.$row['events_id'].'\'})" title="พิมพ์รายงาน Excel">
+        $htmls .= '<button type="button" class="btn btn-success text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;" onclick="manage_events(\'excel\', {events_id: \''.$row['events_id'].'\'})" title="พิมพ์รายงาน Excel">
                     <i class="uil uil-file-share-alt"></i></button>';
         $htmls .= '</td>';
         $htmls .= '</tr>';
