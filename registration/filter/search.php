@@ -83,23 +83,22 @@
         $htmls .= ' <div class="mt-1">'.$status_btn.'</div>';
         $htmls .= '</td>';
         $htmls .= '<td class="text-center">';
-        $htmls .= $btns;
-        $htmls .= '</td>';
-        $htmls .= '<td class="text-center">';
         $htmls .= ' <div class="fs-14 fw-bold text-primary">'.$row['registered_count'].'</div>';
         $htmls .= ' <div class="small text-muted">คนลงทะเบียน</div>';
         $htmls .= '</td>';
         $htmls .= '<td class="text-center">';
-        $htmls .= '<button type="button" class="btn btn-sm btn-soft-orange me-2" onclick="manage_events(\'edit\', {events_id: \''.$row['events_id'].'\'}) " title="แก้ไขผู้ลงทะเบียน">
+        $htmls .= $btns;
+        $htmls .= '</td>';
+        $htmls .= '<td class="text-center">';
+        $htmls .= '<button type="button" class="btn btn-soft-orange rounded-circle me-1 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;" onclick="manage_events(\'edit\', {events_id: \''.$row['events_id'].'\'}) " title="แก้ไขผู้ลงทะเบียน">
                     <i class="uil uil-edit"></i></button>';
-        $htmls .= '<button type="button" class="btn btn-sm btn-primary rounded-3" onclick="manage_events(\'register\', {events_id: '.$row['events_id'].'})">
-                    <i class="uil uil-signin"></i></button>';
+        $htmls .= '<button type="button" class="btn btn-danger text-white rounded-circle me-1 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;" onclick="manage_events(\'pdf\', {events_id: \''.$row['events_id'].'\'})" title="พิมพ์รายงาน PDF">
+                    <i class="uil uil-print"></i></button>';
+        $htmls .= '<button type="button" class="btn btn-success text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;" onclick="manage_events(\'excel\', {events_id: \''.$row['events_id'].'\'})" title="พิมพ์รายงาน Excel">
+                    <i class="uil uil-file-share-alt"></i></button>';
         $htmls .= '</td>';
         $htmls .= '</tr>';
 
-
-
-        
     }
 } else {
     $htmls = '<tr><td colspan="4" class="text-center p-4">ไม่พบกิจกรรมที่เปิดให้ลงทะเบียน</td></tr>';

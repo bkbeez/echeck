@@ -312,22 +312,52 @@
                     </table>
                 </div>
             </div>
-            <div id="pane-qr" style="display: none;" class="text-center py-5">
-                <div class="qr-scan-area animate__animated animate__zoomIn">
-                    <div class="qr-icon-wrapper">
-                        <div class="scan-line"></div>
-                        <i class="uil uil-qrcode-scan"></i>
+            //dasboard pane
+            <div id="pane-qr" style="display: none;" class="py-4">
+                <div class="row align-items-start">
+                    <div class="col-md-7 text-center border-end">
+                        <div class="qr-scan-area animate__animated animate__zoomIn">
+                            <div class="qr-icon-wrapper">
+                                <div class="scan-line"></div>
+                                <i class="uil uil-qrcode-scan"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <h4 class="fw-bold text-dark">พร้อมสำหรับการสแกน</h4>
+                            <p class="text-muted small">สแกนรหัสนักศึกษาเพื่อลงทะเบียน</p>
+                        </div>
+                        <div id="qr-status-msg" class="mt-3" style="display:none;">
+                            <span class="badge bg-soft-success text-success p-2 px-4 rounded-pill">
+                                <i class="uil uil-check-circle me-1"></i> ตรวจสอบข้อมูลสำเร็จ
+                            </span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="mt-3">
-                    <h4 class="fw-bold text-dark">พร้อมสำหรับการสแกน</h4>
-                </div>
+                    <div class="col-md-5">
+                        <div class="ps-3">
+                            <h5 class="fw-bold mb-3 text-start"><i class="uil uil-chart-bar text-primary"></i> สรุปยอดเข้างาน</h5>
+                            
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <div class="p-3 bg-white shadow-sm border rounded-3 text-center">
+                                        <div class="text-muted x-small" style="font-size: 0.75rem;">เช็คอินแล้ว</div>
+                                        <div class="h3 fw-bold text-success mb-0" id="dash-arrived">0</div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="p-3 bg-white shadow-sm border rounded-3 text-center">
+                                        <div class="text-muted x-small" style="font-size: 0.75rem;">ทั้งหมด</div>
+                                        <div class="h3 fw-bold text-primary mb-0" id="dash-total">0</div>
+                                    </div>
+                                </div>
+                            </div>
 
-                <div id="qr-status-msg" class="mt-4" style="display:none;">
-                    <span class="badge bg-soft-success text-success p-2 px-4 rounded-pill">
-                        <i class="uil uil-check-circle me-1"></i> ตรวจสอบข้อมูลสำเร็จ
-                    </span>
+                            <div class="text-start small fw-bold mb-2 text-muted">รายชื่อล่าสุด:</div>
+                            <div id="dash-recent-list" class="list-group list-group-flush shadow-sm rounded-3 overflow-hidden border">
+                                <div class="list-group-item text-center py-4 text-muted small">ยังไม่มีข้อมูล</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -377,4 +407,83 @@
             }
         });
     }
+    //dashboard auto update
+    var dashTimer = null;
+
+    function changeTab(mode) {
+        $('.tab-btn').removeClass('active');
+        $('#pane-list, #pane-qr, #pane-dash').hide();
+
+        if(mode === 'list') {
+            $('#btn-list').addClass('active');
+            $('#pane-list').fadeIn(200);
+            stopDashUpdate();
+        } else if(mode === 'qr') {
+            $('#btn-qr').addClass('active');
+            $('#pane-qr').fadeIn(200);
+            stopDashUpdate();
+        } else if(mode === 'dash') {
+            $('#btn-dash').addClass('active');
+            $('#pane-dash').fadeIn(200);
+            startDashUpdate();
+        }
+    }
+
+    function startDashUpdate() {
+        updateDashData();
+        dashTimer = setInterval(updateDashData, 3000);
+    }
+
+    function stopDashUpdate() {
+        if(dashTimer) clearInterval(dashTimer);
+    }
+
+    var dashTimer = null;
+
+    function changeTab(mode) {
+        $('.tab-btn').removeClass('active');
+        $('#pane-list, #pane-qr').hide();
+
+        if(mode === 'list') {
+            $('#btn-list').addClass('active');
+            $('#pane-list').fadeIn(200);
+            if(dashTimer) clearInterval(dashTimer);
+        } else {
+            $('#btn-qr').addClass('active');
+            $('#pane-qr').fadeIn(200);
+            updateDashData();
+            dashTimer = setInterval(updateDashData, 3000);
+        }
+    }
+    function updateDashData() {
+        $.ajax({
+            url: '/scripts/stats.php',
+            type: 'POST',
+            data: { events_id: '<?=$events_id?>' },
+            dataType: 'json',
+            success: function(res) {
+                $('#dash-arrived').text(res.arrived_count);
+                $('#dash-total').text('<?=count($lists)?>');
+                
+                if(res.lists.length > 0) {
+                    let html = '';
+                    res.lists.forEach(item => {
+                        html += `<tr>
+                            <td class="ps-2"><b>${item.student_id}</b></td>
+                            <td>${item.firstname}</td>
+                            <td class="text-end text-muted small">${item.checkin_time}</td>
+                        </tr>`;
+                    });
+                    $('#dash-recent-list').html(html);
+                } else {
+                    $('#dash-recent-list').html('<tr><td class="text-center text-muted">ยังไม่มีคนลงทะเบียน</td></tr>');
+                }
+            }
+        });
+    }
+    // อย่าลืมดักปิด Timer เมื่อ Modal ถูกปิด
+    $('.modal').on('hidden.bs.modal', function () {
+        stopDashUpdate();
+    });
+
 </script>
