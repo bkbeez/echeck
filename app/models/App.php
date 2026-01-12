@@ -37,6 +37,7 @@ class App {
                             $htmls .= '<p class="price fs-sm" style="margin-top:-10px;">'.User::get('email').'</p>';
                         $htmls .= '</div>';
                     $htmls .= '</div>';
+                    $htmls .= '<div class="card lift mt-2" onclick="document.location=\''.APP_HOME.'/scan\'" style="cursor:pointer;"><div class="card-body text-center" style="padding:45px 0 0 0 !important;"><i class="uil uil-qrcode-scan" style="font-size:128px;line-height:64px;"></i><h4>SCAN</h4></div></div>';
                     $htmls .= '<div class="offcanvas-footer flex-column text-center">';
                         /*$htmls .= '<div class="row text-center gx-0">';
                             $htmls .= '<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="float:none;width:50%;">';
@@ -183,44 +184,45 @@ class App {
             unset($_SESSION['deny']);
         }
         $htmls = '';
-        if( isset($index['addfooter']) ){
-            $htmls .= '<section class="wrapper bg-primary angled upper-start"></section>';
-        }
-        $htmls .= '<footer class="bg-primary text-white">';
-            $htmls .= '<div class="container pt-10 pb-1">';
-                $htmls .= '<div class="row gy-2 gy-lg-0">';
-                    $htmls .= '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 on-copyright">';
-                        $htmls .= '<div class="widget on-logo">';
-                            $htmls .= '<img src="'.THEME_IMG.'/logo/logo-o.png" srcset="'.THEME_IMG.'/logo/logo-o.png 2x" alt="" />';
+        if( !isset($index['hidefooter']) ){
+            if( isset($index['addfooter']) ){
+                $htmls .= '<section class="wrapper bg-primary angled upper-start"></section>';
+            }
+            $htmls .= '<footer class="bg-primary text-white">';
+                $htmls .= '<div class="container pt-10 pb-1">';
+                    $htmls .= '<div class="row gy-2 gy-lg-0">';
+                        $htmls .= '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 on-copyright">';
+                            $htmls .= '<div class="widget on-logo">';
+                                $htmls .= '<img src="'.THEME_IMG.'/logo/logo-o.png" srcset="'.THEME_IMG.'/logo/logo-o.png 2x" alt="" />';
+                            $htmls .= '</div>';
+                            $htmls .= '<p class="fs-14 mb-0">© '.date("Y").' '.APP_CODE.'. <br class="d-none d-lg-block">All rights reserved.</p>';
                         $htmls .= '</div>';
-                        $htmls .= '<p class="fs-14 mb-0">© '.date("Y").' '.APP_CODE.'. <br class="d-none d-lg-block">All rights reserved.</p>';
-                    $htmls .= '</div>';
-                    $htmls .= '<div class="col-xs-12 col-sm-12 col-md-9 col-lg-6">';
-                        $htmls .= '<div class="widget">';
-                            $htmls .= '<h4 class="widget-title text-white mb-1"><i class="uil uil-map-marker"></i> ติดต่อเรา</h4>';
-                            $htmls .= '<address class="fs-14 pe-xl-15 pe-xxl-17">';
-                                $htmls .= '<div class="on-text-oneline">'.APP_FACT_TH.'</div>';
-                                $htmls .= '<div>'.APP_ADDR_TH.'</div>';
-                            $htmls .= '</address>';
+                        $htmls .= '<div class="col-xs-12 col-sm-12 col-md-9 col-lg-6">';
+                            $htmls .= '<div class="widget">';
+                                $htmls .= '<h4 class="widget-title text-white mb-1"><i class="uil uil-map-marker"></i> ติดต่อเรา</h4>';
+                                $htmls .= '<address class="fs-14 pe-xl-15 pe-xxl-17">';
+                                    $htmls .= '<div class="on-text-oneline">'.APP_FACT_TH.'</div>';
+                                    $htmls .= '<div>'.APP_ADDR_TH.'</div>';
+                                $htmls .= '</address>';
+                            $htmls .= '</div>';
                         $htmls .= '</div>';
-                    $htmls .= '</div>';
-                    $htmls .= '<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">';
-                        $htmls .= '<div class="widget widget-phone">';
-                            $htmls .= '<h4 class="widget-title text-white mb-1"><i class="uil uil-phone-volume"></i> โทรศัพท์</h4>';
-                            $htmls .= '<p class="fs-14 mb-0 on-text-oneline">';
-                                $htmls .= '<i class="uil uil-forwaded-call"></i> '.APP_PHONE;
-                            $htmls .= '</p>';
-                            $htmls .= '<nav class="nav social social-white" style="margin-top:-5px;">';
-                                $htmls .= '<a href="https://www.edu.cmu.ac.th" target="_blank"><i class="uil uil-globe"></i></a>';
-                                $htmls .= '<a href="https://www.facebook.com/edu.cmu.ac.th" target="_blank"><i class="uil uil-facebook"></i></a>';
-                                $htmls .= '<a href="https://www.youtube.com/@predcmu4451" target="_blank"><i class="uil uil-youtube" target="_blank"></i></a>';
-                            $htmls .= '</nav>';
+                        $htmls .= '<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">';
+                            $htmls .= '<div class="widget widget-phone">';
+                                $htmls .= '<h4 class="widget-title text-white mb-1"><i class="uil uil-phone-volume"></i> โทรศัพท์</h4>';
+                                $htmls .= '<p class="fs-14 mb-0 on-text-oneline">';
+                                    $htmls .= '<i class="uil uil-forwaded-call"></i> '.APP_PHONE;
+                                $htmls .= '</p>';
+                                $htmls .= '<nav class="nav social social-white" style="margin-top:-5px;">';
+                                    $htmls .= '<a href="https://www.edu.cmu.ac.th" target="_blank"><i class="uil uil-globe"></i></a>';
+                                    $htmls .= '<a href="https://www.facebook.com/edu.cmu.ac.th" target="_blank"><i class="uil uil-facebook"></i></a>';
+                                    $htmls .= '<a href="https://www.youtube.com/@predcmu4451" target="_blank"><i class="uil uil-youtube" target="_blank"></i></a>';
+                                $htmls .= '</nav>';
+                            $htmls .= '</div>';
                         $htmls .= '</div>';
                     $htmls .= '</div>';
                 $htmls .= '</div>';
-            $htmls .= '</div>';
-        $htmls .= '</footer>';
-
+            $htmls .= '</footer>';
+        }
         return $htmls;
     }
 
