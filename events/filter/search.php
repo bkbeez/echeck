@@ -156,8 +156,8 @@
                     $htmls .= '<div>'.$manage.'</div>';
                 $htmls .= '</td>';
                 $htmls .= '<td class="actions act-3">';
-                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'list\', { \'events_id\':\''.$row['events_id'].'\' });" type="button" class="btn btn-sm btn-circle btn-outline-primary"><i class="uil uil-users-alt"></i></button><small class=b-tip>รายชื่อ</small></div>';
                     $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'events_id\':\''.$row['events_id'].'\' });" type="button" class="btn btn-sm btn-circle btn-outline-primary"><i class="uil uil-edit-alt"></i></button><small class=b-tip>แก้ไข</small></div>';
+                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'list\', { \'events_id\':\''.$row['events_id'].'\' });" type="button" class="btn btn-sm btn-circle btn-outline-primary"><i class="uil uil-users-alt"></i></button><small class=b-tip>รายชื่อ</small></div>';
                     $htmls .= '<div class="btn-box delete"><button type="button" onclick="manage_events(\'delete\', { \'events_id\':\''.$row['events_id'].'\', \'events_name\':\''.$row['events_name'].'\' });" class="btn btn-sm btn-circle btn-outline-danger"><i class="uil uil-trash-alt"></i></button><small class=b-tip>ลบ</small></div>';
                 $htmls .= '</td>';
             $htmls .= '</tr>';
