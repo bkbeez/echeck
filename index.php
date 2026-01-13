@@ -39,7 +39,13 @@
                     <span class="typer text-sky text-nowrap" data-delay="100" data-words="คณะศึกษาศาสตร์,Faculty of Education,มหาวิทยาลัยเชียงใหม่,Chiang Mai University"></span><span class="cursor fs-38 text-sky" data-owner="typer"></span>
                 </h1>
                 <p class="lead fs-24 lh-sm text-white mb-7 pe-lg-0 pe-xxl-15">ระบบบริการจัดการข้อมูลกิจกรรมและรายชื่อผู้เข้าร่วม สำหรับใช้ลงทะเบียนเข้าร่วมกิจกรรมต่างๆ ที่จัดโดยคณะศึกษาศาสตร์ มหาวิทยาลัยเชียงใหม่</p>
-                <div><a href="<?=APP_HOME?>/events" class="btn btn-lg btn-soft-primary rounded-pill">เริ่มต้นใช้งาน &rarr;</a></div>
+                <div>
+                    <?php if( Auth::check() ){ ?>
+                    <a href="<?=APP_HOME?>/registration" class="btn btn-lg btn-soft-primary rounded-pill">เริ่มลงทะเบียน &rarr;</a>
+                    <?php }else{ ?>
+                    <a href="<?=APP_HOME?>/events" class="btn btn-lg btn-soft-primary rounded-pill">เริ่มต้นใช้งาน &rarr;</a>
+                    <?php } ?>
+                </div>
             </div>
             <div class="col-lg-5 offset-lg-1 mb-n18" data-cues="slideInDown">
                 <div class="swiper-container dots-over shadow-lg" data-margin="0" data-autoplay="true" data-autoplaytime="3000" data-nav="true" data-dots="false" data-items="1">
@@ -63,13 +69,14 @@
         <div class="row text-center">
             <h2 class="fs-48 text-uppercase text-muted mb-4"><i class="uil uil-arrow-circle-down"></i></h2>
             <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-                <h3 class="display-4 text-primary mb-8 px-xl-10">ข้อมูลกิจกรรมและรายชื่อผู้เข้าร่วม</h3>
+                <h3 class="display-4 text-primary mb-8 px-xl-10">ข้อมูลกิจกรรมและการลงทะเบียน</h3>
             </div>
         </div>
         <div class="position-relative mb-7">
             <div class="shape rounded-circle bg-soft-yellow rellax w-16 h-16" data-rellax-speed="1" style="bottom:-2.5rem;right:-2.5rem;z-index:0;"></div>
             <div class="shape bg-dot blue rellax w-16 h-17" data-rellax-speed="1" style="top:-0.5rem;left:-2.5rem;z-index:0;"></div>
             <div class="row gx-md-5 gy-5 text-center">
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3"></div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
                     <div class="position-relative lift" onclick="document.location='<?=APP_HOME.'/events'?>';">
                         <div class="shape rounded bg-soft-purple rellax d-md-block" data-rellax-speed="0" style="bottom:-0.75rem;right:-0.75rem;width:98%;height:98%;z-index:0;transform:translate3d(0px, 0px, 0px);"></div>
@@ -84,40 +91,17 @@
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
                     <div class="position-relative lift" onclick="document.location='<?=APP_HOME.'/registration'?>';">
-                        <div class="shape rounded bg-soft-blue rellax d-md-block" data-rellax-speed="0" style="bottom:-0.75rem;right:-0.75rem;width:98%;height:98%;z-index:0;transform:translate3d(0px, 0px, 0px);"></div>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="icon btn btn-circle btn-lg btn-blue pe-none mb-3"><i class="uil uil-users-alt"></i></div>
-                                <h4>ลงทะเบียนกิจกรรม</h4>
-                                <a href="<?=APP_HOME.'/registration'?>" class="more hover link-blue">เข้าใช้งาน</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
-                    <div class="position-relative lift" onclick="document.location='<?=APP_HOME.'/participants/user_register.php'?>';">
                         <div class="shape rounded bg-soft-green rellax d-md-block" data-rellax-speed="0" style="bottom:-0.75rem;right:-0.75rem;width:98%;height:98%;z-index:0;transform:translate3d(0px, 0px, 0px);"></div>
                         <div class="card">
                             <div class="card-body">
-                                <div class="icon btn btn-circle btn-lg btn-green pe-none mb-3"><i class="uil uil-qrcode-scan"></i></div>
-                                <h4>ลงทะเบียน<sup> USER</sup></h4>
-                                <a href="<?=APP_HOME.'/participants/user_register.php'?>" class="more hover link-green">เข้าใช้งาน</a>
+                                <div class="icon btn btn-circle btn-lg btn-green pe-none mb-3"><i class="uil uil-desktop"></i></div>
+                                <h4>ลงทะเบียนกิจกรรม</h4>
+                                <a href="<?=APP_HOME.'/registration'?>" class="more hover link-green">เข้าใช้งาน</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
-                    <div class="position-relative lift" onclick="document.location='<?=APP_HOME.'/participants/staff_register.php'?>';">
-                        <div class="shape rounded bg-soft-orange rellax d-md-block" data-rellax-speed="0" style="bottom:-0.75rem;right:-0.75rem;width:98%;height:98%;z-index:0;transform:translate3d(0px, 0px, 0px);"></div>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="icon btn btn-circle btn-lg btn-orange pe-none mb-3"><i class="uil uil-desktop"></i></div>
-                                <h4>ลงทะเบียน<sup> STAFF</sup></h4>
-                                <a href="<?=APP_HOME.'/participants/staff_register.php'?>" class="more hover link-orange">เข้าใช้งาน</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-3"></div>
             </div>
         </div>
     </div>
