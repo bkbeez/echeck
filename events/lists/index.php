@@ -55,6 +55,9 @@
         line-height: 12px;
         margin:0 2px 0 -2px;
     }
+    .table-filter .filter-result table tr td {
+        line-height: 18px;
+    }
     @media only all and (max-width: 991px) {
         .table-filter .filter-result .name {
             width: auto;
@@ -64,6 +67,9 @@
         }
         .table-filter .filter-result .name>.organize-o {
             display: block;
+        }
+        .table-filter .filter-result table tr td {
+            line-height: 20px;
         }
     }
     @media only all and (max-width: 768px) {
