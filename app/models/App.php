@@ -91,19 +91,9 @@ class App {
                                                 $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-edit"></i></div>จัดการกิจกรรม</span>';
                                             $htmls .= '</a>';
                                         $htmls .= '</li>';
-                                        /*$htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='participants') ? ' active':null).'">';
-                                            $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/participants">';
-                                                $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-users-alt"></i></div>รายชื่อผู้เข้าร่วม</span>';
-                                            $htmls .= '</a>';
-                                        $htmls .= '</li>';*/
                                         $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='user_register') ? ' active':null).'">';
-                                            $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/participants/user_register.php">';
-                                                $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-qrcode-scan"></i></div>ลงทะเบียน USER</span>';
-                                            $htmls .= '</a>';
-                                        $htmls .= '</li>';
-                                        $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='staff_register') ? ' active':null).'">';
-                                            $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/participants/staff_register.php">';
-                                                $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-desktop"></i></div>ลงทะเบียน STAFF</span>';
+                                            $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/registration">';
+                                                $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-desktop"></i></div>ลงทะเบียนกิจกรรม</span>';
                                             $htmls .= '</a>';
                                         $htmls .= '</li>';
                                     $htmls .= '</ul>';
