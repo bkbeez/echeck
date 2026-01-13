@@ -1,12 +1,26 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
-<?php Auth::ajax(APP_PATH.'/admin/?users'); ?>
+<?php Auth::ajax(APP_PATH.'/events'); ?>
 <?php
     $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://api.edu.cmu.ac.th/v1/organize/1/childs');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_USERPWD, EDU_API_USER.":".EDU_API_PASS);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    $organizes = json_decode($result, true);
+    if( isset($organizes)&&count($organizes)>0 ){
+        $organizeoptions = '';
+        foreach($organizes as $item){
+            $organizeoptions .= '<option value="'.$item['organize_id'].'">'.$item['organize_name'].'</option>';
+        }
+    }
 ?>
 <style type="text/css">
     .modal-dialog .modal-header {
         min-height: 100px;
-        background: #fef7ed;
+        background: #efeff8;
     }
     .modal-dialog .modal-body {
         margin-top: -30px;
@@ -15,6 +29,49 @@
     }
     .modal-dialog .modal-body>.alert {
         padding: 5px 15px;
+    }
+    .modal-dialog .modal-body table {
+        width: 100%;
+        margin: 0;
+        font-weight: normal;
+        font-family: sans-serif;
+    }
+    .modal-dialog .modal-body table .choose {
+        width: 35px;
+        text-align: center;
+        vertical-align: top;
+    }
+    .modal-dialog .modal-body .form-check-input,
+    .modal-dialog .modal-body table .choose>input {
+        margin-top: 0;
+        cursor: pointer;
+    }
+    .modal-dialog .modal-body table .no {
+        width: 3%;
+        text-align: center;
+        vertical-align: top;
+    }
+    .modal-dialog .modal-body table .mail {
+        width: 25%;
+    }
+    .modal-dialog .modal-body table .name {
+        width: auto;
+    }
+    .modal-dialog .modal-body table .organize {
+        width: auto;
+    }
+    .modal-dialog .modal-body table tr td {
+        font-size: 14px;
+        padding: 4px 3px 2px 3px;
+    }
+    .modal-dialog .modal-footer {
+        margin: 0 0 0 0;
+        height: 80px;
+        min-height: auto;
+        padding: 10px 0;
+    }
+    .modal-dialog .modal-footer button {
+        margin: 0;
     }
     .modal-dialog .modal-footer button>i {
         float: left;
@@ -25,66 +82,70 @@
 </style>
 <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content modal-manage">
-        <form name="RecordForm" action="<?=$form?>/scripts/lists/create.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
+        <form name="CheckLists" action="<?=$form?>/scripts/lists/employee/checklists.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
             <input type="hidden" name="events_id" value="<?=((isset($_POST['events_id'])&&$_POST['events_id'])?$_POST['events_id']:null)?>"/>
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h2 class="mb-0 text-blue text-start on-text-oneline"><i class="uil uil-user-plus" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> รายชื่อใหม่</h2>
+                <h2 class="mb-0 text-blue text-start on-text-oneline"><i class="uil uil-user-check" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> เพิ่มข้อมูลจากรายชื่อบุคลากร</h2>
             </div>
             <div class="modal-body">
-                <div class="alert alert-warning alert-icon mb-2">
+                <div class="alert alert-primary alert-icon mb-2">
                     <div class="form-floating form-select-wrapper mb-1">
-                        <select id="type" name="type" class="form-select" aria-label="...">
-                            <option value="EMPLOYEE">พนักงาน</option>
-                            <option value="STUDENT">นักศึกษา</option>
-                            <option value="OTHER">บุคคลทั่วไป</option>
+                        <select id="organize_id" name="organize_id" class="form-select" aria-label="...">
+                            <option value="">เลือกหน่วยงาน</option>
+                            <?=( isset($organizeoptions) ? $organizeoptions : null )?>
                         </select>
-                        <label for="type">ประเภทผู้เข้าร่วม <span class="text-red">*</span></label>
-                    </div>
-                </div>
-                <div class="alert alert-warning alert-icon mb-2">
-                    <p class="lead text-dark mb-1 text-start on-text-oneline">ข้อมูลผู้เข้าร่วม</p>
-                    <div class="form-floating mb-1">
-                        <input id="email" name="email" value="" type="email" class="form-control" placeholder="...">
-                        <label for="email">อีเมล <span class="text-red">*</span></label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <input id="prefix" name="prefix" value="" type="text" class="form-control" placeholder="...">
-                        <label for="prefix">คำนำหน้า</label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <input id="firstname" name="firstname" value="" type="text" class="form-control" placeholder="...">
-                        <label for="firstname">ชื่อ <span class="text-red">*</span></label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <input id="lastname" name="lastname" value="" type="text" class="form-control" placeholder="...">
-                        <label for="lastname">สกุล</label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <input id="organization" name="organization" value="" type="text" class="form-control" placeholder="...">
-                        <label for="organization">สังกัด <span class="text-red">*</span></label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <input id="department" name="department" value="" type="text" class="form-control" placeholder="...">
-                        <label for="department">ฝ่าย/แผนก</label>
+                        <label for="organize_id">หน่วยงาน <span class="text-red">*</span></label>
                     </div>
                 </div>
             </div>
+            <input type="submit" style="display:none;">
+        </form>
+        <form name="RecordForm" action="<?=$form?>/scripts/lists/employee/create.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
+            <input type="hidden" name="events_id" value="<?=((isset($_POST['events_id'])&&$_POST['events_id'])?$_POST['events_id']:null)?>"/>
+            <div class="modal-body">&nbsp;</div>
             <div class="modal-footer text-center">
-                <div class="row gx-1 row-button">
-                    <div class="col-lg-6 col-md-6 pt-1">
-                        <button type="submit" class="btn btn-lg btn-blue rounded-pill w-100"><i class="uil uil-check-circle"></i>เพิ่มใหม่</button>
-                    </div>
-                    <div class="col-lg-6 col-md-6 pt-1">
-                        <button type="button" class="btn btn-lg btn-outline-danger rounded-pill w-100" data-bs-dismiss="modal"><i class="uil uil-times-circle"></i>ยกเลิก</button>
-                    </div>
-                </div>
+                <button type="submit" class="btn btn-lg btn-blue rounded-pill" disabled><i class="uil uil-check-circle"></i>เพิ่มรายชื่อที่เลือก</button>
             </div>
         </form>
     </div>
 </div>
 <script type="text/javascript">
+    function record_events(action, params) {
+        if(action=='type'){
+            var checkboxes = document.getElementsByName(inputName);
+            if (self.checked) {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = true;
+                    }
+                }
+            } else {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = false;
+                    }
+                }
+            }
+        }
+    }
     $(document).ready(function() {
+        $("form[name='CheckLists']").change(function(){
+            $("form[name='CheckLists'] input[type='submit']").click();
+        });
+        $("form[name='CheckLists']").ajaxForm({
+            beforeSubmit: function (formData, jqForm, options) {
+                
+            },
+            success: function(rs) {
+                var data = JSON.parse(rs);
+                if(data.status=='success'){
+                    $("form[name='RecordForm'] .modal-body").html(data.htmls);
+                }else{
+                    $("form[name='RecordForm'] .modal-body").html('<div class="alert alert-danger alert-icon mb-2">'+data.text+'</div>');
+                }
+            }
+        });
         $("form[name='RecordForm']").ajaxForm({
             beforeSubmit: function (formData, jqForm, options) {
                 $("form[name='RecordForm'] label>span>font").remove();

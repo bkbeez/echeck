@@ -99,7 +99,7 @@
 </style>
 <section class="wrapper bg-primary">
     <div class="container pt-1 pb-1">
-        <h2 class="display-6 text-yellow mb-2"> <button type="button" class="btn btn-navy" onclick="document.location='<?=$index['back']?>';"><i class="uil uil-arrow-circle-left"></i><span>กลับ</span></button> <?=((isset($data['events_name'])&&$data['events_name'])?$data['events_name']:'ไม่ทราบ... .. .')?></h2>
+        <h2 class="display-6 text-white mb-2"> <button type="button" class="btn btn-navy" onclick="document.location='<?=$index['back']?>';"><i class="uil uil-arrow-circle-left"></i><span>กลับ</span></button> <?=((isset($data['events_name'])&&$data['events_name'])?$data['events_name']:'ไม่ทราบ... .. .')?></h2>
         <div class="row-tabs row gx-2 gy-2">
             <div class="col-4">
                 <div class="card bg-blue active shadow-lg">
@@ -241,6 +241,16 @@
             params['form_as'] = '<?=$form?>';
             params['events_id'] = $("form[name='filter'] input[name='events_id']").val();
             $("#ManageDialog").load("<?=$form?>/lists/employee.php", params, function(response, status, xhr){
+                if(status=="error"){
+                    $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
+                }else{
+                    $("#ManageDialog").modal('show');
+                }
+            });
+        }else if(action=='student'){
+            params['form_as'] = '<?=$form?>';
+            params['events_id'] = $("form[name='filter'] input[name='events_id']").val();
+            $("#ManageDialog").load("<?=$form?>/lists/student.php", params, function(response, status, xhr){
                 if(status=="error"){
                     $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
                 }else{
