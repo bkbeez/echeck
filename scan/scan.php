@@ -79,8 +79,8 @@
         background-color: #747ed1;
         text-decoration: none !important;
         -webkit-border-radius: 0.4rem;
-        -moz-border-radius: 0.4rem
-        border-radius: 0.4rem
+        -moz-border-radius: 0.4rem;
+        border-radius: 0.4rem;
     }
     .qrcode-scanner #reader a.html5-qrcode-element:focus,
     .qrcode-scanner #reader a.html5-qrcode-element:hover,

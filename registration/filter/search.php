@@ -11,7 +11,6 @@
         $_SESSION['login']['filter'][$filter_as]['limit'] = $limit;
         $page = 1;
     }
-    // --- Query Condition ---
     $parameters = array();
     $parameters['user_by'] = User::get('email');
     $condition = " AND ( events.user_create=:user_by";
@@ -31,15 +30,11 @@
         $parameters['keyword'] = "%".$keyword."%";
         $condition .= " AND ( events.events_name LIKE :keyword )";
     }
-
-    // --- การนับจำนวนทั้งหมด ---
     $sql_count = "SELECT COUNT(events.events_id) AS total FROM events WHERE events.events_id IS NOT NULL";
     $count = DB::one($sql_count.$condition, $parameters);
     $result['total'] = (int)($count['total'] ?? 0);
     $result['pages'] = ceil($result['total'] / $limit) ?: 1;
     $result['page'] = ($page > $result['pages']) ? $result['pages'] : $page;
-
-    // --- ดึงข้อมูลกิจกรรม ---
     $start = (($result['page']-1)*$limit);
     $sql = "SELECT events.*,
             (SELECT COUNT(*) FROM events_lists WHERE events_id = events.events_id) as registered_count,
