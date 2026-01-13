@@ -37,7 +37,6 @@ $lists = DB::sql("SELECT student_id, prefix, firstname, lastname, organization, 
         <thead>
             <tr>
                 <th style="width: 50px;">ลำดับ</th>
-                <th style="width: 120px;">รหัสนักศึกษา</th>
                 <th>ชื่อ-นามสกุล</th>
                 <th>หน่วยงาน/คณะ</th>
                 <th style="width: 150px;">เวลาเช็คอิน</th>
