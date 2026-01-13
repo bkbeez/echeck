@@ -34,20 +34,25 @@
             <div class="modal-body">
                 <div class="alert alert-warning alert-icon mb-2">
                     <div class="form-floating form-select-wrapper mb-1">
-                        <select id="type" name="type" class="form-select" aria-label="...">
-                            <option value="EMPLOYEE">พนักงาน</option>
+                        <select id="type" name="type" class="form-select" aria-label="..." onchange="record_events('type', { 'self':this });">
+                            <option value="EMPLOYEE">บุคลากร</option>
                             <option value="STUDENT">นักศึกษา</option>
-                            <option value="OTHER">บุคคลทั่วไป</option>
+                            <option value="OTHER" selected>บุคคลทั่วไป</option>
                         </select>
                         <label for="type">ประเภทผู้เข้าร่วม <span class="text-red">*</span></label>
                     </div>
+                    <div class="form-floating mb-1 on-email" style="display:none;">
+                        <input id="email" name="email" value="" type="email" class="form-control" placeholder="...">
+                        <label for="email">อีเมลที่ลงทะเบียน <span class="text-red">*</span></label>
+                    </div>
+                    <div class="form-floating mb-1 on-student" style="display:none;">
+                        <input id="student_id" name="student_id" value="" type="text" class="form-control" placeholder="...">
+                        <label for="student_id">รหัสนักศึกษา <span class="text-red">*</span></label>
+                    </div>
+                    <div class="fs-12 text-red" style="margin-top:-5px;">* <em>ไม่สามารถเปลี่ยนแปลงในภายหลังไม่ได้</em></div>
                 </div>
                 <div class="alert alert-warning alert-icon mb-2">
                     <p class="lead text-dark mb-1 text-start on-text-oneline">ข้อมูลผู้เข้าร่วม</p>
-                    <div class="form-floating mb-1">
-                        <input id="email" name="email" value="" type="email" class="form-control" placeholder="...">
-                        <label for="email">อีเมล <span class="text-red">*</span></label>
-                    </div>
                     <div class="form-floating mb-1">
                         <input id="prefix" name="prefix" value="" type="text" class="form-control" placeholder="...">
                         <label for="prefix">คำนำหน้า</label>
@@ -60,13 +65,23 @@
                         <input id="lastname" name="lastname" value="" type="text" class="form-control" placeholder="...">
                         <label for="lastname">สกุล</label>
                     </div>
-                    <div class="form-floating mb-1">
-                        <input id="organization" name="organization" value="" type="text" class="form-control" placeholder="...">
-                        <label for="organization">สังกัด <span class="text-red">*</span></label>
+                    <div class="form-floating form-select-wrapper mb-1">
+                        <select id="organization" name="organization" class="form-select" aria-label="..." onchange="record_events('organization', { 'self':this });">
+                            <option value="EMPTY">ไม่มี</option>
+                            <?=Helper::organizationOption()?>
+                            <option value="OTHER">อื่นๆ ระบุเอง</option>
+                        </select>
+                        <label for="organization">สังกัด</label>
                     </div>
-                    <div class="form-floating mb-1">
-                        <input id="department" name="department" value="" type="text" class="form-control" placeholder="...">
-                        <label for="department">ฝ่าย/แผนก</label>
+                    <div class="form-floating mb-1 on-organization" style="display:none;">
+                        <input id="organization_other" name="organization_other" value="" type="text" class="form-control" placeholder="...">
+                        <label for="organization_other">ชื่อสังกัด <span class="text-red">*</span></label>
+                    </div>
+                    <div class="on-department">
+                        <div class="form-floating mb-1">
+                            <input id="department" name="department" value="" type="text" class="form-control" disabled placeholder="...">
+                            <label for="department">หน่วยงาน/แผนก <sup>( <em>ถ้ามี...</em> )</sup></label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,6 +99,58 @@
     </div>
 </div>
 <script type="text/javascript">
+    function record_events(action, params) {
+        if(action=='type'){
+            if(params.self.value=='EMPLOYEE'){
+                $("form[name='RecordForm'] .on-email").fadeIn();
+                $("form[name='RecordForm'] .on-student").fadeOut();
+            }else if(params.self.value=='STUDENT'){
+                $("form[name='RecordForm'] .on-email").fadeIn();
+                $("form[name='RecordForm'] .on-student").fadeIn();
+            }else{
+                $("form[name='RecordForm'] .on-email").fadeOut();
+                $("form[name='RecordForm'] .on-student").fadeOut();
+            }
+        }else if(action=='organization'){
+            if(params.self.value=='EMPTY'){
+                var htmls  = '<div class="form-floating mb-1">';
+                    htmls += '<input id="department" name="department" value="" type="text" class="form-control" disabled placeholder="...">';
+                    htmls += '<label for="department">หน่วยงาน/แผนก <sup>( <em>ถ้ามี...</em> )</sup></label>';
+                htmls += '</div>';
+                $("form[name='RecordForm'] .on-department").html(htmls);
+            }else if(params.self.value=='OTHER'){
+                $("form[name='RecordForm'] .on-organization").fadeIn();
+            }else{
+                $("form[name='RecordForm'] .on-organization").fadeOut();
+                var htmls = '';
+                if(params.self.value=='คณะศึกษาศาสตร์'){
+                    htmls += '<div class="form-floating form-select-wrapper mb-1">';
+                        htmls += '<select id="department" name="department" class="form-select" aria-label="..." onchange="record_events(\'department\', { \'self\':this });">';
+                            htmls += '<?=Helper::departmentOption()?>';
+                            htmls += '<option value="OTHER">อื่นๆ ระบุเอง</option>';
+                        htmls += '</select>';
+                        htmls += '<label for="department">หน่วยงาน/แผนก</label>';
+                    htmls += '</div>';
+                    htmls += '<div class="form-floating mb-1 on-department-other" style="display:none;">';
+                        htmls += '<input id="department_other" name="department_other" value="" type="text" class="form-control" placeholder="...">';
+                        htmls += '<label for="department_other">ชื่อหน่วยงาน/แผนก <span class="text-red">*</span></label>';
+                    htmls += '</div>';
+                }else{
+                    htmls += '<div class="form-floating mb-1">';
+                        htmls += '<input id="department" name="department" value="" type="text" class="form-control" placeholder="...">';
+                        htmls += '<label for="department">หน่วยงาน/แผนก <sup>( <em>ถ้ามี...</em> )</sup></label>';
+                    htmls += '</div>';
+                }
+                $("form[name='RecordForm'] .on-department").html(htmls);
+            }
+        }else if(action=='department'){
+            if(params.self.value=='OTHER'){
+                $("form[name='RecordForm'] .on-department-other").fadeIn();
+            }else{
+                $("form[name='RecordForm'] .on-department-other").fadeOut();
+            }
+        }
+    }
     $(document).ready(function() {
         $("form[name='RecordForm']").ajaxForm({
             beforeSubmit: function (formData, jqForm, options) {

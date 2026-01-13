@@ -126,15 +126,18 @@
                 $htmls .= '<td class="name autoline">';
                     $htmls .= '<mark class="doc row-no">'.$row_no.'</mark>';
                     $htmls .= '<font>'.$row['fullname'].'</font>';
-                    $htmls .= '<div class="organize-o">';
-                        $htmls .= '<i class="uil uil-university"></i> '.$row['organization'];
-                        $htmls .= ( $row['department'] ? ' &rang; '.$row['department'] : null );
-                    $htmls.= '</div>';
+                    $htmls .= ( $row['email'] ? '<div class="on-text-oneline">&rang; '.$row['email'].'</div>' : null );
+                    if( $row['organization'] ){
+                        $htmls .= '<div class="organize-o">';
+                            $htmls .= '<i class="uil uil-university"></i> '.$row['organization'];
+                            $htmls .= ( $row['department'] ? '<div class="on-text-oneline">&rang; '.$row['department'].'</div>' : null );
+                        $htmls.= '</div>';
+                    }
                     $htmls .= '<div class="status-o">'.$status.'</div>';
                 $htmls .= '</td>';
-                $htmls .= '<td class="organize">';
+                $htmls .= '<td class="organize autoline">';
                     $htmls .= $row['organization'];
-                    $htmls .= ( $row['department'] ? ' &rang; '.$row['department'] : null );
+                    $htmls .= ( $row['department'] ? '<div>&rang; '.$row['department'].'</div>' : null );
                 $htmls .= '</td>';
                 $htmls .= '<td class="status">';
                     $htmls .= $status;

@@ -56,6 +56,9 @@
         margin:0 2px 0 -2px;
     }
     @media only all and (max-width: 991px) {
+        .table-filter .filter-result .name {
+            width: auto;
+        }
         .table-filter .filter-result .organize {
             display: none;
         }
@@ -93,14 +96,14 @@
         <h2 class="display-6 text-yellow mb-2"> <button type="button" class="btn btn-navy" onclick="document.location='<?=$index['back']?>';"><i class="uil uil-arrow-circle-left"></i><span>กลับ</span></button> <?=((isset($data['events_name'])&&$data['events_name'])?$data['events_name']:'ไม่ทราบ... .. .')?></h2>
         <div class="row-tabs row gx-2 gy-2">
             <div class="col-4">
-                <div class="card bg-green active shadow-lg">
+                <div class="card bg-blue active shadow-lg">
                     <a href="javascript:void(0);" onclick="manage_events('employee', { 'link':'<?=$link?>' });">
                         <div class="card-body p-2">
                             <div class="d-flex flex-row">
-                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-plus text-green"></i></span></div>
+                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-plus text-blue"></i></span></div>
                                 <div class="info-box">
                                     <h4 class="text-white mt-1 mb-0">Employee</h4>
-                                    <p class="text-white mb-0">เพิ่มรายชื่อพนักงาน</p>
+                                    <p class="text-white mb-0">เพิ่มข้อมูลจากรายชื่อบุคลากร</p>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +118,7 @@
                                 <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-plus text-orange"></i></span></div>
                                 <div class="info-box">
                                     <h4 class="text-white mt-1 mb-0">Student</h4>
-                                    <p class="text-white mb-0">เพิ่มรายชื่อนักศึกษา</p>
+                                    <p class="text-white mb-0">เพิ่มข้อมูลจากรายชื่อนักศึกษา</p>
                                 </div>
                             </div>
                         </div>
@@ -123,14 +126,14 @@
                 </div>
             </div>
             <div class="col-4">
-                <div class="card bg-purple text-white shadow-lg">
+                <div class="card bg-navy text-white shadow-lg">
                     <a href="javascript:void(0);" onclick="manage_events('new', { 'link':'<?=$link?>' });">
                         <div class="card-body p-2">
                             <div class="d-flex flex-row">
-                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-plus text-purple"></i></span></div>
+                                <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-plus text-navy"></i></span></div>
                                 <div class="info-box">
-                                    <h4 class="text-white mt-1 mb-0">Other</h4>
-                                    <p class="text-white mb-0">เพิ่มรายชื่ออื่นๆ</p>
+                                    <h4 class="text-white mt-1 mb-0">Person</h4>
+                                    <p class="text-white mb-0">เพิ่มรายชื่อรายบุคคล</p>
                                 </div>
                             </div>
                         </div>
@@ -151,9 +154,9 @@
                     <div class="row">
                         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-6 filter-pageby">
                             <select name="limit" class="form-select mb-1">
-                                <option value="50"<?=((!isset($filter['limit'])||intval($filter['limit'])==50)?' selected':null)?>>50</option>
-                                <option value="100"<?=((isset($filter['limit'])&&intval($filter['limit'])==100)?' selected':null)?>>100</option>
-                                <option value="250"<?=((isset($filter['limit'])&&intval($filter['limit'])==250)?' selected':null)?>>250</option>
+                                <option value="100"<?=((!isset($filter['limit'])||intval($filter['limit'])==100)?' selected':null)?>>100</option>
+                                <option value="200"<?=((isset($filter['limit'])&&intval($filter['limit'])==200)?' selected':null)?>>200</option>
+                                <option value="300"<?=((isset($filter['limit'])&&intval($filter['limit'])==300)?' selected':null)?>>300</option>
                                 <option value="500"<?=((isset($filter['limit'])&&intval($filter['limit'])==500)?' selected':null)?>>500</option>
                                 <option value="750"<?=((isset($filter['limit'])&&intval($filter['limit'])==750)?' selected':null)?>>750</option>
                                 <option value="1000"<?=((isset($filter['limit'])&&intval($filter['limit'])==1000)?' selected':null)?>>1000</option>
@@ -285,20 +288,7 @@
                     }).done(function(data) {
                         runStop();
                         if(data.status=='success'){
-                            swal({
-                                'type': data.status,
-                                'title': '<span class="on-font-primary">'+data.title+'</span>',
-                                'html': data.text,
-                                'showConfirmButton': false,
-                                'timer': 1500
-                            }).then(
-                                function () {},
-                                function (dismiss) {
-                                    if (dismiss === 'timer') {
-                                        $("form[name='filter'] button[type='submit']").click();
-                                    }
-                                }
-                            );
+                            $("form[name='filter'] button[type='submit']").click();
                         }else{
                             swal({
                                 'type' : data.status,

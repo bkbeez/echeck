@@ -1,6 +1,7 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php Auth::ajax(APP_PATH.'/admin/?users'); ?>
 <?php
+    $type = 'OTHER';
     $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );
     if( (isset($_POST['id'])&&$_POST['id'])&&(isset($_POST['events_id'])&&$_POST['events_id']) ){
         $data = DB::one("SELECT events_lists.*
@@ -9,6 +10,86 @@
                         LIMIT 1;"
                         , array('id'=>$_POST['id'], 'events_id'=>$_POST['events_id'])
         );
+        $type = ((isset($data['type'])&&$data['type'])?$data['type']:'OTHER');
+    }
+    $organizationhtmls = '';
+    if( isset($data['organization'])&&$data['organization'] ){
+        $organizationhtmls .= '<div class="form-floating form-select-wrapper mb-1">';
+            $organizationhtmls .= '<select id="organization" name="organization" class="form-select" aria-label="..." onchange="record_events(\'organization\', { \'self\':this });">';
+                $organizationhtmls .= '<option value="EMPTY">ไม่มี</option>';
+                $organizationhtmls .= Helper::organizationOption($data['organization']);
+                $organizationhtmls .= '<option value="OTHER">อื่นๆ ระบุเอง</option>';
+            $organizationhtmls .= '</select>';
+            $organizationhtmls .= '<label for="organization">สังกัด</label>';
+        $organizationhtmls .= '</div>';
+        if( in_array($data['organization'], Helper::getOrganization()) ){
+            $organizationhtmls .= '<div class="form-floating mb-1 on-organization" style="display:none;">';
+                $organizationhtmls .= '<input id="organization_other" name="organization_other" value="" type="text" class="form-control" placeholder="...">';
+                $organizationhtmls .= '<label for="organization_other">ชื่อสังกัด <span class="text-red">*</span></label>';
+            $organizationhtmls .= '</div>';
+        }else{
+            $organizationhtmls .= '<div class="form-floating mb-1 on-organization">';
+                $organizationhtmls .= '<input id="organization_other" name="organization_other" value="'.$data['organization'].'" type="text" class="form-control" placeholder="...">';
+                $organizationhtmls .= '<label for="organization_other">ชื่อสังกัด <span class="text-red">*</span></label>';
+            $organizationhtmls .= '</div>';
+        }
+        if( $data['organization']=='คณะศึกษาศาสตร์' ){
+            $organizationhtmls .= '<div class="on-department">';
+                if( isset($data['department'])&&$data['department'] ){
+                    if( in_array($data['department'], Helper::getDepartment()) ){
+                        $organizationhtmls .= '<div class="form-floating form-select-wrapper mb-1">';
+                            $organizationhtmls .= '<select id="department" name="department" class="form-select" aria-label="..." onchange="record_events(\'department\', { \'self\':this });">';
+                                $organizationhtmls .= Helper::departmentOption($data['department']);
+                                $organizationhtmls .= '<option value="OTHER">อื่นๆ ระบุเอง</option>';
+                            $organizationhtmls .= '</select>';
+                            $organizationhtmls .= '<label for="department">หน่วยงาน/แผนก</label>';
+                        $organizationhtmls .= '</div>';
+                        $organizationhtmls .= '<div class="form-floating mb-1 on-department-other" style="display:none;">';
+                            $organizationhtmls .= '<input id="department_other" name="department_other" value="" type="text" class="form-control" placeholder="...">';
+                            $organizationhtmls .= '<label for="department_other">ชื่อหน่วยงาน/แผนก <span class="text-red">*</span></label>';
+                        $organizationhtmls .= '</div>';
+                    }else{
+                        $organizationhtmls .= '<div class="form-floating form-select-wrapper mb-1">';
+                            $organizationhtmls .= '<select id="department" name="department" class="form-select" aria-label="..." onchange="record_events(\'department\', { \'self\':this });">';
+                                $organizationhtmls .= Helper::departmentOption();
+                                $organizationhtmls .= '<option value="OTHER" selected>อื่นๆ ระบุเอง</option>';
+                            $organizationhtmls .= '</select>';
+                            $organizationhtmls .= '<label for="department">หน่วยงาน/แผนก</label>';
+                        $organizationhtmls .= '</div>';
+                        $organizationhtmls .= '<div class="form-floating mb-1 on-department-other">';
+                            $organizationhtmls .= '<input id="department_other" name="department_other" value="'.( (isset($data['department'])&&$data['department']) ? $data['department'] : null ).'" type="text" class="form-control" placeholder="...">';
+                            $organizationhtmls .= '<label for="department_other">ชื่อหน่วยงาน/แผนก <span class="text-red">*</span></label>';
+                        $organizationhtmls .= '</div>';
+                    }
+                }
+            $organizationhtmls .= '</div>';
+        }else{
+            $organizationhtmls .= '<div class="on-department">';
+                $organizationhtmls .= '<div class="form-floating mb-1">';
+                    $organizationhtmls .= '<input id="department" name="department" value="'.( (isset($data['department'])&&$data['department']) ? $data['department'] : null ).'" type="text" class="form-control" placeholder="...">';
+                    $organizationhtmls .= '<label for="department">หน่วยงาน/แผนก <sup>( <em>ถ้ามี...</em> )</sup></label>';
+                $organizationhtmls .= '</div>';
+            $organizationhtmls .= '</div>';
+        }
+    }else{
+        $organizationhtmls .= '<div class="form-floating form-select-wrapper mb-1">';
+            $organizationhtmls .= '<select id="organization" name="organization" class="form-select" aria-label="..." onchange="record_events(\'organization\', { \'self\':this });">';
+                $organizationhtmls .= '<option value="EMPTY">ไม่มี</option>';
+                $organizationhtmls .= Helper::organizationOption();
+                $organizationhtmls .= '<option value="OTHER">อื่นๆ ระบุเอง</option>';
+            $organizationhtmls .= '</select>';
+            $organizationhtmls .= '<label for="organization">สังกัด</label>';
+        $organizationhtmls .= '</div>';
+        $organizationhtmls .= '<div class="form-floating mb-1 on-organization" style="display:none;">';
+            $organizationhtmls .= '<input id="organization_other" name="organization_other" value="" type="text" class="form-control" placeholder="...">';
+            $organizationhtmls .= '<label for="organization_other">ชื่อสังกัด <span class="text-red">*</span></label>';
+        $organizationhtmls .= '</div>';
+        $organizationhtmls .= '<div class="on-department">';
+            $organizationhtmls .= '<div class="form-floating mb-1">';
+                $organizationhtmls .= '<input id="department" name="department" value="" type="text" class="form-control" disabled placeholder="...">';
+                $organizationhtmls .= '<label for="department">หน่วยงาน/แผนก <sup>( <em>ถ้ามี...</em> )</sup></label>';
+            $organizationhtmls .= '</div>';
+        $organizationhtmls .= '</div>';
     }
 ?>
 <style type="text/css">
@@ -42,21 +123,25 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-warning alert-icon mb-2">
-                    <div class="form-floating form-select-wrapper mb-1">
-                        <select id="type" name="type" class="form-select" aria-label="...">
-                            <option value="EMPLOYEE"<?=((isset($data['type'])&&$data['type']=='EMPLOYEE')?' selected':null)?>>พนักงาน</option>
-                            <option value="STUDENT"<?=((isset($data['type'])&&$data['type']=='STUDENT')?' selected':null)?>>นักศึกษา</option>
-                            <option value="OTHER"<?=((isset($data['type'])&&$data['type']=='OTHER')?' selected':null)?>>บุคคลทั่วไป</option>
-                        </select>
+                    <div class="form-floating mb-1">
+                        <input id="type" name="type" value="<?=((isset($data['type'])&&$data['type'])?$data['type']:'OTHER')?>" type="text" class="form-control" placeholder="..." readonly>
                         <label for="type">ประเภทผู้เข้าร่วม <span class="text-red">*</span></label>
                     </div>
+                    <?php if( $type=='EMPLOYEE'||$type=='STUDENT' ){ ?>
+                    <div class="form-floating mb-1">
+                        <input id="email" name="email" value="<?=((isset($data['email'])&&$data['email'])?$data['email']:null)?>" type="email" class="form-control" placeholder="..." readonly>
+                        <label for="email">อีเมลที่ลงทะเบียน <span class="text-red">*</span></label>
+                    </div>
+                    <?php } ?>
+                    <?php if( $type=='STUDENT' ){ ?>
+                    <div class="form-floating mb-1">
+                        <input id="student_id" name="student_id" value="<?=((isset($data['student_id'])&&$data['student_id'])?$data['student_id']:null)?>" type="text" class="form-control" placeholder="..." readonly>
+                        <label for="student_id">รหัสนักศึกษา <span class="text-red">*</span></label>
+                    </div>
+                    <?php } ?>
                 </div>
                 <div class="alert alert-warning alert-icon mb-2">
                     <p class="lead text-dark mb-1 text-start on-text-oneline">ข้อมูลผู้เข้าร่วม</p>
-                    <div class="form-floating mb-1">
-                        <input id="email" name="email" value="<?=((isset($data['email'])&&$data['email'])?$data['email']:null)?>" type="email" class="form-control" placeholder="...">
-                        <label for="email">อีเมล <span class="text-red">*</span></label>
-                    </div>
                     <div class="form-floating mb-1">
                         <input id="prefix" name="prefix" value="<?=((isset($data['prefix'])&&$data['prefix'])?$data['prefix']:null)?>" type="text" class="form-control" placeholder="...">
                         <label for="prefix">คำนำหน้า</label>
@@ -69,14 +154,7 @@
                         <input id="lastname" name="lastname" value="<?=((isset($data['lastname'])&&$data['lastname'])?$data['lastname']:null)?>" type="text" class="form-control" placeholder="...">
                         <label for="lastname">สกุล</label>
                     </div>
-                    <div class="form-floating mb-1">
-                        <input id="organization" name="organization" value="<?=((isset($data['organization'])&&$data['organization'])?$data['organization']:null)?>" type="text" class="form-control" placeholder="...">
-                        <label for="organization">สังกัด <span class="text-red">*</span></label>
-                    </div>
-                    <div class="form-floating mb-1">
-                        <input id="department" name="department" value="<?=((isset($data['department'])&&$data['department'])?$data['department']:null)?>" type="text" class="form-control" placeholder="...">
-                        <label for="department">ฝ่าย/แผนก</label>
-                    </div>
+                    <?=$organizationhtmls?>
                 </div>
             </div>
             <div class="modal-footer text-center">
@@ -96,7 +174,45 @@
 <script type="text/javascript">
     function record_events(action, params){
         $("form[name='RecordForm'] label>span>font").remove();
-        if(action=="confirm"){
+        if(action=='organization'){
+            if(params.self.value=='EMPTY'){
+                var htmls  = '<div class="form-floating mb-1">';
+                    htmls += '<input id="department" name="department" value="" type="text" class="form-control" disabled placeholder="...">';
+                    htmls += '<label for="department">หน่วยงาน/แผนก <sup>( <em>ถ้ามี...</em> )</sup></label>';
+                htmls += '</div>';
+                $("form[name='RecordForm'] .on-department").html(htmls);
+            }else if(params.self.value=='OTHER'){
+                $("form[name='RecordForm'] .on-organization").fadeIn();
+            }else{
+                $("form[name='RecordForm'] .on-organization").fadeOut();
+                var htmls = '';
+                if(params.self.value=='คณะศึกษาศาสตร์'){
+                    htmls += '<div class="form-floating form-select-wrapper mb-1">';
+                        htmls += '<select id="department" name="department" class="form-select" aria-label="..." onchange="record_events(\'department\', { \'self\':this });">';
+                            htmls += '<?=Helper::departmentOption()?>';
+                            htmls += '<option value="OTHER">อื่นๆ ระบุเอง</option>';
+                        htmls += '</select>';
+                        htmls += '<label for="department">หน่วยงาน/แผนก</label>';
+                    htmls += '</div>';
+                    htmls += '<div class="form-floating mb-1 on-department-other" style="display:none;">';
+                        htmls += '<input id="department_other" name="department_other" value="" type="text" class="form-control" placeholder="...">';
+                        htmls += '<label for="department_other">ชื่อหน่วยงาน/แผนก <span class="text-red">*</span></label>';
+                    htmls += '</div>';
+                }else{
+                    htmls += '<div class="form-floating mb-1">';
+                        htmls += '<input id="department" name="department" value="" type="text" class="form-control" placeholder="...">';
+                        htmls += '<label for="department">หน่วยงาน/แผนก <sup>( <em>ถ้ามี...</em> )</sup></label>';
+                    htmls += '</div>';
+                }
+                $("form[name='RecordForm'] .on-department").html(htmls);
+            }
+        }else if(action=='department'){
+            if(params.self.value=='OTHER'){
+                $("form[name='RecordForm'] .on-department-other").fadeIn();
+            }else{
+                $("form[name='RecordForm'] .on-department-other").fadeOut();
+            }
+        }else if(action=="confirm"){
             if( params!=undefined ){
                 $("form[name='RecordForm'] .confirm-box").html('').css('margin-top','0');
                 $("form[name='RecordForm'] .row-button").show();
