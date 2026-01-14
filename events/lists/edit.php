@@ -174,7 +174,7 @@
                         <button type="button" class="btn btn-lg btn-green rounded-pill w-100" onclick="record_events('confirm');"><i class="uil uil-save"></i>บันทึก</button>
                     </div>
                     <div class="col-lg-6 col-md-6 pt-1">
-                        <button type="button" class="btn btn-lg btn-outline-danger rounded-pill w-100" data-bs-dismiss="modal"><i class="uil uil-cancel"></i>ละทิ้ง</button>
+                        <button type="button" class="btn btn-lg btn-soft-ash rounded-pill w-100" data-bs-dismiss="modal"><i class="uil uil-cancel"></i>ละทิ้ง</button>
                     </div>
                 </div>
             </div>
