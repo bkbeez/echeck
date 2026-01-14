@@ -101,45 +101,45 @@
     <div class="container pt-1 pb-1">
         <h2 class="display-6 text-white mb-2"> <button type="button" class="btn btn-navy" onclick="document.location='<?=$index['back']?>';"><i class="uil uil-arrow-circle-left"></i><span>กลับ</span></button> <?=((isset($data['events_name'])&&$data['events_name'])?$data['events_name']:'ไม่ทราบ... .. .')?></h2>
         <div class="row-tabs row gx-2 gy-2">
-            <div class="col-4">
+            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                 <div class="card bg-blue active shadow-lg">
                     <a href="javascript:void(0);" onclick="manage_events('employee', { 'link':'<?=$link?>' });">
                         <div class="card-body p-2">
                             <div class="d-flex flex-row">
                                 <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-plus text-blue"></i></span></div>
-                                <div class="info-box">
-                                    <h4 class="text-white mt-1 mb-0">Employee</h4>
-                                    <p class="text-white mb-0">เพิ่มข้อมูลจากรายชื่อบุคลากร</p>
+                                <div class="info-box on-text-oneline">
+                                    <h4 class="text-white on-text-oneline mt-1 mb-0">Employee</h4>
+                                    <p class="text-white on-text-oneline mb-0">เพิ่มข้อมูลจากรายชื่อบุคลากร</p>
                                 </div>
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
-            <div class="col-4">
-                <div class="card bg-orange text-white shadow-lg">
+            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                <div class="card bg-red text-white shadow-lg">
                     <a href="javascript:void(0);" onclick="manage_events('student', { 'link':'<?=$link?>' });">
                         <div class="card-body p-2">
                             <div class="d-flex flex-row">
                                 <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-plus text-orange"></i></span></div>
-                                <div class="info-box">
-                                    <h4 class="text-white mt-1 mb-0">Student</h4>
-                                    <p class="text-white mb-0">เพิ่มข้อมูลจากรายชื่อนักศึกษา</p>
+                                <div class="info-box on-text-oneline">
+                                    <h4 class="text-white on-text-oneline mt-1 mb-0">Student</h4>
+                                    <p class="text-white on-text-oneline mb-0">เพิ่มข้อมูลจากรายชื่อนักศึกษา</p>
                                 </div>
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                 <div class="card bg-navy text-white shadow-lg">
                     <a href="javascript:void(0);" onclick="manage_events('new', { 'link':'<?=$link?>' });">
                         <div class="card-body p-2">
                             <div class="d-flex flex-row">
                                 <div><span class="icon btn btn-circle btn-lg bg-white pe-none me-3"><i class="uil uil-plus text-navy"></i></span></div>
-                                <div class="info-box">
-                                    <h4 class="text-white mt-1 mb-0">Person</h4>
-                                    <p class="text-white mb-0">เพิ่มรายชื่อรายบุคคล</p>
+                                <div class="info-box on-text-oneline">
+                                    <h4 class="text-white on-text-oneline mt-1 mb-0">Person</h4>
+                                    <p class="text-white on-text-oneline mb-0">เพิ่มรายชื่อรายบุคคล</p>
                                 </div>
                             </div>
                         </div>

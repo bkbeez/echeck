@@ -6,7 +6,7 @@
 <style type="text/css">
     .modal-dialog .modal-header {
         min-height: 100px;
-        background: #fef7ed;
+        background: #f5f5f6;
     }
     .modal-dialog .modal-body {
         margin-top: -30px;
@@ -23,16 +23,16 @@
         margin-right: 3px;
     }
 </style>
-<div class="modal-dialog modal-dialog-centered">
+<div class="modal-dialog">
     <div class="modal-content modal-manage">
         <form name="RecordForm" action="<?=$form?>/scripts/lists/create.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
             <input type="hidden" name="events_id" value="<?=((isset($_POST['events_id'])&&$_POST['events_id'])?$_POST['events_id']:null)?>"/>
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h2 class="mb-0 text-blue text-start on-text-oneline"><i class="uil uil-user-plus" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> รายชื่อใหม่</h2>
+                <h2 class="mb-0 text-navy text-start on-text-oneline"><i class="uil uil-plus-circle" style="float:left;font-size:45px;line-height:42px;margin-right:3px;"></i> Person</h2>
             </div>
             <div class="modal-body">
-                <div class="alert alert-warning alert-icon mb-2">
+                <div class="alert alert-secondary alert-icon mb-2">
                     <div class="form-floating form-select-wrapper mb-1">
                         <select id="type" name="type" class="form-select" aria-label="..." onchange="record_events('type', { 'self':this });">
                             <option value="EMPLOYEE">บุคลากร</option>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="fs-12 text-red" style="margin-top:-5px;">* <em>ไม่สามารถเปลี่ยนแปลงในภายหลังไม่ได้</em></div>
                 </div>
-                <div class="alert alert-warning alert-icon mb-2">
+                <div class="alert alert-secondary alert-icon mb-2">
                     <p class="lead text-dark mb-1 text-start on-text-oneline">ข้อมูลผู้เข้าร่วม</p>
                     <div class="form-floating mb-1">
                         <input id="prefix" name="prefix" value="" type="text" class="form-control" placeholder="...">

@@ -5,6 +5,9 @@
     $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );
     if( (isset($_POST['id'])&&$_POST['id'])&&(isset($_POST['events_id'])&&$_POST['events_id']) ){
         $data = DB::one("SELECT events_lists.*
+                        ,IF(events_lists.status=1, 'success'
+                            ,IF(events_lists.status=2, 'danger', 'secondary')
+                        ) AS color
                         FROM events_lists
                         WHERE events_lists.id=:id AND events_lists.events_id=:events_id
                         LIMIT 1;"
@@ -91,11 +94,18 @@
             $organizationhtmls .= '</div>';
         $organizationhtmls .= '</div>';
     }
+    $color = ((isset($data['color'])&&$data['color'])?$data['color']:'secondary');
 ?>
 <style type="text/css">
     .modal-dialog .modal-header {
         min-height:100px;
+        background: #f5f5f6;
+    }
+    .modal-dialog .modal-header.success {
         background: #edf9f6;
+    }
+    .modal-dialog .modal-header.danger {
+        background: #f9eded;
     }
     .modal-dialog .modal-body {
         margin-top: -30px;
@@ -112,17 +122,17 @@
         margin-right: 3px;
     }
 </style>
-<div class="modal-dialog modal-dialog-centered">
+<div class="modal-dialog">
     <div class="modal-content modal-manage">
         <form name="RecordForm" action="<?=$form?>/scripts/lists/update.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
             <input type="hidden" name="id" value="<?=((isset($data['id'])&&$data['id'])?$data['id']:null)?>">
             <input type="hidden" name="events_id" value="<?=((isset($data['events_id'])&&$data['events_id'])?$data['events_id']:null)?>">
-            <div class="modal-header">
+            <div class="modal-header <?=$color?>">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                <h2 class="mb-0 text-primary text-start on-text-oneline"><i class="uil uil-edit-alt" style="float:left;font-size:36px;line-height:36px;margin-right:3px;"></i> แก้ไขรายชื่อ</h2>
+                <h2 class="mb-0 text-navy text-start on-text-oneline"><i class="uil uil-edit" style="float:left;font-size:45px;line-height:42px;margin-right:3px;"></i> Person</h2>
             </div>
             <div class="modal-body">
-                <div class="alert alert-warning alert-icon mb-2">
+                <div class="alert alert-<?=$color?> alert-icon mb-2">
                     <div class="form-floating mb-1">
                         <input id="type" name="type" value="<?=((isset($data['type'])&&$data['type'])?$data['type']:'OTHER')?>" type="text" class="form-control" placeholder="..." readonly>
                         <label for="type">ประเภทผู้เข้าร่วม <span class="text-red">*</span></label>
@@ -140,7 +150,7 @@
                     </div>
                     <?php } ?>
                 </div>
-                <div class="alert alert-warning alert-icon mb-2">
+                <div class="alert alert-<?=$color?> alert-icon mb-2">
                     <p class="lead text-dark mb-1 text-start on-text-oneline">ข้อมูลผู้เข้าร่วม</p>
                     <div class="form-floating mb-1">
                         <input id="prefix" name="prefix" value="<?=((isset($data['prefix'])&&$data['prefix'])?$data['prefix']:null)?>" type="text" class="form-control" placeholder="...">
