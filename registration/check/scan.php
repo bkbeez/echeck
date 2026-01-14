@@ -3,41 +3,41 @@
 
 <style type="text/css">
     body { 
-        background: #f4f7f6 url('<?=THEME_IMG?>/map.png') center center; 
-        background-attachment: fixed; 
+        background: #f4f7f6 url('<?=THEME_IMG?>/map.png') center center;
+        background-attachment: fixed;
     }
-    .on-hamburger, .navbar-collapse-wrapper { 
-        display: none !important; 
+    .on-hamburger, .navbar-collapse-wrapper {
+        display: none !important;
     }
-    .main-container { 
-        padding-top: 30px; 
-        padding-bottom: 30px; 
+    .main-container {
+        padding-top: 30px;
+        padding-bottom: 30px;
     }
-    .scanner-section { 
-        background: #ffffff; 
-        border-radius: 25px; 
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
-        overflow: hidden; height: 100%; 
-        border: 1px solid #eee; 
+    .scanner-section {
+        background: #ffffff;
+        border-radius: 25px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        overflow: hidden; height: 100%;
+        border: 1px solid #eee;
     }
-    .qrcode-scanner { 
+    .qrcode-scanner {
         width: 100%;
-        padding: 20px; 
+        padding: 20px;
         text-align: center;
-        position: relative; 
+        position: relative;
     }
     
-    #reader { 
-        width: 100% !important; 
-        border: none !important; 
-        position: relative; 
+    #reader {
+        width: 100% !important;
+        border: none !important;
+        position: relative;
     }
-    #reader__scan_region { 
-        border-radius: 20px; 
-        background: transparent !important; 
+    #reader__scan_region {
+        border-radius: 20px;
+        background: transparent !important;
         overflow: hidden;
     }
-    #reader__dashboard_section_csr, 
+    #reader__dashboard_section_csr,
     #reader__header_message,
     #reader img[alt='Info icon'] { display: none !important; }
     .html5-qrcode-element {
@@ -140,13 +140,10 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-
     </div>
 </div>
-
 <script type="text/javascript">
     var html5QrcodeScanner = new Html5QrcodeScanner("reader", { 
         qrbox: { width: 250, height: 250 }, 
@@ -155,15 +152,12 @@
         rememberLastUsedCamera: true,
         supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
     });
-    
     function onScanRender() {
         html5QrcodeScanner.render(onScanSuccess, onScanError);
     }
-
     function onScanSuccess(decodedText, decodedResult) {
         if (navigator.vibrate) navigator.vibrate(100);
         html5QrcodeScanner.clear(); 
-        
         $.ajax({
             url: "<?=APP_PATH.'/scan/scanning.php'?>",
             type : 'POST',
@@ -186,20 +180,18 @@
             }
         });
     }
-
     function onScanError(errorMessage) { }
-
-    function fetchDashboardData() {
-        $.ajax({
-            url: "<?=APP_PATH.'/scan/get_dashboard.php'?>",
-            type: 'GET',
-            dataType: 'json',
-            success: function(res) {
-                if(res.status === 'success') {
-                    $('#total-participants').text(res.count);
+    $(document).ready(function() {
+        onScanRender();
+        if(typeof(EventSource) !== "undefined") {
+            var source = new EventSource("<?=$form?>/scripts/counting.php");
+            source.onmessage = function(event) {
+                var result = JSON.parse(event.data);
+                if(result.status === 'success') {
+                    $('#total-participants').text(result.count);
                     let html = '';
-                    if(res.list && res.list.length > 0) {
-                        res.list.forEach(function(item) {
+                    if(result.list && result.list.length > 0) {
+                        result.list.forEach(function(item) {
                             html += `<tr>
                                 <td class="ps-4"><span class="badge bg-soft-primary text-primary rounded-pill px-3">${item.time}</span></td>
                                 <td>
@@ -216,15 +208,14 @@
                     }
                     $('#participant-list').html(html);
                 }
-            }
-        });
-    }
-
-    $(document).ready(function(){
-        onScanRender();
-        fetchDashboardData();
-        setInterval(fetchDashboardData, 5000);
+            };
+            source.onerror = function(err) {
+                console.error("EventSource failed:", err);
+            };
+        } else {
+            console.log('Error: Your browser does not support EventSource.');
+            $('#participant-list').html('<tr><td colspan="3" class="text-center py-5 text-danger">เบราว์เซอร์ไม่รองรับการอัปเดตแบบ Real-time</td></tr>');
+        }
     });
 </script>
-
 <?php include(APP_FOOTER); ?>
