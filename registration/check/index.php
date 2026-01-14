@@ -1,7 +1,7 @@
 
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php
-    $index['page'] = 'scan';
+    $index['page'] = 'check';
     $index['hidefooter'] = true;
     $link = APP_PATH.'/'.$index['page'];
     $form = APP_PATH.'/'.$index['page'];
@@ -14,6 +14,7 @@
         $events_id = $_POST['events_id'];
         include('check.php');
     }else{
+        $index['page'] = 'scan';
         include('scan.php');
     }
 ?>

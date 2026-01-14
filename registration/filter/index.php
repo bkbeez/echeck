@@ -224,7 +224,7 @@
 function manage_events(action, params){
     if(action=='register'){
         params['form_as']='<?=$form?>';
-        $("#ManageDialog").load("<?=$form?>/filter/register.php", params, function(response, status, xhr){
+        $("#ManageDialog").load("<?=$form?>/check/scan.php", params, function(response, status, xhr){
                 if(status=="error"){
                     $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
                 }else{
