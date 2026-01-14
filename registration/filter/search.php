@@ -56,7 +56,7 @@
         
         if($row['status'] == 1) {
         $status_btn = '<span class="badge bg-green text-white rounded"><i class="uil uil-play"></i> เปิดให้ลงทะเบียน</span>';
-        $btns .= '<button onclick="manage_events(\'register\', {events_id:\''.$row['events_id'].'\'});" 
+        $btns .= '<button onclick="window.location.href=\'/registration/check/?events_id='.$row['events_id'].'\';" 
             class="btn btn-primary rounded-3 d-flex align-items-center justify-content-center shadow-sm px-3" 
             style="height: 38px; min-width: 120px; border: none; transition: all 0.3s ease; gap: 8px;" 
             title="ลงทะเบียนกิจกรรม">

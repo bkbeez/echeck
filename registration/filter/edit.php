@@ -240,7 +240,7 @@
                             <div style="font-weight: 500;"><?=date('d M Y', strtotime($row['date_create']))?></div>
                             <div class="text-muted small"><?=date('H:i', strtotime($row['date_create']))?> น.</div>
                         </td>
-                        <td><span class="badge-status-index">สำเร็จ</span></td>
+                        <td><span class="badge-status-index">ลงทะเบียนสำเร็จ</span></td>
                         <td>
                             <button title="ยกเลิก" class="btn-delete-soft" onclick="cancelRegis('<?=$row['id']?>', '<?=$row['events_id']?>')">
                                 <i class="uil uil-trash-alt"></i>

@@ -6,8 +6,8 @@ if (!$events_id) {
     die("Access Denied: Invalid Request");
 }
 $user_email = User::get('email');
-$check_owner = DB::one("SELECT events_id FROM events 
-                        WHERE events_id = :id 
+$check_owner = DB::one("SELECT events_id FROM events
+                        WHERE events_id = :id
                         AND (user_create = :user OR events_id IN (SELECT events_id FROM events_shared WHERE email = :user))", 
                         ['id' => $events_id, 'user' => $user_email]);
 if (!$check_owner) {
