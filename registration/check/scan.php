@@ -32,7 +32,11 @@
         background: linear-gradient(135deg, #747ed1 0%,#5b66c4 100%);
         border-radius: 20 px
     }
-    
+    .filter-keyword{
+        margin-left: 30px;
+        margin-top : 25px;
+        margin-bottom: 20px;
+    }
     #reader {
         width: 100% !important;
         border: none !important;
@@ -180,7 +184,7 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th class="ps-4 border-0">เวลา</th>
-                                        <th class="border-0">ข้อมูลผู้เข้าร่วม</th>
+                                        <th class="border-0">ผู้ลงทะเบียน</th>
                                         <th class="text-end pe-4 border-0">สถานะ</th>
                                     </tr>
                                 </thead>
