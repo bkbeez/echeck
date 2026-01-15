@@ -37,7 +37,7 @@
         if( $event['participant_type']=='LIST' ){
             $checks = array();
             $checks['events_id'] = $event['events_id'];
-            $checks['email'] = $parameters['email'];
+            $checks['email'] = User::get('email');
             $data = DB::one("SELECT events_lists.*
                 , TRIM(CONCAT(COALESCE(events_lists.prefix,''),events_lists.firstname,' ',COALESCE(events_lists.lastname,''))) AS fullname
                 FROM events_lists
