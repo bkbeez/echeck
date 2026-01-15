@@ -20,14 +20,9 @@
     }
 ?>
 <style type="text/css">
-    .modal-dialog .modal-header {
-        min-height: 100px;
-        background: #3f78e0;
-    }
     .modal-dialog .modal-body {
-        margin-top: -30px;
-        padding-left: 35px;
-        padding-right: 35px;
+        padding-left:35px;
+        padding-right:35px;
     }
     .modal-dialog .modal-body>.alert {
         padding: 5px 8px;
@@ -73,20 +68,9 @@
         white-space: nowrap;
         text-overflow: ellipsis;
     }
-    .modal-dialog .modal-footer {
-        margin: 0 0 0 0;
-        height: 90px;
-        min-height: auto;
-        padding: 10px 0;
-    }
-    .modal-dialog .modal-footer button {
-        margin: 0;
-    }
-    .modal-dialog .modal-footer button>i {
-        float: left;
-        font-size: 24px;
-        line-height: 24px;
-        margin-right: 3px;
+    .modal-dialog .modal-footer{
+        min-height:60px;
+        background-color:#3f78e0;
     }
     .modal-dialog .state-loading {
         display: inline-block;
@@ -153,17 +137,17 @@
     }
 </style>
 <div class="modal-dialog modal-xl">
-    <div id="employee-top" class="modal-content modal-manage">
-        <form name="CheckLists" action="<?=$form?>/scripts/lists/employee/select.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
+    <div class="modal-content modal-manage">
+        <form name="CheckForm" action="<?=$form?>/scripts/lists/employee/select.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
             <input type="hidden" name="events_id" value="<?=((isset($_POST['events_id'])&&$_POST['events_id'])?$_POST['events_id']:null)?>"/>
             <?=( isset($organizeinputs) ? $organizeinputs : null )?>
             <input type="hidden" name="form_as" value="<?=$form?>"/>
-            <div class="modal-header">
+            <div class="modal-header" style="min-height:105px;background:#3f78e0;">
                 <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 <h2 class="mb-0 text-white text-start on-text-oneline"><i class="uil uil-plus-circle" style="float:left;font-size:45px;line-height:42px;margin-right:3px;"></i> Employee</h2>
             </div>
-            <div class="modal-body">
-                <div class="alert alert-info alert-icon mb-2" style="padding:5px 8px 1px 8px;">
+            <div class="modal-body" style="margin-top:-30px;">
+                <div class="alert alert-info alert-icon mb-0" style="padding:5px 8px 1px 8px;">
                     <div class="row gx-1">
                         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                             <div class="form-floating form-select-wrapper mb-1">
@@ -184,109 +168,158 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-check">
-                        <input id="checkall" class="form-check-input" type="checkbox" name="checkall" value="Y" onchange="record_events('checkall', { 'self':this });">
-                        <label class="form-check-label text-dark" for="checkall"> เลือก<font class="underline-3 style-3 text-blue blue">ทั้งหมด</font></label>
+                    <div class="on-check-all" style="min-height:48px;padding-top:5px;display:none;">
+                        <div style="right:0;float:right;position:absolute;margin:-5px 8px 0 0;">
+                            <button type="button" class="btn btn-sm btn-blue" onclick="record_events('start');" style="margin:0;padding-left:28px;padding-right:5px;"><i class="uil uil-plus-circle" style="float:left;font-size:20px;line-height:10px;margin-left:-15px;position:absolute;"></i>เพิ่มรายชื่อ&nbsp;<span class="badge bg-pale-ash text-dark rounded-pill" style="top:1px;">0</span></button>
+                        </div>
+                        <div class="form-check" style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">
+                            <input id="checkall-top" class="form-check-input" type="checkbox" name="checkTop" value="Y" onchange="record_events('checkall', { 'self':this });">
+                            <label class="form-check-label text-dark" for="checkall-top"> <font class="underline-3 style-3 text-blue blue">ทั้งหมด</font></sup></label>
+                        </div>
                     </div>
                 </div>
             </div>
             <input type="submit" style="display:none;">
         </form>
-        <div class="form-lists form-manage">
-            <input type="hidden" name="events_id" value="<?=((isset($_POST['events_id'])&&$_POST['events_id'])?$_POST['events_id']:null)?>"/>
-            <div class="modal-body" style="margin-top:0;"></div>
-            <div class="modal-footer text-center">
-                <button type="button" class="btn btn-lg btn-blue rounded-pill" onclick="record_events('start');"><i class="uil uil-plus-circle"></i>เพิ่มรายชื่อที่เลือก</button>
+        <div class="modal-body checklists" style="padding-top:5px;">
+            <div class="alert alert-light alert-icon text-center text-red mb-0" style="min-height:50px;padding:8px 8px 1px 8px;">โปรดเลือกหน่วยงานก่อน !!!</div>
+        </div>
+        <div class="modal-body finished" style="margin-bottom:-30px;">
+            <div class="alert alert-info alert-icon mb-0 on-check-all" style="min-height:55px;padding:12px 8px 1px 8px;display:none;">
+                <div style="right:0;float:right;position:absolute;margin:-5px 8px 0 0;">
+                    <button type="button" class="btn btn-sm btn-blue" onclick="record_events('start');" style="margin:0;padding-left:28px;padding-right:5px;"><i class="uil uil-plus-circle" style="float:left;font-size:20px;line-height:10px;margin-left:-15px;position:absolute;"></i>เพิ่มรายชื่อ&nbsp;<span class="badge bg-pale-ash text-dark rounded-pill" style="top:1px;">0</span></button>
+                </div>
+                <div class="form-manage">
+                    <div class="form-check">
+                        <input id="checkall-bottom" class="form-check-input" type="checkbox" name="checkBottom" value="Y" onchange="record_events('checkall', { 'self':this });">
+                        <label class="form-check-label text-dark" for="checkall-bottom"> <font class="underline-3 style-3 text-blue blue">ทั้งหมด</font></sup></label>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="modal-footer text-center"></div>
     </div>
 </div>
 <script type="text/javascript">
     function record_events(action, params) {
         if(action=='check'){
-            var checked=0;
+            var checked = 0;
             var checkboxes = document.getElementsByName('lists[]');
             for (var i = 0; i < checkboxes.length; i++) {
                 if(checkboxes[i].checked==true) {
                     checked++;
                 }
             }
+            document.getElementById('checkall-top').checked = false;
+            document.getElementById('checkall-bottom').checked = false;
+            $(".modal-dialog .modal-body button[type='button']>.badge").html(checked);
             if( checkboxes.length==checked ){
-                document.CheckLists.checkall.checked = true;
-            }else if(checked>0){
-                document.CheckLists.checkall.checked = false;
+                document.getElementById('checkall-top').checked = true;
+                document.getElementById('checkall-bottom').checked = true;
+            }
+            if(params.self.checked){
+                $(".modal-dialog .modal-body.checklists>.AT-"+params.at).attr('checked',true);
+            }else{
+                $(".modal-dialog .modal-body.checklists>.AT-"+params.at).removeAttr('checked');
             }
         }else if(action=='checkall'){
+            if(params.self.name=='checkBottom'){
+                document.getElementById('checkall-top').checked = params.self.checked;
+            }else{
+                document.getElementById('checkall-bottom').checked = params.self.checked;
+            }
             var checkboxes = document.getElementsByName('lists[]');
-            if(params.self.checked) {
+            if(params.self.checked){
                 for(var i = 0; i < checkboxes.length; i++) {
                     if(checkboxes[i].type == 'checkbox') {
                         checkboxes[i].checked = true;
                     }
                 }
+                $(".modal-dialog .modal-body.checklists>form").attr('checked',true);
+                $(".modal-dialog .modal-body button[type='button']>.badge").html(checkboxes.length);
             }else{
                 for(var i = 0; i < checkboxes.length; i++) {
                     if(checkboxes[i].type == 'checkbox') {
                         checkboxes[i].checked = false;
                     }
                 }
+                $(".modal-dialog .modal-body.checklists>form").removeAttr('checked');
+                $(".modal-dialog .modal-body button[type='button']>.badge").html('0');
             }
         }else if(action=='start'){
-            $("#ManageDialog").scrollTo("#employee-top");
-            //$(".form-lists>.modal-body>form:first-child").find('input[type="submit"]').click();
+            $(".modal-dialog .modal-body.checklists>form .on-status").html('');
+            if( $(".modal-dialog .modal-body.checklists>form[checked]")!=undefined ){
+                var id = $(".modal-dialog .modal-body.checklists>form[checked]").attr('id');
+                $("#ManageDialog").scrollTo("#"+id);
+                $(".modal-dialog .modal-body.checklists>form.AT-"+id).find('input[type="submit"]').click();
+            }
         }
     }
     $(document).ready(function() {
-        $("form[name='CheckLists'] select[name='organize_id']").change(function(){
-            $("form[name='CheckLists'] input[type='submit']").click();
+        $("form[name='CheckForm'] select[name='organize_id'], form[name='CheckForm'] select[name='status']").change(function(){
+            $("form[name='CheckForm'] input[type='submit']").click();
         });
-        $("form[name='CheckLists'] select[name='status']").change(function(){
-            $("form[name='CheckLists'] input[type='submit']").click();
-        });
-        $("form[name='CheckLists']").ajaxForm({
+        $("form[name='CheckForm']").ajaxForm({
             beforeSubmit: function (formData, jqForm, options) {
-                $(".form-lists>.modal-body").html('<div style="min-height:135px;margin-top:40px;"><center><div class="state-loading"><div></div><div></div><div></div><div></div><div></div><div></div></div></center></div>');
+                document.getElementById('checkall-top').checked = false;
+                document.getElementById('checkall-top').disabled = true;
+                document.getElementById('checkall-bottom').checked = false;
+                document.getElementById('checkall-bottom').disabled = true;
+                $(".modal-dialog .modal-body .on-check-all").hide();
+                $(".modal-dialog .modal-body.checklists").html('<div style="min-height:135px;margin-top:40px;"><center><div class="state-loading"><div></div><div></div><div></div><div></div><div></div><div></div></div></center></div>');
             },
             success: function(rs) {
                 var data = JSON.parse(rs);
                 if(data.status=='success'){
-                    $(".form-lists>.modal-body").html(data.htmls);
-                    $(".form-lists>.modal-body form[name='saving']").ajaxForm({
+                    $(".modal-dialog .modal-body.checklists").html(data.htmls);
+                    document.getElementById('checkall-top').disabled = false;
+                    document.getElementById('checkall-bottom').disabled = false;
+                    $(".modal-dialog .modal-body .on-check-all").show();
+                    $(".modal-dialog .modal-body.checklists form[name='saving']").ajaxForm({
                         beforeSubmit: function (formData, jqForm, options) {
-
+                            $(".modal-dialog .modal-body.checklists>.AT-"+formData[0].value+" .on-status").html('');
                         },
                         success: function(rs) {
                             var data = JSON.parse(rs);
                             if( data.login!=undefined&&data.login ){
                                 runLogin();
                             }else{
-                                if(data.status=='success'){
-                                    if( data.removeas!=undefined&&data.removeas ){
-                                        //$("form."+data.removeas+" .input-group-submit").html('<button type="submit" class="btn btn-primary" style="margin:0;"><i class="glyphicon glyphicon-floppy-saved"></i> SAVE</button>');
-                                        $(".form-lists>.modal-body>form."+data.removeas).hide(function(){
-                                            $(this).remove();
-                                            if( $(".form-lists>.modal-body>form:first-child").find('input[type="submit"]').length>0 ){
-                                                $(".form-lists>.modal-body>form:first-child").find('input[type="submit"]').click();
-                                            }else{
-                                                $(".form-lists>.modal-footer").html('<button type="button" class="btn btn-lg btn-green rounded-pill"><i class="uil uil-check-circle"></i>บันทึกรายชื่อที่เลือกเรียบร้อยแล้ว</button>');
-                                                $(".form-lists>.modal-footer>button").fadeOut(function(){
-                                                    $("#ManageDialog").modal('hide');
-                                                    $("form[name='filter'] input[name='state']").val(null);
-                                                    $("form[name='filter'] button[type='submit']").click();
-                                                });
-                                            }
-                                        });
+                                if( data.at!=undefined&&data.at ){
+                                    if(data.status=='success'){
+                                        $(".modal-dialog .modal-body.checklists>form."+data.at).remove();
                                     }else{
-                                        console.log("Done");
+                                        document.getElementById(data.at).checked = false;
+                                        document.getElementById('checkall-top').checked = false;
+                                        document.getElementById('checkall-bottom').checked = false;
+                                        $(".modal-dialog .modal-body.checklists>form."+data.at+" .on-status").html(data.text);
+                                        $(".modal-dialog .modal-body.checklists>form."+data.at).removeAttr('checked');
+                                        $(".modal-dialog .modal-body button[type='button']>.badge").html(parseInt($(".modal-dialog .modal-body button[type='button']>.badge").html())-1);
                                     }
-                                }else{
-                                    console.log("Error");
+                                    if( $(".modal-dialog .modal-body.checklists>form[checked]").length>0 ){
+                                        var id = $(".modal-dialog .modal-body.checklists>form[checked]").attr('id');
+                                        $("#ManageDialog").scrollTo("#"+id);
+                                        $(".modal-dialog .modal-body.checklists>form.AT-"+id).find('input[type="submit"]').click();
+                                    }else{
+                                        if( $(".modal-dialog .modal-body.checklists>form").length>0 ){
+                                            $(".modal-dialog .modal-body button[type='button']>.badge").html('0');
+                                            $("form[name='filter'] input[name='state']").val(null);
+                                            $("form[name='filter'] button[type='submit']").click();
+                                        }else{
+                                            $(".modal-dialog .modal-body .on-check-all").hide();
+                                            $(".modal-dialog .modal-body.finished").html('<div class="alert alert-success alert-icon text-center mb-0" style="min-height:55px;padding:12px 35px 8px 35px;"><span class="uil uil-check-circle" style="display:inline-block;font-size:32px;line-height:30px;margin-left:-36px;position:fixed;"></span> บันทึกรายชื่อเรียบร้อยแล้ว</div>');
+                                            $(".modal-dialog").fadeOut(1500, function(){
+                                                $("#ManageDialog").modal('hide');
+                                                $("form[name='filter'] input[name='state']").val(null);
+                                                $("form[name='filter'] button[type='submit']").click();
+                                            });
+                                        }
+                                    }
                                 }
                             }
                         }
                     });
                 }else{
-                    $(".form-lists .modal-body").html('<div class="alert alert-danger alert-icon mb-2">'+data.text+'</div>');
+                    $(".modal-dialog .modal-body.checklists").html(data.text);
                 }
             }
         });

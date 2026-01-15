@@ -25,6 +25,7 @@
         <link rel="stylesheet" href="<?=THEME_JS?>/datepicker/thai/datepicker.css" />
         <script type="text/javascript" src="<?=THEME_JS?>/jquery-2.1.1.js"></script>
         <script type="text/javascript" src="<?=THEME_JS?>/jquery.form.min.js"></script>
+        <script type="text/javascript" src="<?=THEME_JS?>/jquery.scrollTo.min.js"></script>
         <script type="text/javascript" src="<?=THEME_JS?>/sweetalert/sweetalert2.min.js"></script>
         <script type="text/javascript" src="<?=THEME_JS?>/qrcode/html5-qrcode.min.js"></script>
         <script type="text/javascript" src="<?=THEME_JS?>/qrcode/jquery.qrcode-0.12.0.min.js"></script>

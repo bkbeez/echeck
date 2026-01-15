@@ -117,7 +117,7 @@
                 </div>
             </div>
             <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                <div class="card bg-red text-white shadow-lg">
+                <div class="card bg-orange text-white shadow-lg">
                     <a href="javascript:void(0);" onclick="manage_events('student', { 'link':'<?=$link?>' });">
                         <div class="card-body p-2">
                             <div class="d-flex flex-row">

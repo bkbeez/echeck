@@ -34,13 +34,13 @@
     // Check exist
     if( $parameters['type']=='EMPLOYEE' ){
         $parameters['email'] = Helper::stringSave($_POST['email']);
-        $check = User::one("SELECT id FROM events_lists WHERE events_id=:events_id AND id<>:id AND email=:email LIMIT 1;", array('id'=>$parameters['id'], 'events_id'=>$parameters['events_id'], 'email'=>$parameters['email']));
+        $check = DB::one("SELECT id FROM events_lists WHERE events_id=:events_id AND id<>:id AND email=:email LIMIT 1;", array('id'=>$parameters['id'], 'events_id'=>$parameters['events_id'], 'email'=>$parameters['email']));
         if( isset($check['id'])&&$check['id'] ){
             Status::error( 'บุคลากรนี้มีอยู่แล้ว !!!', array('onfocus'=>"email") );
         }
     }else if( $parameters['type']=='STUDENT' ){
         $parameters['student_id'] = Helper::stringSave($_POST['student_id']);
-        $check = User::one("SELECT id FROM events_lists WHERE events_id=:events_id AND id<>:id AND student_id=:student_id LIMIT 1;", array('id'=>$parameters['id'], 'events_id'=>$parameters['events_id'], 'student_id'=>$parameters['student_id']));
+        $check = DB::one("SELECT id FROM events_lists WHERE events_id=:events_id AND id<>:id AND student_id=:student_id LIMIT 1;", array('id'=>$parameters['id'], 'events_id'=>$parameters['events_id'], 'student_id'=>$parameters['student_id']));
         if( isset($check['id'])&&$check['id'] ){
             Status::error( 'นักศึกษานี้มีอยู่แล้ว !!!', array('onfocus'=>"student_id") );
         }
@@ -73,7 +73,7 @@
     }else{
         $checksql .= " AND lastname IS NULL";
     }
-    $namecheck = User::one($checksql, $checks);
+    $namecheck = DB::one($checksql, $checks);
     if( isset($namecheck['id'])&&$namecheck['id'] ){
         Status::error( 'ชื่อนี้มีอยู่แล้ว !!!', array('onfocus'=>"firstname") );
     }

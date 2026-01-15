@@ -20,7 +20,7 @@
     $parameters = array();
     $fields = "`id`";
     $values = ":id";
-    $parameters['id'] = (new datetime())->format("YmdHis").'000';
+    $parameters['id'] = (new datetime())->format("YmdHis").'000000000';
     $fields .= ',`events_id`';
     $values .= ",:events_id";
     $parameters['events_id'] = $_POST['events_id'];
@@ -36,13 +36,13 @@
     // Check exist
     if( $parameters['type']=='EMPLOYEE' ){
         $parameters['email'] = Helper::stringSave($_POST['email']);
-        $check = User::one("SELECT id FROM events_lists WHERE email=:email LIMIT 1;", array('email'=>$parameters['email']));
+        $check = DB::one("SELECT id FROM events_lists WHERE email=:email LIMIT 1;", array('email'=>$parameters['email']));
         if( isset($check['id'])&&$check['id'] ){
             Status::error( 'บุคลากรนี้มีอยู่แล้ว !!!', array('onfocus'=>"email") );
         }
     }else if( $parameters['type']=='STUDENT' ){
         $parameters['student_id'] = Helper::stringSave($_POST['student_id']);
-        $check = User::one("SELECT id FROM events_lists WHERE student_id=:student_id LIMIT 1;", array('student_id'=>$parameters['student_id']));
+        $check = DB::one("SELECT id FROM events_lists WHERE student_id=:student_id LIMIT 1;", array('student_id'=>$parameters['student_id']));
         if( isset($check['id'])&&$check['id'] ){
             Status::error( 'นักศึกษานี้มีอยู่แล้ว !!!', array('onfocus'=>"student_id") );
         }
@@ -74,7 +74,7 @@
     }else{
         $checksql .= " AND lastname IS NULL";
     }
-    $namecheck = User::one($checksql, $checks);
+    $namecheck = DB::one($checksql, $checks);
     if( isset($namecheck['id'])&&$namecheck['id'] ){
         Status::error( 'ชื่อนี้มีอยู่แล้ว !!!', array('onfocus'=>"firstname") );
     }
@@ -111,7 +111,7 @@
     $fields .= ',`user_create`';
     $values .= ",:user_create";
     $parameters['user_create'] = User::get('email');
-    if( User::create("INSERT INTO `events_lists` ($fields) VALUES ($values)", $parameters) ){
+    if( DB::create("INSERT INTO `events_lists` ($fields) VALUES ($values)", $parameters) ){
         // Summary
         DB::update("UPDATE `events` SET `participants`=(SELECT COUNT(events_lists.id) FROM events_lists WHERE events_lists.events_id=:events_id) WHERE events_id=:events_id;", array('events_id'=>$parameters['events_id']));
         Status::success( "บันทึกรายชื่อเข้าสู่กิจกรรมแล้ว", array('title'=>"เพิ่มรายชื่อแล้ว") );
