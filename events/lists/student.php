@@ -163,31 +163,41 @@
                 <?php //Helper::debug($lists); ?>
                 <div class="alert alert-warning alert-icon mb-0" style="padding:5px 8px 1px 8px;">
                     <div class="row gx-1">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
                             <div class="form-floating form-select-wrapper mb-1">
                                 <select id="year" name="year" class="form-select" aria-label="...">
                                     <?=( isset($yearoptions) ? $yearoptions : null )?>
                                 </select>
-                                <label for="year">รหัสปี <span class="text-red">*</span></label>
+                                <label for="year">ปีที่รับเข้า</label>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
                             <div class="form-floating form-select-wrapper mb-1">
-                                <select id="major" name="major" class="form-select" aria-label="...">
-                                    <option value="">เลือกสาขาวิชา</option>
-                                    <?=( isset($majoroptions) ? $majoroptions : null )?>
+                                <select id="education_id" name="education_id" class="form-select" aria-label="...">
+                                    <option value="03">ปริญญาตรี</option>
+                                    <option value="02">ปริญญาโท</option>
+                                    <option value="01">ปริญญาเอก</option>
                                 </select>
-                                <label for="major">สาขาวิชา <span class="text-red">*</span></label>
+                                <label for="education_id">ระดับ</label>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="form-floating form-select-wrapper mb-1">
                                 <select id="status" name="status" class="form-select" aria-label="...">
                                     <option value="normstatus">สถานภาพปกติ</option>
                                     <option value="gradstatus">สำเร็จการศึกษา</option>
                                     <option value="outofstatus">พ้นสถานภาพแล้ว</option>
                                 </select>
-                                <label for="status">สถานะ <span class="text-red">*</span></label>
+                                <label for="status">สถานะ</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-floating form-select-wrapper mb-1">
+                                <select id="major" name="major" class="form-select" aria-label="...">
+                                    <option value="">เลือกสาขาวิชา</option>
+                                    <?=( isset($majoroptions) ? $majoroptions : null )?>
+                                </select>
+                                <label for="major">สาขาวิชา</label>
                             </div>
                         </div>
                     </div>
@@ -279,7 +289,7 @@
         }
     }
     $(document).ready(function() {
-        $("form[name='CheckForm'] select[name='year'], form[name='CheckForm'] select[name='major'], form[name='CheckForm'] select[name='status']").change(function(){
+        $("form[name='CheckForm'] select[name='year'], form[name='CheckForm'] select[name='education_id'], form[name='CheckForm'] select[name='major'], form[name='CheckForm'] select[name='status']").change(function(){
             $("form[name='CheckForm'] input[type='submit']").click();
         });
         $("form[name='CheckForm']").ajaxForm({

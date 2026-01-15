@@ -155,7 +155,7 @@
                                     <option value="">เลือกหน่วยงาน</option>
                                     <?=( isset($organizeoptions) ? $organizeoptions : null )?>
                                 </select>
-                                <label for="organize_id">หน่วยงาน <span class="text-red">*</span></label>
+                                <label for="organize_id">หน่วยงาน</label>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
@@ -164,7 +164,7 @@
                                     <option value="workstatus">ทำงานปกติ</option>
                                     <option value="outofstatus">พ้นสภาพแล้ว</option>
                                 </select>
-                                <label for="status">สถานะ <span class="text-red">*</span></label>
+                                <label for="status">สถานะ</label>
                             </div>
                         </div>
                     </div>

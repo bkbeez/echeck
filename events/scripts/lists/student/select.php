@@ -3,14 +3,17 @@
 <?php
     $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );
     $url = 'https://api.edu.cmu.ac.th/v1/student/filter';
-    if( isset($_POST['year'])&&$_POST['year'] ){
+    if( (isset($_POST['year'])&&$_POST['year'])&&(isset($_POST['education_id'])&&$_POST['education_id'])&&(isset($_POST['major'])&&$_POST['major'])&&(isset($_POST['status'])&&$_POST['status']) ){
         $posts = array();
         $posts['year'] = $_POST['year'];
-        if(isset($_POST['major'])&&$_POST['major']){
-            $posts['major'] = $_POST['major'];
-        }
-        if(isset($_POST['status'])&&$_POST['status']){
-            //$posts['year'] = $_POST['year'];
+        $posts['major'] = $_POST['major'];
+        $posts['education_id'] = $_POST['education_id'];
+        if($_POST['status']=='normstatus'){
+            $posts['status_id'] = "01,02";
+        }else if($_POST['status']=='gradstatus'){
+            $posts['status_id'] = "03";
+        }else if($_POST['status']=='outofstatus'){
+            $posts['status_id'] = "04,05";
         }
         $ch = curl_init();
         curl_setopt_array($ch, array(
@@ -68,6 +71,6 @@
             Status::success( "พบข้อมูลจำนวน ".$seq." คน", array('records'=>$seq, 'htmls'=>$htmls) );
         }
     }else{
-        Status::error( '<div class="alert alert-light alert-icon text-center text-red mb-0" style="min-height:50px;padding:8px 8px 1px 8px;">โปรดเลือกรหัสปีก่อน !!!</div>' );
+        Status::error( '<div class="alert alert-light alert-icon text-center text-red mb-0" style="min-height:50px;padding:8px 8px 1px 8px;">โปรดเลือกสาขาวิชาก่อน !!!</div>' );
     }
 ?>
