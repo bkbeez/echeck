@@ -149,7 +149,7 @@
             <div class="modal-body" style="margin-top:-30px;">
                 <div class="alert alert-info alert-icon mb-0" style="padding:5px 8px 1px 8px;">
                     <div class="row gx-1">
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                             <div class="form-floating form-select-wrapper mb-1">
                                 <select id="organize_id" name="organize_id" class="form-select" aria-label="...">
                                     <option value="">เลือกหน่วยงาน</option>
@@ -158,13 +158,13 @@
                                 <label for="organize_id">หน่วยงาน <span class="text-red">*</span></label>
                             </div>
                         </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                             <div class="form-floating form-select-wrapper mb-1">
                                 <select id="status" name="status" class="form-select" aria-label="...">
                                     <option value="workstatus">ทำงานปกติ</option>
                                     <option value="outofstatus">พ้นสภาพแล้ว</option>
                                 </select>
-                                <label for="status">สถานภาพ <span class="text-red">*</span></label>
+                                <label for="status">สถานะ <span class="text-red">*</span></label>
                             </div>
                         </div>
                     </div>
