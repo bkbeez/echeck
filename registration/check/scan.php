@@ -238,7 +238,7 @@
     //scan
     $(document).ready(function() {
         if(typeof(EventSource) !== "undefined") {
-            var source = new EventSource("<?=APP_PATH?>/scripts/counting.php");
+            var source = new EventSource("<?=APP_PATH?>/scripts/check/counting.php");
             source.onmessage = function(event) {
                 var result = JSON.parse(event.data);
                 $('#total-participants').text(result.count);
@@ -273,7 +273,7 @@
         onScanRender();
     });
     function fetchDashboardData() {
-        $.getJSON("<?=APP_PATH?>/scan/get_dashboard.php", function(rs) {
+        $.getJSON("<?=APP_PATH?>/scripts/check/get_dashboard.php", function(rs) {
             if(rs.status == 'success') {
                 $('#total-participants').text(rs.count);
             }
