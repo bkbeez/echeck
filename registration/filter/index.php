@@ -66,6 +66,7 @@
         font-size: 22px;
         animation: bounce 1s infinite;
     }
+    
     @keyframes mymove {
         0%   {top: 0px;}
         25%  {top: 3px;}
