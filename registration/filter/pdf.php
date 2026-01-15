@@ -115,8 +115,7 @@ $lists = DB::sql("SELECT student_id, prefix, firstname, lastname, organization, 
     }
     @media print {
         .no-print { display: none; }
-        .report-header { 
-            -webkit-print-color-adjust: exact; 
+        .report-header {
             border-bottom-right-radius: 0;
         }
     body { background-color: #fff; }
