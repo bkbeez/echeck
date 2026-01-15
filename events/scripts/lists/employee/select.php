@@ -53,7 +53,6 @@
             }
             Status::success( "พบข้อมูลจำนวน ".$seq." คน", array('records'=>$seq, 'htmls'=>$htmls) );
         }
-
     }else{
         Status::error( '<div class="alert alert-light alert-icon text-center text-red mb-0" style="min-height:50px;padding:8px 8px 1px 8px;">โปรดเลือกหน่วยงานก่อน !!!</div>' );
     }

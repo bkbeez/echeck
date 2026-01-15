@@ -2,20 +2,34 @@
 <?php Auth::ajax(APP_PATH.'/events'); ?>
 <?php
     $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );
+    // Years
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://api.edu.cmu.ac.th/v1/organize/1/childs');
+    curl_setopt($ch, CURLOPT_URL, 'https://api.edu.cmu.ac.th/v1/student/descyears');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($ch, CURLOPT_USERPWD, EDU_API_USER.":".EDU_API_PASS);
-    $result = curl_exec($ch);
+    $result1 = curl_exec($ch);
     curl_close($ch);
-    $organizes = json_decode($result, true);
-    if( isset($organizes)&&count($organizes)>0 ){
-        $organizeinputs = '';
+    $checkyears = json_decode($result1, true);
+    if( isset($checkyears)&&count($checkyears)>0 ){
+        $yearoptions = '';
+        foreach($checkyears as $item){
+            $yearoptions .= '<option value="'.$item['year'].'">'.$item['year'].'</option>';
+        }
+    }
+    // Majors
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://api.edu.cmu.ac.th/v1/student/majors');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($ch, CURLOPT_USERPWD, EDU_API_USER.":".EDU_API_PASS);
+    $result2 = curl_exec($ch);
+    curl_close($ch);
+    $checkmajors = json_decode($result2, true);
+    if( isset($checkmajors)&&count($checkmajors)>0 ){
         $majoroptions = '';
-        foreach($organizes as $item){
-            $majoroptions .= '<option value="'.$item['organize_id'].'">'.$item['organize_name'].'</option>';
-            $organizeinputs .= '<input type="hidden" name="organize['.$item['organize_id'].']" value="'.$item['organize_name'].'"/>';
+        foreach($checkmajors as $item){
+            $majoroptions .= '<option value="'.$item['major'].'">'.$item['major'].'</option>';
         }
     }
 ?>
@@ -140,19 +154,18 @@
     <div class="modal-content modal-manage">
         <form name="CheckForm" action="<?=$form?>/scripts/lists/student/select.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
             <input type="hidden" name="events_id" value="<?=((isset($_POST['events_id'])&&$_POST['events_id'])?$_POST['events_id']:null)?>"/>
-            <?=( isset($organizeinputs) ? $organizeinputs : null )?>
             <input type="hidden" name="form_as" value="<?=$form?>"/>
             <div class="modal-header" style="min-height:105px;background:#f78b77;">
                 <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 <h2 class="mb-0 text-white text-start on-text-oneline"><i class="uil uil-plus-circle" style="float:left;font-size:45px;line-height:42px;margin-right:3px;"></i> Student</h2>
             </div>
             <div class="modal-body" style="margin-top:-30px;">
+                <?php //Helper::debug($lists); ?>
                 <div class="alert alert-warning alert-icon mb-0" style="padding:5px 8px 1px 8px;">
                     <div class="row gx-1">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                             <div class="form-floating form-select-wrapper mb-1">
                                 <select id="year" name="year" class="form-select" aria-label="...">
-                                    <option value="">เลือกรหัสปี</option>
                                     <?=( isset($yearoptions) ? $yearoptions : null )?>
                                 </select>
                                 <label for="year">รหัสปี <span class="text-red">*</span></label>
@@ -266,7 +279,7 @@
         }
     }
     $(document).ready(function() {
-        $("form[name='CheckForm'] select[name='organize_id'], form[name='CheckForm'] select[name='status']").change(function(){
+        $("form[name='CheckForm'] select[name='year'], form[name='CheckForm'] select[name='major'], form[name='CheckForm'] select[name='status']").change(function(){
             $("form[name='CheckForm'] input[type='submit']").click();
         });
         $("form[name='CheckForm']").ajaxForm({
