@@ -221,6 +221,7 @@
 <style>
 
 </style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
 function manage_events(action, params){
     if(action=='register'){

@@ -171,13 +171,12 @@
                     <table class="table table-custom table-hover mb-0">
                         <thead>
                             <tr>
-                                <th class="ps-4" width="20%">เวลา</th>
-                                <th width="60%">ผู้ลงทะเบียน</th>
-                                <th class="text-end pe-4" width="20%">สถานะ</th>
+                                <th class="ps-4" width="30%">เวลา</th>
+                                <th width="70%">ผู้ลงทะเบียน</th>
                             </tr>
                         </thead>
                         <tbody id="participant-list">
-                            <tr><td colspan="3" class="text-center py-5 text-muted">กำลังโหลดข้อมูล...</td></tr>
+                            <tr><td colspan="2" class="text-center py-5 text-muted">กำลังโหลดข้อมูล...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -216,14 +215,9 @@
                             <div class="fw-bold" style="color:#444;">${item.name}</div>
                             <div class="small text-muted">${item.org || '-'}</div>
                         </td>
-                        <td class="text-end pe-4">
-                            <span class="badge rounded-pill px-3 py-2" style="background:#e8f5e9; color:#2e7d32;">
-                                เช็คอินสำเร็จ
-                            </span>
-                        </td>
                     </tr>`;
                 });
-                $('#participant-list').html(listHtml || '<tr><td colspan="3" class="text-center py-4">ยังไม่มีข้อมูล</td></tr>');
+                $('#participant-list').html(listHtml || '<tr><td colspan="2" class="text-center py-4">ยังไม่มีข้อมูล</td></tr>');
             };
         }
     });
