@@ -145,6 +145,22 @@
 .navbar-stick #mainsite-navbar .navbar-nav .dropdown:not(.dropdown-submenu)>.dropdown-toggle:after {
     color: #615eba;
 }
+.navbar-nav .nav-link-icon {
+    width:48px;
+    overflow:hidden;
+    background: #FFF;
+    border:3px solid #625fba;
+    border-radius:50%;
+    -moz-border-radius:50%;
+    -webkit-border-radius:50%;
+}
+.navbar-nav .nav-link-icon>img {
+    width: 100%;
+}
+.navbar-nav .nav-link-icon:hover {
+    border-width: 1px;
+    background-color: #e6e5f4 !important;
+}
 .mainsite-dropdown>.nav-item:hover>a>.nav-name,
 .mainsite-dropdown>.nav-item.active>a>.nav-name {
     text-decoration-line: underline;
