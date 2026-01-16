@@ -5,12 +5,13 @@
         Status::error( 'ไม่พบประเภทกิจกรรม !!!' );
     }else if(!isset($_POST['events_id'])||!$_POST['events_id']){
         Status::error( 'ไม่พบรหัสกิจกรรม !!!' );
-    }else if( $_POST['participant_type']=='LIST'&&(!isset($_POST['id'])||!$_POST['id']) ){
-        Status::error( 'ไม่พบรหัสผู้เข้าร่วม !!!' );
     }
     // Begin
     $today = new datetime();
     if( $_POST['participant_type']=='LIST' ){
+        if( !isset($_POST['id'])||!$_POST['id'] ){
+            Status::error( 'ไม่พบรหัสผู้เข้าร่วม !!!' );
+        }
         $parameters = array();
         $parameters['id'] = $_POST['id'];
         $parameters['events_id'] = $_POST['events_id'];
@@ -33,7 +34,7 @@
                     $htmls .= '</p>';
                 $htmls .= '</div>';
             $htmls .= '</div>';
-            Status::success( "ลงทะเบียนเข้าร่วมเรียบร้อยแล้ว", array('title'=>"เข้าร่วมแล้ว", 'htmls'=>$htmls) )
+            Status::success( "ลงทะเบียนเข้าร่วมเรียบร้อยแล้ว", array('title'=>"เข้าร่วมแล้ว", 'htmls'=>$htmls) );
         }
     }else{
         $parameters = array();
