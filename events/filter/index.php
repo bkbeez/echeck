@@ -34,6 +34,11 @@
         line-height: 12px;
         margin:0 2px 0 -2px;
     }
+    .table-filter .filter-result .badge.badge-qr {
+        cursor: pointer;
+        padding-left: 8px;
+        padding-right: 0px;
+    }
     .table-filter .filter-result .badge.badge-list {
         padding-left: 8px;
         padding-right: 6px;
@@ -221,6 +226,14 @@
                     $("#ManageDialog").modal('show');
                 }
             });
+        }else if(action=='qrcode'){
+            $("#ManageDialog").load("<?=$form?>/filter/qrcode.php", params, function(response, status, xhr){
+                if(status=="error"){
+                    $(this).html('<div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content text-center">'+xhr.status + "<br>" + xhr.statusText+'<div class="modal-body"></div></div></div>');
+                }else{
+                    $("#ManageDialog").modal('show');
+                }
+            });
         }else if(action=='status'){
             params['form_as'] = '<?=$form?>';
             $("#ManageDialog").load("<?=$form?>/filter/status.php", params, function(response, status, xhr){
@@ -229,7 +242,7 @@
                 }else{
                     $("#ManageDialog").modal('show');
                 }
-            });
+            });  
         }else if(action=='delete'){
             swal({
                 'title':'<b class="text-red" style="font-size:100px;"><i class="uil uil-trash-alt"></i></b>',
