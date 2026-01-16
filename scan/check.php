@@ -226,15 +226,11 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $("form[name='CheckForm']").ajaxForm({
-            beforeSubmit: function (formData, jqForm, options) {
-                //runStart();
-            },
             success: function(rs) {
-                //runStop();
                 var data = JSON.parse(rs);
                 if(data.status=='success'){
                     $("form[name='CheckForm'] .row-success").append(data.htmls);
-                    $("form[name='CheckForm'] .row-button").html('<div style="display:none;"><button type="button" class="btn btn-lg btn-success btn-gift rounded fs-20 w-100" onclick="check_events(\'back\');"><i class="uil uil-check-circle" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> เสร็จสิ้น</button></div>');
+                    $("form[name='CheckForm'] .row-button").html('<div style="display:none;"><button type="button" class="btn btn-lg btn-success btn-gift rounded fs-20 w-100" onclick="document.location=\'<?=APP_HOME?>\';"><i class="uil uil-check-circle" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> เสร็จสิ้น</button></div>');
                     $("form[name='CheckForm'] .row-success .on-success>div").fadeIn('slow', function(){
                         $("form[name='CheckForm'] .row-button>div").fadeIn(1000);
                     });
@@ -265,7 +261,7 @@
             }
         });
         <?php if( isset($checkinhtmls) ){ ?>
-        $("form[name='CheckForm'] .row-button").html('<div style="display:none;"><button type="button" class="btn btn-lg btn-primary btn-gift rounded fs-20 w-100" onclick="check_events(\'back\');"><i class="uil uil-check-circle" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> เสร็จสิ้น</button></div>');
+        $("form[name='CheckForm'] .row-button").html('<div style="display:none;"><button type="button" class="btn btn-lg btn-primary btn-gift rounded fs-20 w-100" onclick="document.location=\'<?=APP_HOME?>\';"><i class="uil uil-check-circle" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> เสร็จสิ้น</button></div>');
         $("form[name='CheckForm'] .row-success .on-success>div").fadeIn('slow', function(){
             $("form[name='CheckForm'] .row-button>div").fadeIn(1000);
         });
