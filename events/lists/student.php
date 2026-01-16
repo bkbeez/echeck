@@ -2,20 +2,19 @@
 <?php Auth::ajax(APP_PATH.'/events'); ?>
 <?php
     $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );
+    // Years
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://api.edu.cmu.ac.th/v1/organize/1/childs');
+    curl_setopt($ch, CURLOPT_URL, 'https://api.edu.cmu.ac.th/v1/student/descyears');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
     curl_setopt($ch, CURLOPT_USERPWD, EDU_API_USER.":".EDU_API_PASS);
     $result = curl_exec($ch);
     curl_close($ch);
-    $organizes = json_decode($result, true);
-    if( isset($organizes)&&count($organizes)>0 ){
-        $organizeinputs = '';
-        $majoroptions = '';
-        foreach($organizes as $item){
-            $majoroptions .= '<option value="'.$item['organize_id'].'">'.$item['organize_name'].'</option>';
-            $organizeinputs .= '<input type="hidden" name="organize['.$item['organize_id'].']" value="'.$item['organize_name'].'"/>';
+    $years = json_decode($result, true);
+    if( isset($years)&&count($years)>0 ){
+        $yearoptions = '';
+        foreach($years as $item){
+            $yearoptions .= '<option value="'.$item['year'].'">'.$item['year'].'</option>';
         }
     }
 ?>
@@ -140,7 +139,6 @@
     <div class="modal-content modal-manage">
         <form name="CheckForm" action="<?=$form?>/scripts/lists/student/select.php" method="POST" enctype="multipart/form-data" class="form-manage" target="_blank">
             <input type="hidden" name="events_id" value="<?=((isset($_POST['events_id'])&&$_POST['events_id'])?$_POST['events_id']:null)?>"/>
-            <?=( isset($organizeinputs) ? $organizeinputs : null )?>
             <input type="hidden" name="form_as" value="<?=$form?>"/>
             <div class="modal-header" style="min-height:105px;background:#f78b77;">
                 <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -149,32 +147,40 @@
             <div class="modal-body" style="margin-top:-30px;">
                 <div class="alert alert-warning alert-icon mb-0" style="padding:5px 8px 1px 8px;">
                     <div class="row gx-1">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                            <div class="form-floating form-select-wrapper mb-1">
+                                <select id="education_id" name="education_id" class="form-select" aria-label="...">
+                                    <option value="">เลือกระดับ</option>
+                                    <option value="03">ปริญญาตรี</option>
+                                    <option value="02">ปริญญาโท</option>
+                                    <option value="01">ปริญญาเอก</option>
+                                </select>
+                                <label for="education_id">ระดับ</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
                             <div class="form-floating form-select-wrapper mb-1">
                                 <select id="year" name="year" class="form-select" aria-label="...">
-                                    <option value="">เลือกรหัสปี</option>
                                     <?=( isset($yearoptions) ? $yearoptions : null )?>
                                 </select>
-                                <label for="year">รหัสปี <span class="text-red">*</span></label>
+                                <label for="year">ปีที่รับเข้า</label>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
-                            <div class="form-floating form-select-wrapper mb-1">
-                                <select id="major" name="major" class="form-select" aria-label="...">
-                                    <option value="">เลือกสาขาวิชา</option>
-                                    <?=( isset($majoroptions) ? $majoroptions : null )?>
-                                </select>
-                                <label for="major">สาขาวิชา <span class="text-red">*</span></label>
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="form-floating form-select-wrapper mb-1">
                                 <select id="status" name="status" class="form-select" aria-label="...">
+                                    <option value="">ทั้งหมด</option>
                                     <option value="normstatus">สถานภาพปกติ</option>
                                     <option value="gradstatus">สำเร็จการศึกษา</option>
                                     <option value="outofstatus">พ้นสถานภาพแล้ว</option>
                                 </select>
-                                <label for="status">สถานะ <span class="text-red">*</span></label>
+                                <label for="status">สถานะ</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="form-floating form-select-wrapper mb-1">
+                                <select id="major" name="major" class="form-select" aria-label="..."><option value="">... .. .</option></select>
+                                <label for="major">สาขาวิชา</label>
                             </div>
                         </div>
                     </div>
@@ -266,7 +272,7 @@
         }
     }
     $(document).ready(function() {
-        $("form[name='CheckForm'] select[name='organize_id'], form[name='CheckForm'] select[name='status']").change(function(){
+        $("form[name='CheckForm'] select[name='education_id'], form[name='CheckForm'] select[name='year'], form[name='CheckForm'] select[name='status'], form[name='CheckForm'] select[name='major']").change(function(){
             $("form[name='CheckForm'] input[type='submit']").click();
         });
         $("form[name='CheckForm']").ajaxForm({
@@ -281,54 +287,62 @@
             success: function(rs) {
                 var data = JSON.parse(rs);
                 if(data.status=='success'){
-                    $(".modal-dialog .modal-body.checklists").html(data.htmls);
-                    document.getElementById('checkall-top').disabled = false;
-                    document.getElementById('checkall-bottom').disabled = false;
-                    $(".modal-dialog .modal-body .on-check-all").show();
-                    $(".modal-dialog .modal-body.checklists form[name='saving']").ajaxForm({
-                        beforeSubmit: function (formData, jqForm, options) {
-                            $(".modal-dialog .modal-body.checklists>.AT-"+formData[0].value+" .on-status").html('');
-                        },
-                        success: function(rs) {
-                            var data = JSON.parse(rs);
-                            if( data.login!=undefined&&data.login ){
-                                runLogin();
-                            }else{
-                                if( data.at!=undefined&&data.at ){
-                                    if(data.status=='success'){
-                                        $(".modal-dialog .modal-body.checklists>form."+data.at).remove();
-                                    }else{
-                                        document.getElementById(data.at).checked = false;
-                                        document.getElementById('checkall-top').checked = false;
-                                        document.getElementById('checkall-bottom').checked = false;
-                                        $(".modal-dialog .modal-body.checklists>form."+data.at+" .on-status").html(data.text);
-                                        $(".modal-dialog .modal-body.checklists>form."+data.at).removeAttr('checked');
-                                        $(".modal-dialog .modal-body button[type='button']>.badge").html(parseInt($(".modal-dialog .modal-body button[type='button']>.badge").html())-1);
-                                    }
-                                    if( $(".modal-dialog .modal-body.checklists>form[checked]").length>0 ){
-                                        var id = $(".modal-dialog .modal-body.checklists>form[checked]").attr('id');
-                                        $("#ManageDialog").scrollTo("#"+id);
-                                        $(".modal-dialog .modal-body.checklists>form.AT-"+id).find('input[type="submit"]').click();
-                                    }else{
-                                        if( $(".modal-dialog .modal-body.checklists>form").length>0 ){
-                                            $(".modal-dialog .modal-body button[type='button']>.badge").html('0');
-                                            $("form[name='filter'] input[name='state']").val(null);
-                                            $("form[name='filter'] button[type='submit']").click();
+                    if( data.majors!=undefined&&data.majors!='' ){
+                        $("form[name='CheckForm'] select[name='major']").html(data.majors);
+                    }
+                    if( data.htmls!=undefined&&data.htmls!='' ){
+                        $(".modal-dialog .modal-body.checklists").html(data.htmls);
+                        document.getElementById('checkall-top').disabled = false;
+                        document.getElementById('checkall-bottom').disabled = false;
+                        $(".modal-dialog .modal-body .on-check-all").show();
+                        $(".modal-dialog .modal-body.checklists form[name='saving']").ajaxForm({
+                            beforeSubmit: function (formData, jqForm, options) {
+                                $(".modal-dialog .modal-body.checklists>.AT-"+formData[0].value+" .on-status").html('');
+                            },
+                            success: function(rs) {
+                                var data = JSON.parse(rs);
+                                if( data.login!=undefined&&data.login ){
+                                    runLogin();
+                                }else{
+                                    if( data.at!=undefined&&data.at ){
+                                        if(data.status=='success'){
+                                            $(".modal-dialog .modal-body.checklists>form."+data.at).remove();
                                         }else{
-                                            $(".modal-dialog .modal-body .on-check-all").hide();
-                                            $(".modal-dialog .modal-body.finished").html('<div class="alert alert-success alert-icon text-center mb-0" style="min-height:55px;padding:12px 35px 8px 35px;"><span class="uil uil-check-circle" style="display:inline-block;font-size:32px;line-height:30px;margin-left:-36px;position:fixed;"></span> บันทึกรายชื่อเรียบร้อยแล้ว</div>');
-                                            $(".modal-dialog").fadeOut(1500, function(){
-                                                $("#ManageDialog").modal('hide');
+                                            document.getElementById(data.at).checked = false;
+                                            document.getElementById('checkall-top').checked = false;
+                                            document.getElementById('checkall-bottom').checked = false;
+                                            $(".modal-dialog .modal-body.checklists>form."+data.at+" .on-status").html(data.text);
+                                            $(".modal-dialog .modal-body.checklists>form."+data.at).removeAttr('checked');
+                                            $(".modal-dialog .modal-body button[type='button']>.badge").html(parseInt($(".modal-dialog .modal-body button[type='button']>.badge").html())-1);
+                                        }
+                                        if( $(".modal-dialog .modal-body.checklists>form[checked]").length>0 ){
+                                            var id = $(".modal-dialog .modal-body.checklists>form[checked]").attr('id');
+                                            $("#ManageDialog").scrollTo("#"+id);
+                                            $(".modal-dialog .modal-body.checklists>form.AT-"+id).find('input[type="submit"]').click();
+                                        }else{
+                                            if( $(".modal-dialog .modal-body.checklists>form").length>0 ){
+                                                $(".modal-dialog .modal-body button[type='button']>.badge").html('0');
                                                 $("form[name='filter'] input[name='state']").val(null);
                                                 $("form[name='filter'] button[type='submit']").click();
-                                            });
+                                            }else{
+                                                $(".modal-dialog .modal-body .on-check-all").hide();
+                                                $(".modal-dialog .modal-body.finished").html('<div class="alert alert-success alert-icon text-center mb-0" style="min-height:55px;padding:12px 35px 8px 35px;"><span class="uil uil-check-circle" style="display:inline-block;font-size:32px;line-height:30px;margin-left:-36px;position:fixed;"></span> บันทึกรายชื่อเรียบร้อยแล้ว</div>');
+                                                $(".modal-dialog").fadeOut(1500, function(){
+                                                    $("#ManageDialog").modal('hide');
+                                                    $("form[name='filter'] input[name='state']").val(null);
+                                                    $("form[name='filter'] button[type='submit']").click();
+                                                });
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    }else{
+                        $(".modal-dialog .modal-body.checklists").html('<div class="alert alert-light alert-icon text-center text-red mb-0" style="min-height:50px;padding:8px 8px 1px 8px;">ไม่พบรายชื่อตามเงื่อนไข !!!</div>');
+                    }
                 }else{
+                    $("form[name='CheckForm'] select[name='major']").html('<option value="">... .. .</option>');
                     $(".modal-dialog .modal-body.checklists").html(data.text);
                 }
             }

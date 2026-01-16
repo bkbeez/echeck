@@ -155,16 +155,16 @@
                                     <option value="">เลือกหน่วยงาน</option>
                                     <?=( isset($organizeoptions) ? $organizeoptions : null )?>
                                 </select>
-                                <label for="organize_id">หน่วยงาน <span class="text-red">*</span></label>
+                                <label for="organize_id">หน่วยงาน</label>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
                             <div class="form-floating form-select-wrapper mb-1">
                                 <select id="status" name="status" class="form-select" aria-label="...">
                                     <option value="workstatus">ทำงานปกติ</option>
-                                    <option value="outofstatus">พ้นสภาพแล้ว</option>
+                                    <option value="outofstatus">พ้นสถานภาพแล้ว</option>
                                 </select>
-                                <label for="status">สถานะ <span class="text-red">*</span></label>
+                                <label for="status">สถานะ</label>
                             </div>
                         </div>
                     </div>
@@ -271,53 +271,57 @@
             success: function(rs) {
                 var data = JSON.parse(rs);
                 if(data.status=='success'){
-                    $(".modal-dialog .modal-body.checklists").html(data.htmls);
-                    document.getElementById('checkall-top').disabled = false;
-                    document.getElementById('checkall-bottom').disabled = false;
-                    $(".modal-dialog .modal-body .on-check-all").show();
-                    $(".modal-dialog .modal-body.checklists form[name='saving']").ajaxForm({
-                        beforeSubmit: function (formData, jqForm, options) {
-                            $(".modal-dialog .modal-body.checklists>.AT-"+formData[0].value+" .on-status").html('');
-                        },
-                        success: function(rs) {
-                            var data = JSON.parse(rs);
-                            if( data.login!=undefined&&data.login ){
-                                runLogin();
-                            }else{
-                                if( data.at!=undefined&&data.at ){
-                                    if(data.status=='success'){
-                                        $(".modal-dialog .modal-body.checklists>form."+data.at).remove();
-                                    }else{
-                                        document.getElementById(data.at).checked = false;
-                                        document.getElementById('checkall-top').checked = false;
-                                        document.getElementById('checkall-bottom').checked = false;
-                                        $(".modal-dialog .modal-body.checklists>form."+data.at+" .on-status").html(data.text);
-                                        $(".modal-dialog .modal-body.checklists>form."+data.at).removeAttr('checked');
-                                        $(".modal-dialog .modal-body button[type='button']>.badge").html(parseInt($(".modal-dialog .modal-body button[type='button']>.badge").html())-1);
-                                    }
-                                    if( $(".modal-dialog .modal-body.checklists>form[checked]").length>0 ){
-                                        var id = $(".modal-dialog .modal-body.checklists>form[checked]").attr('id');
-                                        $("#ManageDialog").scrollTo("#"+id);
-                                        $(".modal-dialog .modal-body.checklists>form.AT-"+id).find('input[type="submit"]').click();
-                                    }else{
-                                        if( $(".modal-dialog .modal-body.checklists>form").length>0 ){
-                                            $(".modal-dialog .modal-body button[type='button']>.badge").html('0');
-                                            $("form[name='filter'] input[name='state']").val(null);
-                                            $("form[name='filter'] button[type='submit']").click();
+                    if( data.htmls!=undefined&&data.htmls!='' ){
+                        $(".modal-dialog .modal-body.checklists").html(data.htmls);
+                        document.getElementById('checkall-top').disabled = false;
+                        document.getElementById('checkall-bottom').disabled = false;
+                        $(".modal-dialog .modal-body .on-check-all").show();
+                        $(".modal-dialog .modal-body.checklists form[name='saving']").ajaxForm({
+                            beforeSubmit: function (formData, jqForm, options) {
+                                $(".modal-dialog .modal-body.checklists>.AT-"+formData[0].value+" .on-status").html('');
+                            },
+                            success: function(rs) {
+                                var data = JSON.parse(rs);
+                                if( data.login!=undefined&&data.login ){
+                                    runLogin();
+                                }else{
+                                    if( data.at!=undefined&&data.at ){
+                                        if(data.status=='success'){
+                                            $(".modal-dialog .modal-body.checklists>form."+data.at).remove();
                                         }else{
-                                            $(".modal-dialog .modal-body .on-check-all").hide();
-                                            $(".modal-dialog .modal-body.finished").html('<div class="alert alert-success alert-icon text-center mb-0" style="min-height:55px;padding:12px 35px 8px 35px;"><span class="uil uil-check-circle" style="display:inline-block;font-size:32px;line-height:30px;margin-left:-36px;position:fixed;"></span> บันทึกรายชื่อเรียบร้อยแล้ว</div>');
-                                            $(".modal-dialog").fadeOut(1500, function(){
-                                                $("#ManageDialog").modal('hide');
+                                            document.getElementById(data.at).checked = false;
+                                            document.getElementById('checkall-top').checked = false;
+                                            document.getElementById('checkall-bottom').checked = false;
+                                            $(".modal-dialog .modal-body.checklists>form."+data.at+" .on-status").html(data.text);
+                                            $(".modal-dialog .modal-body.checklists>form."+data.at).removeAttr('checked');
+                                            $(".modal-dialog .modal-body button[type='button']>.badge").html(parseInt($(".modal-dialog .modal-body button[type='button']>.badge").html())-1);
+                                        }
+                                        if( $(".modal-dialog .modal-body.checklists>form[checked]").length>0 ){
+                                            var id = $(".modal-dialog .modal-body.checklists>form[checked]").attr('id');
+                                            $("#ManageDialog").scrollTo("#"+id);
+                                            $(".modal-dialog .modal-body.checklists>form.AT-"+id).find('input[type="submit"]').click();
+                                        }else{
+                                            if( $(".modal-dialog .modal-body.checklists>form").length>0 ){
+                                                $(".modal-dialog .modal-body button[type='button']>.badge").html('0');
                                                 $("form[name='filter'] input[name='state']").val(null);
                                                 $("form[name='filter'] button[type='submit']").click();
-                                            });
+                                            }else{
+                                                $(".modal-dialog .modal-body .on-check-all").hide();
+                                                $(".modal-dialog .modal-body.finished").html('<div class="alert alert-success alert-icon text-center mb-0" style="min-height:55px;padding:12px 35px 8px 35px;"><span class="uil uil-check-circle" style="display:inline-block;font-size:32px;line-height:30px;margin-left:-36px;position:fixed;"></span> บันทึกรายชื่อเรียบร้อยแล้ว</div>');
+                                                $(".modal-dialog").fadeOut(1500, function(){
+                                                    $("#ManageDialog").modal('hide');
+                                                    $("form[name='filter'] input[name='state']").val(null);
+                                                    $("form[name='filter'] button[type='submit']").click();
+                                                });
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                    });
+                        });
+                    }else{
+                        $(".modal-dialog .modal-body.checklists").html('<div class="alert alert-light alert-icon text-center text-red mb-0" style="min-height:50px;padding:8px 8px 1px 8px;">ไม่พบรายชื่อตามเงื่อนไข !!!</div>');
+                    }
                 }else{
                     $(".modal-dialog .modal-body.checklists").html(data.text);
                 }

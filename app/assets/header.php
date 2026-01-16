@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="<?=THEME_CSS?>/plugins.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/style.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/colors/grape.css">
-        <link rel="stylesheet" href="<?=THEME_CSS?>/index.css">
+        <link rel="stylesheet" href="<?=THEME_CSS?>/index.css?1.0.0">
         <link rel="stylesheet" href="<?=THEME_CSS?>/table.css">
         <link rel="stylesheet" href="<?=THEME_JS?>/sweetalert/sweetalert2.min.css" />
         <link rel="stylesheet" href="<?=THEME_JS?>/datepicker/thai/datepicker.css" />
