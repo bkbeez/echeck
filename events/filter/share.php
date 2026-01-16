@@ -1,5 +1,5 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
-<?php Auth::ajax(APP_PATH.'/admin/?users'); ?>
+<?php Auth::ajax(APP_PATH.'/events'); ?>
 <?php
     $htmls = '<h3 class="text-muted text-center">EMPTY</h3>';
     $form = ( (isset($_POST['form_as'])&&$_POST['form_as']) ? $_POST['form_as'] : null );

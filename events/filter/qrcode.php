@@ -1,5 +1,5 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
-<?php Auth::ajax(APP_PATH.'/admin/?users'); ?>
+<?php Auth::ajax(APP_PATH.'/events'); ?>
 <?php
     if( isset($_POST['events_id'])&&$_POST['events_id'] ){
         $data = DB::one("SELECT events.*

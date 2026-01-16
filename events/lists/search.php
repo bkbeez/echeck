@@ -114,13 +114,13 @@
         $lang = App::lang();
         foreach($lists as $no => $row){
             $row_no = (($start+1)+$no);
-            $status = '<span class="badge badge-status badge-sm bg-pale-dark text-dark rounded me-1 align-self-start" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-circle"></i>ยังไมไ่ด้ลงทะเบียน</span>';
+            $status = '<span class="badge badge-status badge-sm bg-pale-dark text-dark rounded me-1 align-self-start"><i class="uil uil-circle"></i>ไม่ได้ลงทะเบียน</span>';
             if( $row['status']==1 ){
-                $status = '<span class="badge badge-status badge-sm bg-pale-green text-green rounded me-1 align-self-start" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-check-circle"></i>ลงทะเบียนแล้ว</span>';
+                $status = '<span class="badge badge-status badge-sm bg-green text-white rounded me-1 align-self-start lift" style="cursor:pointer;" onclick="manage_events(\'status\', { \'id\':\''.$row['id'].'\', \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-check-circle"></i>เข้าร่วมแล้ว</span>';
             }else if( $row['status']==2 ){
-                $status = '<span class="badge badge-status badge-sm bg-pale-red text-red rounded me-1 align-self-start" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-times-circle"></i>ยกเลิกการลงทะเบียน</span>';
+                $status = '<span class="badge badge-status badge-sm bg-red text-white rounded me-1 align-self-start lift" style="cursor:pointer;" onclick="manage_events(\'status\', { \'id\':\''.$row['id'].'\', \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-times-circle"></i>ยกเลิกแล้ว</span>';
             }
-            $htmls .= '<tr class="'.$row['events_id'].'">';
+            $htmls .= '<tr class="'.$row['id'].'">';
                 $htmls .= '<td class="no" scope="row">'.$row_no.'</td>';
                 $htmls .= '<td class="type">'.$row['type_icon'].'</td>';
                 $htmls .= '<td class="name autoline">';
