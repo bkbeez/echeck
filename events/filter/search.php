@@ -132,6 +132,7 @@
                         $htmls .= $row['events_icon'];
                         $htmls .= '<span class="icon-o">'.$status.$manage.'</span>';
                     $htmls.= '</div>';
+                    $htmls .= '<span class="badge badge-qr badge-sm bg-pale-grape text-grape rounded me-1 align-self-start" onclick="manage_events(\'qrcode\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-qrcode-scan"></i>&nbsp;</span>';
                     $htmls .= '<font>'.$row['events_name'].'</font>';
                     if( $row['participants']>0||$row['participant_type']=='LIST' ){
                         $htmls .= ' <span class="badge badge-list badge-sm bg-pale-grape text-grape rounded me-1 align-self-start lift" style="cursor:pointer;" onclick="manage_events(\'list\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-users-alt"></i><sup><b class="fs-13">'.$row['participants'].'</b> รายชื่อ</sup></span>';
