@@ -1,5 +1,5 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php');?>
-<?php Auth::ajax(APP_PATH.'/registration'); ?>
+<?php Auth::check(APP_PATH.'/registration'); ?>
 <?php 
 $events_id = isset($_GET['events_id']) ? $_GET['events_id'] : null;
 if (!$events_id) {

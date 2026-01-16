@@ -6,11 +6,11 @@
     header('Connection: keep-alive');
     function getStats() {
         $total = DB::one("SELECT COUNT(*) as cnt FROM events_lists WHERE status = 1");
-        $lists = DB::sql("SELECT firstname, lastname, organization, date_checkin
-                            FROM events_lists
-                            WHERE status = 1
-                            ORDER BY date_checkin DESC
-                            LIMIT 15");
+        $lists = DB::sql("SELECT firstname, lastname, organization, date_checkin 
+                            FROM events_lists 
+                            WHERE status = 1 
+                            ORDER BY date_checkin DESC 
+                            LIMIT 20");
         $data_list = [];
         if($lists){
             foreach($lists as $row) {
