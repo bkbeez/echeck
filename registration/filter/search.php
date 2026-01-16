@@ -1,6 +1,7 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php Auth::ajax(APP_PATH.'/registration'); ?>
 <?php
+    header('Content-Type: application/json');
     // Init
     $result = array('status'=>'success', 'title'=>Lang::get('ระบบลงทะเบียนกิจกรรม') );
     $page = ((isset($_POST['page'])&&$_POST['page'])?intval($_POST['page']):1);

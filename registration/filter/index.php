@@ -224,7 +224,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
 function manage_events(action, params){
-    if(action=='register'){
+    if(action=='check'){
         params['form_as']='<?=$form?>';
         $("#ManageDialog").load("<?=$form?>/check/scan.php", params, function(response, status, xhr){
                 if(status=="error"){

@@ -9,10 +9,10 @@
         exit;
     }
     $loadpage = null;
-    if( isset($_GET['scan']) ){
-        $index['view'] = 'scan';
+    if( isset($_GET['check']) ){
+        $index['view'] = 'check';
         $index['back'] = $link;
-        $loadpage = 'scan/index.php';
+        $loadpage = 'check/index.php';
     }else{
         $index['view'] = 'filter';
         $loadpage = 'filter/index.php';

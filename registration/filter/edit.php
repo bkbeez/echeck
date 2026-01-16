@@ -89,11 +89,11 @@ $lists = DB::sql("SELECT * FROM events_lists WHERE events_id = :id ORDER BY date
     .btn-delete-soft { 
         color: #ed2e7e; 
         background: transparent;
-         border: 1px solid #ffe5f0; 
-         width: 38px; height: 38px; 
-         border-radius: 10px; 
-         cursor: pointer; 
-        }
+        border: 1px solid #ffe5f0; 
+        width: 38px; height: 38px; 
+        border-radius: 10px; 
+        cursor: pointer; 
+    }
     .btn-delete-soft:hover { 
         background: #ed2e7e; 
         color: #fff; 
@@ -189,7 +189,7 @@ function cancelRegis(id, ev_id) {
         if (result.isConfirmed) {
             Swal.showLoading();
             $.ajax({
-                url: '/scripts/delete.php',
+                url: '/registration/script/delete.php',
                 type: 'POST',
                 data: { id: id, events_id: ev_id },
                 dataType: 'json',
