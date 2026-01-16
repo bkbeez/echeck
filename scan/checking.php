@@ -82,6 +82,8 @@
         $fields .= ',`user_create`';
         $values .= ",:user_checkin";
         if( DB::create("INSERT INTO `events_lists` ($fields) VALUES ($values)", $parameters) ){
+            // Summary
+            DB::update("UPDATE `events` SET `participants`=(SELECT COUNT(events_lists.id) FROM events_lists WHERE events_lists.events_id=:events_id) WHERE events_id=:events_id;", array('events_id'=>$parameters['events_id']));
             $htmls = '<div class="d-flex flex-row on-success">';
                 $htmls .= '<div style="display:none;"><div class="icon text-success me-2 mt-n3" style="font-size:52px;line-height:75px;"><i class="uil uil-calendar-alt"></i></div></div>';
                 $htmls .= '<div style="display:none;">';
