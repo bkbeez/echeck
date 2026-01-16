@@ -8,7 +8,32 @@
     }
     // Begin
     $today = new datetime();
-    if( $_POST['participant_type']=='LIST' ){
+    if(isset($_POST['id'])&&$_POST['id']){
+        $parameters = array();
+        $parameters['id'] = $_POST['id'];
+        $parameters['events_id'] = $_POST['events_id'];
+        $datas  = '`status`';
+        $datas .= "=:status";
+        $parameters['status'] = 1;
+        $datas .= ',`date_checkin`';
+        $datas .= "=:date_checkin";
+        $parameters['date_checkin'] = $today->format("Y-m-d H:i:s");
+        $datas .= ',`user_checkin`';
+        $datas .= "=:user_checkin";
+        $parameters['user_checkin'] = ( (isset($_POST['email'])&&$_POST['email']) ? $_POST['email'] : null );
+        if( DB::update("UPDATE `events_lists` SET $datas WHERE id=:id AND events_id=:events_id;", $parameters) ){
+            $htmls = '<div class="d-flex flex-row on-success">';
+                $htmls .= '<div style="display:none;"><div class="icon text-success me-2 mt-n3" style="font-size:52px;line-height:75px;"><i class="uil uil-calendar-alt"></i></div></div>';
+                $htmls .= '<div style="display:none;">';
+                    $htmls .= '<h5 class="mb-0 text-success on-font-primary">ลงทะเบียนเข้าร่วมแล้ว</h5>';
+                    $htmls .= '<p class="on-text-normal text-success m-0" style="margin-top:-2px;line-height:18px;">';
+                        $htmls .= '&rang; '.Helper::date($parameters['date_checkin']).' '.$today->format("H:i:s");
+                    $htmls .= '</p>';
+                $htmls .= '</div>';
+            $htmls .= '</div>';
+            Status::success( "ลงทะเบียนเข้าร่วมเรียบร้อยแล้ว", array('title'=>"เข้าร่วมแล้ว", 'htmls'=>$htmls) );
+        }
+    }else if( $_POST['participant_type']=='LIST' ){
         if( !isset($_POST['id'])||!$_POST['id'] ){
             Status::error( 'ไม่พบรหัสผู้เข้าร่วม !!!' );
         }

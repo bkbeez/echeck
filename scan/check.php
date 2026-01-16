@@ -46,7 +46,22 @@
                 LIMIT 1;"
                 , $checks
             );
-            $events_lists_id = ( (isset($data['id'])&&$data['id']) ? $data['id'] : null );
+        }else{
+            $checks = array();
+            $checks['events_id'] = $event['events_id'];
+            $checks['email'] = User::get('email');
+            $data = DB::one("SELECT events_lists.*
+                , TRIM(CONCAT(COALESCE(events_lists.prefix,''),events_lists.firstname,' ',COALESCE(events_lists.lastname,''))) AS fullname
+                , CONCAT(DATE_FORMAT(events_lists.date_checkin,'%d/%m/'), (YEAR(events_lists.date_checkin)+543),' เวลา ',DATE_FORMAT(events_lists.date_checkin, '%H:%i')) AS date_checkin_display
+                FROM events_lists
+                WHERE events_lists.events_id=:events_id
+                AND events_lists.email=:email
+                LIMIT 1;"
+                , $checks
+            );
+        }
+        if(isset($data['id'])&&$data['id']){
+            $events_lists_id = $data['id'];
             if( isset($data['fullname'])&&$data['fullname'] ){
                 $fullname = $data['fullname'];
             }
