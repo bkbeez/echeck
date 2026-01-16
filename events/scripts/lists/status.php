@@ -13,10 +13,10 @@
     $parameters['events_id'] = $_POST['events_id'];
     if( isset($_POST['reset'])&&$_POST['reset']=='Y' ){
         if( DB::update("UPDATE `events_lists` SET `status`=0, `date_checkin`=NULL, `user_checkin`=NULL, `date_cancel`=NULL, `user_cancel`=NULL WHERE id=:id AND events_id=:events_id;", $parameters) ){
-            $htmls = '<span class="badge badge-status badge-sm bg-pale-dark text-dark rounded me-1 align-self-start"><i class="uil uil-circle"></i>ไม่ได้ลงทะเบียน</span>';
+            $htmls = '<span class="badge badge-status badge-sm bg-pale-dark text-dark rounded me-1 align-self-start"><i class="uil uil-circle"></i>ไม่ได้เข้าร่วม</span>';
             Status::success( "รีเซตการลงทะเบียนเรียบร้อยแล้ว", array('title'=>"รีเซตเรียบร้อยแล้ว", 'id'=>$parameters['id'], 'events_id'=>$parameters['events_id'], 'htmls'=>$htmls) );
         }
-        Status::error( "กรุณาลองใหม่อีกครั้ง !!!", array('title'=>"ไม่สามารถเปลี่ยนได้") );
+        Status::error( "กรุณาลองใหม่อีกครั้ง !!!", array('title'=>"ไม่สามารถรีเซตได้") );
     }else if( isset($_POST['cancel'])&&$_POST['cancel']=='Y' ){
         $parameters['user_cancel'] = User::get('email');
         if( DB::update("UPDATE `events_lists` SET `status`=2, `date_checkin`=NULL, `user_checkin`=NULL, `date_cancel`=NOW(), `user_cancel`=:user_cancel WHERE id=:id AND events_id=:events_id;", $parameters) ){

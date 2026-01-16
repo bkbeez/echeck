@@ -48,9 +48,9 @@
                         }
                     }else if($key=="status"){
                         $_SESSION['login']['filter'][$filter_as]['condition'][$key] = $value;
-                        if($value=='CHECKED'){
+                        if($value=='UNCHECK'){
                             $condition .= " AND events_lists.status=0";
-                        }else if($value=='UNCHECK'){
+                        }else if($value=='CHECKED'){
                             $condition .= " AND events_lists.status=1";
                         }else if($value=='CANCELLED'){
                             $condition .= " AND events_lists.status=2";
@@ -114,7 +114,7 @@
         $lang = App::lang();
         foreach($lists as $no => $row){
             $row_no = (($start+1)+$no);
-            $status = '<span class="badge badge-status badge-sm bg-pale-dark text-dark rounded me-1 align-self-start"><i class="uil uil-circle"></i>ไม่ได้ลงทะเบียน</span>';
+            $status = '<span class="badge badge-status badge-sm bg-pale-dark text-dark rounded me-1 align-self-start"><i class="uil uil-circle"></i>ไม่ได้เข้าร่วม</span>';
             if( $row['status']==1 ){
                 $status = '<span class="badge badge-status badge-sm bg-green text-white rounded me-1 align-self-start lift" style="cursor:pointer;" onclick="manage_events(\'status\', { \'id\':\''.$row['id'].'\', \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-check-circle"></i>เข้าร่วมแล้ว</span>';
             }else if( $row['status']==2 ){

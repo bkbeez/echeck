@@ -189,9 +189,9 @@
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             <select name="condition[status]" class="form-select mb-1">
                                 <option value="ALL"<?=((!isset($filter['condition']['status'])||$filter['condition']['status']=='ALL')?' selected':null)?>>แสดงทุกสถานะ...</option>
-                                <option value="CHECKED"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='CHECKED')?' selected':null)?>>ลงทะเบียนแล้ว</option>
-                                <option value="UNCHECK"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='UNCHECK')?' selected':null)?>>ยังไมไ่ด้ลงทะเบียน</option>
-                                <option value="CANCELLED"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='CANCELLED')?' selected':null)?>>ยกเลิกการลงทะเบียน</option>
+                                <option value="UNCHECK"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='UNCHECK')?' selected':null)?>>ไม่ได้เข้าร่วม</option>
+                                <option value="CHECKED"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='CHECKED')?' selected':null)?>>เข้าร่วมแล้ว</option>
+                                <option value="CANCELLED"<?=((isset($filter['condition']['status'])&&$filter['condition']['status']=='CANCELLED')?' selected':null)?>>ยกเลิกแล้ว</option>
                             </select>
                         </div>
                     </div>
