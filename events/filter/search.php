@@ -116,13 +116,13 @@
         $lang = App::lang();
         foreach($lists as $no => $row){
             $row_no = (($start+1)+$no);
-            $status = '<span class="badge badge-status badge-sm bg-orange text-white rounded me-1 align-self-start" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-circle"></i>DRAFT</span>';
+            $status = '<span class="badge badge-status badge-sm bg-orange text-white rounded me-1 align-self-start lift" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-circle"></i>DRAFT</span>';
             if( $row['status']==1 ){
-                $status = '<span class="badge badge-status badge-sm bg-green text-white rounded me-1 align-self-start" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-check-circle"></i>OPEN</span>';
+                $status = '<span class="badge badge-status badge-sm bg-green text-white rounded me-1 align-self-start lift" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-check-circle"></i>OPEN</span>';
             }else if( $row['status']==2 ){
-                $status = '<span class="badge badge-status badge-sm bg-red text-white rounded me-1 align-self-start" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-times-circle"></i>CLOSE</span>';
+                $status = '<span class="badge badge-status badge-sm bg-red text-white rounded me-1 align-self-start lift" onclick="manage_events(\'status\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-times-circle"></i>CLOSE</span>';
             }
-            $manage = '<span class="badge badge-shared badge-sm bg-grape text-white rounded me-1 align-self-start" onclick="manage_events(\'share\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-share-alt"></i><sup><b class="fs-13">'.$row['shares'].'</b> แชร์</sup></span>';
+            $manage = '<span class="badge badge-shared badge-sm bg-grape text-white rounded me-1 align-self-start lift" onclick="manage_events(\'share\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-share-alt"></i><sup><b class="fs-13">'.$row['shares'].'</b> แชร์</sup></span>';
             $htmls .= '<tr class="'.$row['events_id'].'">';
                 $htmls .= '<td class="no" scope="row">'.$row_no.'</td>';
                 $htmls .= '<td class="type">'.$row['events_icon'].'</td>';
@@ -134,7 +134,7 @@
                     $htmls.= '</div>';
                     $htmls .= '<font>'.$row['events_name'].'</font>';
                     if( $row['participants']>0||$row['participant_type']=='LIST' ){
-                        $htmls .= ' <span class="badge badge-list badge-sm bg-pale-grape text-grape rounded me-1 align-self-start" onclick="manage_events(\'participant\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-users-alt"></i><sup><b class="fs-13">'.$row['participants'].'</b> รายชื่อ</sup></span>';
+                        $htmls .= ' <span class="badge badge-list badge-sm bg-pale-grape text-grape rounded me-1 align-self-start lift" style="cursor:pointer;" onclick="manage_events(\'list\', { \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-users-alt"></i><sup><b class="fs-13">'.$row['participants'].'</b> รายชื่อ</sup></span>';
                     }
                     $htmls .= '<div class="date-o">';
                         $htmls .= '<i class="uil uil-calendar-alt"></i> ';
@@ -156,8 +156,8 @@
                     $htmls .= '<div>'.$manage.'</div>';
                 $htmls .= '</td>';
                 $htmls .= '<td class="actions act-3">';
-                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'edit\', { \'events_id\':\''.$row['events_id'].'\' });" type="button" class="btn btn-sm btn-circle btn-outline-primary"><i class="uil uil-edit-alt"></i></button><small class=b-tip>แก้ไข</small></div>';
-                    $htmls .= '<div class="btn-box"><button onclick="manage_events(\'list\', { \'events_id\':\''.$row['events_id'].'\' });" type="button" class="btn btn-sm btn-circle btn-outline-primary"><i class="uil uil-users-alt"></i></button><small class=b-tip>รายชื่อ</small></div>';
+                    $htmls .= '<div class="btn-box"><button type="button" onclick="manage_events(\'edit\', { \'events_id\':\''.$row['events_id'].'\' });" class="btn btn-sm btn-circle btn-outline-primary"><i class="uil uil-edit-alt"></i></button><small class=b-tip>แก้ไข</small></div>';
+                    $htmls .= '<div class="btn-box"><button type="button" onclick="manage_events(\'list\', { \'events_id\':\''.$row['events_id'].'\' });" class="btn btn-sm btn-circle btn-outline-primary"><i class="uil uil-users-alt"></i></button><small class=b-tip>รายชื่อ</small></div>';
                     $htmls .= '<div class="btn-box delete"><button type="button" onclick="manage_events(\'delete\', { \'events_id\':\''.$row['events_id'].'\', \'events_name\':\''.$row['events_name'].'\' });" class="btn btn-sm btn-circle btn-outline-danger"><i class="uil uil-trash-alt"></i></button><small class=b-tip>ลบ</small></div>';
                 $htmls .= '</td>';
             $htmls .= '</tr>';
