@@ -1,6 +1,7 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
 <?php Auth::ajax(APP_PATH.'/events'); ?>
 <?php
+    $scanme = APP_HOST;
     if( isset($_POST['events_id'])&&$_POST['events_id'] ){
         $data = DB::one("SELECT events.*
                         , IF(events.participant_type='LIST'
@@ -14,6 +15,7 @@
                         LIMIT 1;"
                         , array('events_id'=>$_POST['events_id'])
         );
+        $scanme .= '/?events_id='.$_POST['events_id'];
     }
 ?>
 <div class="modal-dialog modal-dialog-centered">
@@ -22,11 +24,11 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" style="margin-top:-30px;margin-bottom:-30px;padding-left:35px;padding-right:35px;">
-            <div class="alert alert-primary alert-icon mb-0" style="padding:15px 8px 35px 8px;">
+            <div class="alert alert-primary alert-icon mb-0" style="padding:2px;">
                 <center>
                     <mark class="doc fs-lg" style="font-family:'CMU Light';"><?=((isset($data['events_name'])&&$data['events_name'])?$data['events_name']:'กิจกรรม')?></mark>
-                    <h2 class="mb-0 text-white on-text-oneline"></h2>
-                    <div class="qrcode"></div>
+                    <div class="qrcode mt-2 mb-2"></div>
+                    <mark class="doc" style="font-family:'CMU Light';"><?=$scanme?></mark>
                 </center>
             </div>
         </div>
@@ -38,7 +40,7 @@
         $(".modal-dialog .qrcode").empty().qrcode({ "render": 'image',
             "fill": '#000000',
             "ecLevel": 'H',
-            "text": '<?=APP_HOST.'/?events_id='.$_POST['events_id']?>',
+            "text": '<?=$scanme?>',
             "size": 256,
             "radius": 0,
             "quiet": 1,
