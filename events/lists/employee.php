@@ -162,7 +162,7 @@
                             <div class="form-floating form-select-wrapper mb-1">
                                 <select id="status" name="status" class="form-select" aria-label="...">
                                     <option value="workstatus">ทำงานปกติ</option>
-                                    <option value="outofstatus">พ้นสภาพแล้ว</option>
+                                    <option value="outofstatus">พ้นสถานภาพแล้ว</option>
                                 </select>
                                 <label for="status">สถานะ</label>
                             </div>

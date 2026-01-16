@@ -79,8 +79,6 @@
                                                     $htmls .= '&nbsp;<sup>(<em class="fs-10 text-red">'.$item['status_name'].'</em>)</sup>';
                                                 }else if(intval($item['status_id'])==3){
                                                     $htmls .= '&nbsp;<sup>(<em class="fs-10 text-green">'.$item['status_name'].'</em>)</sup>';
-                                                }else{
-                                                    $htmls .= '&nbsp;<sup>(<em class="fs-10">'.$item['status_name'].'</em>)</sup>';
                                                 }
                                             }
                                         $htmls .= '</div>';

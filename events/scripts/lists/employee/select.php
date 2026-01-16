@@ -43,16 +43,7 @@
                                     $htmls .= '</span>';
                                     $htmls .= '<span class="col-6 text-body d-flex align-items-center">';
                                         $htmls .= '<div style="overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">';
-                                            /*$htmls .= ( isset($item['major']) ? $item['major'] : '<em class="fs-10 text-red">ไม่ทราบสาขาวิชา !!!</em>' );
-                                            if( isset($item['status_name']) ){
-                                                if(intval($item['status_id'])>=4){
-                                                    $htmls .= '&nbsp;<sup>(<em class="fs-10 text-red">'.$item['status_name'].'</em>)</sup>';
-                                                }else if(intval($item['status_id'])==3){
-                                                    $htmls .= '&nbsp;<sup>(<em class="fs-10 text-green">'.$item['status_name'].'</em>)</sup>';
-                                                }else{
-                                                    $htmls .= '&nbsp;<sup>(<em class="fs-10">'.$item['status_name'].'</em>)</sup>';
-                                                }
-                                            }*/
+                                            $htmls .= ( isset($item['organize_name']) ? $item['organize_name'] : '<em class="fs-10 text-red">ไม่ทราบหน่วย/สาขา !!!</em>' );
                                         $htmls .= '</div>';
                                     $htmls .= '</span>';
                                 $htmls .= '</span>';
