@@ -11,35 +11,35 @@
     $fullname = User::get('fullname');
     $email = ( (isset($data['email'])&&$data['email']) ? $data['email'] : User::get('email') );
     if( isset($event['events_id'])&&$event['events_id'] ){
-        if( isset($event['start_date_display'])&&$event['start_date_display'] ){
-            $start_end_display = '<div class="container">';
-                $start_end_display .= '<div class="row row-date">';
-                    $start_end_display .= '<div class="col-xs-12 col-sm-1 col-md-2 col-lg-2"></div>';
-                    $start_end_display .= '<div class="col-xs-12 col-sm-10 col-md-8 col-lg-8">';
-                        $start_end_display .= '<div class="card bg-primary mt-n4">';
-                            $start_end_display .= '<div class="card-body text-white text-center" style="padding:5px 0 15px 0 !important;">';
-                            if( isset($event['start_date_display'])&&$event['start_date_display'] ){
-                                $start_end_display .= '<div class="from">วันที่</div>';
-                                $start_end_display .= '<span class="badge bg-pale-primary text-primary rounded-pill" style="padding-top:3px;line-height:20px;">'.$event['start_date_display'].'</span>';
-                            }
-                            $start_end_display .= '<hr>';
-                            if( isset($event['end_date_display'])&&$event['end_date_display'] ){
-                                $start_end_display .= '<div class="to">ถึง</div>';
-                                $start_end_display .= '<span class="badge bg-pale-primary text-primary rounded-pill" style="padding-top:3px;line-height:20px;">'.$event['end_date_display'].'</span>';
-                            }
-                            $start_end_display .= '</div>';
-                        $start_end_display .= '</div>';
-                    $start_end_display .= '</div>';
-                    $start_end_display .= '<div class="col-xs-12 col-sm-1 col-md-2 col-lg-2"></div>';
-                $start_end_display .= '</div>';
-            $start_end_display .= '</div>';
-        }
+        $events_display = '<div class="container">';
+            $events_display .= '<div class="row row-date">';
+                $events_display .= '<div class="col-xs-12 col-sm-1 col-md-1 col-lg-1"></div>';
+                $events_display .= '<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">';
+                    $events_display .= '<div class="card bg-primary mt-n4">';
+                        $events_display .= '<div class="card-body text-white text-center" style="padding:5px 0 15px 0 !important;">';
+                        $events_display .= '<div><mark class="doc fs-lg" style="font-family:\'CMU Light\';">'.( (isset($event['events_name'])&&$event['events_name']) ? $event['events_name'] : 'กิจกรรม' ).'</mark></div>';
+                        if( isset($event['start_date_display'])&&$event['start_date_display'] ){
+                            $events_display .= '<mark class="doc from" style="font-size:14px;font-family:\'CMU Light\';line-height:24px;">วันที่</mark>';
+                            $events_display .= '<mark class="doc" style="font-size:14px;font-family:\'CMU Light\';line-height:24px;">'.$event['start_date_display'].'</mark>';
+                        }
+                        $events_display .= '<br>';
+                        if( isset($event['end_date_display'])&&$event['end_date_display'] ){
+                            $events_display .= '<mark class="doc to" style="font-size:14px;font-family:\'CMU Light\';line-height:24px;">ถึง</mark>';
+                            $events_display .= '<mark class="doc" style="font-size:14px;font-family:\'CMU Light\';line-height:24px;">'.$event['end_date_display'].'</mark>';
+                        }
+                        $events_display .= '</div>';
+                    $events_display .= '</div>';
+                $events_display .= '</div>';
+                $events_display .= '<div class="col-xs-12 col-sm-1 col-md-1 col-lg-1"></div>';
+            $events_display .= '</div>';
+        $events_display .= '</div>';
         if( $event['participant_type']=='LIST' ){
             $checks = array();
             $checks['events_id'] = $event['events_id'];
             $checks['email'] = User::get('email');
             $data = DB::one("SELECT events_lists.*
                 , TRIM(CONCAT(COALESCE(events_lists.prefix,''),events_lists.firstname,' ',COALESCE(events_lists.lastname,''))) AS fullname
+                , CONCAT(DATE_FORMAT(events_lists.date_checkin,'%d/%m/'), (YEAR(events_lists.date_checkin)+543),' เวลา ',DATE_FORMAT(events_lists.date_checkin, '%H:%i')) AS date_checkin_display
                 FROM events_lists
                 WHERE events_lists.events_id=:events_id
                 AND events_lists.email=:email
@@ -56,6 +56,17 @@
                     $organization .= '<br>&rang; '.$data['department'];
                 }
             }
+            if( isset($data['date_checkin_display'])&&$data['date_checkin_display'] ){
+                $checkinhtmls = '<div class="d-flex flex-row on-success">';
+                    $checkinhtmls .= '<div><div class="icon text-primary me-2 mt-n3" style="font-size:52px;line-height:75px;"><i class="uil uil-calendar-alt"></i></div></div>';
+                    $checkinhtmls .= '<div>';
+                        $checkinhtmls .= '<h5 class="mb-0 text-primary on-font-primary">ลงทะเบียนเข้าร่วมแล้ว</h5>';
+                        $checkinhtmls .= '<p class="on-text-normal text-dark m-0" style="margin-top:-2px;line-height:18px;">';
+                            $checkinhtmls .= '&rang; '.$data['date_checkin_display'];
+                        $checkinhtmls .= '</p>';
+                    $checkinhtmls .= '</div>';
+                $checkinhtmls .= '</div>';
+            }
         }
     }
 ?>
@@ -66,36 +77,98 @@
         width: 375px;
         padding: 35px 0 0 35px;
     }
-    .wrapper .row-date div.from {
-        width: 35px;
+    .wrapper .row-date mark.from {
+        width: 36px;
+        margin-left: 0;
+        margin-right: 0; 
+        padding-left: 1px;
+        padding-right: 1px;
+        background: none;
         display: inline-block;
-        letter-spacing: -1.5px;
     }
-    .wrapper .row-date div.to {
-        width: 35px;
+    .wrapper .row-date mark.to {
+        width: 36px;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 1px;
+        padding-right: 1px;
+        background: none;
         display: inline-block;
-        letter-spacing: 1.5px;
+        letter-spacing: 2.5px;
     }
-    .wrapper .row-date hr {
+    .wrapper .row-date br {
         display: none;
     }
-    @media only all and (max-width: 414px) {
+
+
+    .loader {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        border: 3px solid;
+        border-color: #FFF #FFF transparent transparent;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+    }
+    .loader::after,
+    .loader::before {
+        content: '';  
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        border: 3px solid;
+        border-color: transparent transparent #FF3D00 #FF3D00;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        box-sizing: border-box;
+        animation: rotationBack 0.5s linear infinite;
+        transform-origin: center center;
+    }
+    .loader::before {
+        width: 20px;
+        height: 20px;
+        border-color: #FFF #FFF transparent transparent;
+        animation: rotation 1.5s linear infinite;
+    }
+    @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    } 
+    @keyframes rotationBack {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(-360deg);
+        }
+    }
+    @media only all and (max-width: 585px) {
         .wrapper .widgets {
             width: 100%;
         }
-        .wrapper .row-date hr {
+        .wrapper .row-date br {
             display: block;
-            margin:8px 0 5px 0;
         }
     }
 </style>
 <section class="wrapper bg-primary">
     <div class="container">
-        <h3 class="on-font-primary text-white text-center pb-3"><?=( (isset($event['events_name'])&&$event['events_name']) ? $event['events_name'] : 'กิจกรรม' )?></h3>
+        <h3 class="on-font-primary text-white text-center pb-3">ลงทะเบียนเข้าร่วมกิจกรรม</h3>
     </div>
 </section>
 <section class="wrapper today-body">
-    <?=( isset($start_end_display) ? $start_end_display : null )?>
+    <?=( isset($events_display) ? $events_display : null )?>
     <div class="container pb-3">
         <div class="row">
             <div class="col d-flex justify-content-center align-items-center">
@@ -137,17 +210,13 @@
                                         </div>
                                     </div>
                                     <?php } ?>
+                                    <?=( isset($checkinhtmls) ? $checkinhtmls : null )?>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row gx-1 row-button">
-                        <div class="col-6 pt-1">
-                            <button type="submit" class="btn btn-lg btn-success btn-gift rounded fs-20 w-100"><i class="uil uil-check-circle" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> เข้าร่วม</button>
-                        </div>
-                        <div class="col-6 pt-1">
-                            <button type="button" class="btn btn-lg btn-danger rounded fs-20 w-100" onclick="check_events('cancel');"><i class="uil uil-times-circle" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> ยกเลิก</button>
-                        </div>
+                    <div class="row-button">
+                        <button type="submit" class="btn btn-lg btn-primary btn-gift rounded fs-20 w-100"><span class="loader"></span>&nbsp;กำลังลงทะเบียน... .. .</button>
                     </div>
                 </form>
             </div>
@@ -155,26 +224,17 @@
     </div>
 </section>
 <script type="text/javascript">
-    function check_events(action, params){
-        if(action=="cancel"){
-            document.location='<?=APP_PATH.'/scan'?>';
-        }else{
-            $("form[name='CheckForm'] .row-button").fadeOut(1500, function(){
-                document.location='<?=APP_PATH.'/scan'?>';
-            });
-        }
-    }
     $(document).ready(function() {
         $("form[name='CheckForm']").ajaxForm({
             beforeSubmit: function (formData, jqForm, options) {
-                runStart();
+                //runStart();
             },
             success: function(rs) {
-                runStop();
+                //runStop();
                 var data = JSON.parse(rs);
                 if(data.status=='success'){
                     $("form[name='CheckForm'] .row-success").append(data.htmls);
-                    $("form[name='CheckForm'] .row-button").html('<div class="col-12 pt-1" style="display:none;"><button type="button" class="btn btn-lg btn-primary btn-gift rounded fs-20 w-100" onclick="check_events(\'back\');"><i class="uil uil-arrow-circle-left" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> กลับสู่หน้าหลัก</button></div>');
+                    $("form[name='CheckForm'] .row-button").html('<div style="display:none;"><button type="button" class="btn btn-lg btn-success btn-gift rounded fs-20 w-100" onclick="check_events(\'back\');"><i class="uil uil-check-circle" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> เสร็จสิ้น</button></div>');
                     $("form[name='CheckForm'] .row-success .on-success>div").fadeIn('slow', function(){
                         $("form[name='CheckForm'] .row-button>div").fadeIn(1000);
                     });
@@ -204,6 +264,16 @@
                 }
             }
         });
+        <?php if( isset($checkinhtmls) ){ ?>
+        $("form[name='CheckForm'] .row-button").html('<div style="display:none;"><button type="button" class="btn btn-lg btn-primary btn-gift rounded fs-20 w-100" onclick="check_events(\'back\');"><i class="uil uil-check-circle" style="float:left;font-size:32px;line-height:32px;margin:0 3px -3px 0;"></i> เสร็จสิ้น</button></div>');
+        $("form[name='CheckForm'] .row-success .on-success>div").fadeIn('slow', function(){
+            $("form[name='CheckForm'] .row-button>div").fadeIn(1000);
+        });
+        <?php }else{ ?>
+        $("form[name='CheckForm'] .row-button>button").fadeOut(2500,function(){
+            $(this).click();
+        });
+        <?php } ?>
     });
 </script>
 <?php include(APP_FOOTER); ?>
