@@ -121,6 +121,9 @@
                 $status = '<span class="badge badge-status badge-sm bg-red text-white rounded me-1 align-self-start lift" style="cursor:pointer;" onclick="manage_events(\'status\', { \'id\':\''.$row['id'].'\', \'events_id\':\''.$row['events_id'].'\' });"><i class="uil uil-times-circle"></i>ยกเลิกแล้ว</span>';
             }
             $htmls .= '<tr class="'.$row['id'].'">';
+                $htmls .= '<td class="check">';
+                    $htmls .= '<input type="checkbox" name="checks[]" value="'.$row['id'].'" class="form-check-input" onchange="manage_events(\'check\', { \'self\':this, \'at\':\''.$row['id'].'\' });"/>';
+                $htmls .= '</td>';
                 $htmls .= '<td class="no" scope="row">'.$row_no.'</td>';
                 $htmls .= '<td class="type">'.$row['type_icon'].'</td>';
                 $htmls .= '<td class="name autoline">';

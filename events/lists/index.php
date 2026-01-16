@@ -28,17 +28,23 @@
     .table-filter .filter-result {
         background: white;
     }
+    .table-filter .filter-result .check {
+        width: 44px;
+        padding-left: 0;
+        padding-right: 0;
+        text-align: center;
+    }
     .table-filter .filter-result .type {
         width: 100px;
     }
     .table-filter .filter-result .name {
-        width: 25%;
-    }
-    .table-filter .filter-result .organize {
         width: auto;
     }
+    .table-filter .filter-result .organize {
+        width: 35%;
+    }
     .table-filter .filter-result .status {
-        width: 25%;
+        width: 120px;
     }
     .table-filter .filter-result .name>.type-o,
     .table-filter .filter-result .name>.organize-o,
@@ -55,13 +61,43 @@
         line-height: 12px;
         margin:0 2px 0 -2px;
     }
+    .table-filter .filter-result table tr th.col-first mark {
+        padding: 4px 6px 6px 6px;
+    }
+    .table-filter .filter-result table tr th.col-last button {
+        float: right;
+        width: 65px;
+        height: 35px;
+        padding: 0 0 0 14px;
+        text-align: left !important;
+        margin-right: 5px !important;
+    }
+    .table-filter .filter-result table tr th.col-last button>i {
+        left: 2px;
+        float: left;
+        font-size: 20px;
+        position: absolute;
+    }
+    .table-filter .filter-result table tr th.col-last button span {
+        color: #e2626b;
+        font-size: 12px;
+        padding: 0 4px;
+        background: #fae6e7;
+        border-radius:3px;
+        -moz-border-radius:3px;
+        -webkit-border-radius:3px;
+    }
+    .table-filter .filter-result table tr th.col-last button.btn-soft-dark span {
+        color: #999;
+        background: #eee;
+    }
     .table-filter .filter-result table tr td {
         line-height: 18px;
     }
+    .table-filter .filter-result table tr td.check {
+        padding-top: 2px;
+    }
     @media only all and (max-width: 991px) {
-        .table-filter .filter-result .name {
-            width: auto;
-        }
         .table-filter .filter-result .organize {
             display: none;
         }
@@ -204,12 +240,13 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th scope="col" class="no col-first">#</th>
+                                <th scope="col" class="check col-first"><mark class="bg-soft-primary"><input class="form-check-input" type="checkbox" name="checkall" value="Y" onchange="manage_events('checkall', { 'self':this });"></mark></th>
+                                <th scope="col" class="no">#</th>
                                 <th scope="col" class="type">ประเภท</th>
                                 <th scope="col" class="name">ชื่อ-สกุล</th>
                                 <th scope="col" class="organize">สังกัด</th>
                                 <th scope="col" class="status">สถานะ</th>
-                                <th scope="col" class="actions act-2 col-last">&nbsp;</th>
+                                <th scope="col" class="actions act-2 col-last"><button disabled type="button" class="btn btn-sm btn-soft-dark" onclick="manage_events('deleteall');"><i class="uil uil-trash-alt"></i><span>ลบ</span></button></th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -313,6 +350,115 @@
                     }).done(function(data) {
                         runStop();
                         if(data.status=='success'){
+                            $("form[name='filter'] button[type='submit']").click();
+                        }else{
+                            swal({
+                                'type' : data.status,
+                                'title': '<span class="on-font-primary">'+data.title+'</span>',
+                                'html' : data.text,
+                                'showCloseButton': false,
+                                'showCancelButton': false,
+                                'focusConfirm': false,
+                                'allowEscapeKey': false,
+                                'allowOutsideClick': false,
+                                'confirmButtonClass': 'btn btn-outline-danger',
+                                'confirmButtonText':'<span>รับทราบ</span>',
+                                'buttonsStyling': false
+                            }).then(
+                                function () {
+                                    swal.close();
+                                },
+                                function (dismiss) {
+                                    if (dismiss === 'cancel') {
+                                        swal.close();
+                                    }
+                                }
+                            );
+                        }
+                    });
+                },
+                function (dismiss) {
+                    if (dismiss === 'cancel') {
+                        swal.close();
+                    }
+                }
+            );
+        }else if(action=='check'){
+            var checked = 0;
+            var checkboxes = document.getElementsByName('checks[]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                if(checkboxes[i].checked==true) {
+                    checked++;
+                }
+            }
+            $("form[name='filter'] .col-last button>span").html(checked);
+            if(checked>0){
+                $("form[name='filter'] .col-last button").attr('class','btn btn-sm btn-danger').removeAttr('disabled');
+            }else{
+                $("form[name='filter'] .col-last button").attr({'class':'btn btn-sm btn-soft-dark', 'disabled':true});
+            }
+            if( checkboxes.length==checked ){
+                document.filter.checkall.checked = true;
+            }else{
+                document.filter.checkall.checked = false;
+            }
+        }else if(action=='checkall'){
+            var checkboxes = document.getElementsByName('checks[]');
+            if(params.self.checked){
+                for(var i = 0; i < checkboxes.length; i++) {
+                    if(checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = true;
+                    }
+                }
+                $("form[name='filter'] .col-last button").attr('class','btn btn-sm btn-danger').removeAttr('disabled');
+                $("form[name='filter'] .col-last button>span").html(checkboxes.length);
+            }else{
+                for(var i = 0; i < checkboxes.length; i++) {
+                    if(checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = false;
+                    }
+                }
+                $("form[name='filter'] .col-last button").attr({'class':'btn btn-sm btn-soft-dark', 'disabled':true});
+                $("form[name='filter'] .col-last button>span").html('ลบ');
+            }
+        }else if(action=='deleteall'){
+            var deletes = [];
+            var checkboxes = document.getElementsByName('checks[]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                if(checkboxes[i].checked==true) {
+                    deletes.push(checkboxes[i].value);
+                }
+            }
+            swal({
+                'title':'<b class="text-red" style="font-size:100px;"><i class="uil uil-trash-alt"></i></b>',
+                'html' : '<div class="fs-24 text-red on-font-primary mb-2">เลือกจำนวน '+$("form[name='filter'] .col-last button>span").html()+' รายชื่อ</div><div>ยืนยันลบรายชื่อเหล่านี้ ใช่ หรือ ไม่ ?</div>',
+                'showCloseButton': false,
+                'showConfirmButton': true,
+                'showCancelButton': true,
+                'focusConfirm': false,
+                'allowEscapeKey': false,
+                'allowOutsideClick': false,
+                'confirmButtonClass': 'btn btn-icon btn-icon-start btn-success rounded-pill',
+                'confirmButtonText':'<font class="fs-16"><i class="uil uil-check-circle"></i>ใช่</font>',
+                'cancelButtonClass': 'btn btn-icon btn-icon-start btn-outline-danger rounded-pill',
+                'cancelButtonText':'<font class="fs-16"><i class="uil uil-times-circle"></i>ไม่</font>',
+                'buttonsStyling': false
+            }).then(
+                function () {
+                    $.ajax({
+                        url : "<?=$form?>/scripts/lists/deleteall.php",
+                        type: 'POST',
+                        data: { 'events_id':$("form[name='filter'] input[name='events_id']").val(), 'deletes':deletes},
+                        dataType: "json",
+                        beforeSend: function( xhr ) {
+                            runStart();
+                        }
+                    }).done(function(data) {
+                        runStop();
+                        if(data.status=='success'){
+                            document.filter.checkall.checked = false;
+                            $("form[name='filter'] .col-last button>span").html('ลบ');
+                            $("form[name='filter'] .col-last button").attr({'class':'btn btn-sm btn-soft-dark', 'disabled':true});
                             $("form[name='filter'] button[type='submit']").click();
                         }else{
                             swal({
