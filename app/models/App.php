@@ -37,16 +37,25 @@ class App {
                             $htmls .= '<p class="price fs-sm" style="margin-top:-10px;">'.User::get('email').'</p>';
                         $htmls .= '</div>';
                     $htmls .= '</div>';
-                    $htmls .= '<div class="card lift mt-2" onclick="document.location=\''.APP_HOME.'/scan\'" style="cursor:pointer;"><div class="card-body text-center" style="padding:45px 0 0 0 !important;"><i class="uil uil-qrcode-scan" style="font-size:128px;line-height:64px;"></i><h4>SCAN</h4></div></div>';
+                    if( Auth::admin() ){
+                        $htmls .= '<div class="card lift mt-2" onclick="document.location=\''.APP_HOME.'/admin/?users\'" style="cursor:pointer;">';
+                            $htmls .= '<div class="card-body" style="padding:8px 0 8px 8px;">';
+                                $htmls .= '<div style="float:left;width:48px;height:48px;text-align:center;margin:0 0 0 0;">';
+                                    $htmls .= '<i class="uil uil-users-alt" style="font-size:36px;line-height:48px;"></i>';
+                                $htmls .= '</div>';
+                                $htmls .= '<font style="line-height:48px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">จัดการบัญชีผู้ใช้ระบบ</font>';
+                            $htmls .= '</div>';
+                        $htmls .= '</div>';
+                         $htmls .= '<div class="card lift mt-2" onclick="document.location=\''.APP_HOME.'/admin/?logs\'" style="cursor:pointer;">';
+                            $htmls .= '<div class="card-body" style="padding:8px 0 8px 8px;">';
+                                $htmls .= '<div style="float:left;width:48px;height:48px;text-align:center;margin:0 0 0 0;">';
+                                    $htmls .= '<i class="uil uil-comment-alt-notes" style="font-size:36px;line-height:48px;"></i>';
+                                $htmls .= '</div>';
+                                $htmls .= '<font style="line-height:48px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">ตรวจสอบการเข้าสู่ระบบ</font>';
+                            $htmls .= '</div>';
+                        $htmls .= '</div>';
+                    }
                     $htmls .= '<div class="offcanvas-footer flex-column text-center">';
-                        /*$htmls .= '<div class="row text-center gx-0">';
-                            $htmls .= '<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="float:none;width:50%;">';
-                                $htmls .= '<button type="button" class="btn btn-soft-ash rounded-pill iceahe-lang'.((App::lang()=='th')?' active':null).' w-100 mb-1" onclick="runLanguage(\'th\');"><span class="underline-3 style-1 primary">&nbsp;&nbsp;TH&nbsp;&nbsp;</span>&nbsp;&nbsp;'.Lang::get('Thai').'</button>';
-                            $htmls .= '</div>';
-                            $htmls .= '<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="float:none;width:50%;">';
-                                $htmls .= '<button type="button" class="btn btn-soft-ash rounded-pill iceahe-lang'.((App::lang()=='en')?' active':null).' w-100 mb-1" onclick="runLanguage(\'en\');"><span class="underline-3 style-1 primary">&nbsp;&nbsp;EN&nbsp;&nbsp;</span>&nbsp;&nbsp;'.Lang::get('English').'</button>';
-                            $htmls .= '</div>';
-                        $htmls .= '</div>';*/
                         $htmls .= '<button type="button" class="btn btn-danger btn-icon btn-icon-start rounded-pill w-100 mb-0" onclick="runLogout();"><i class="uil uil-exit fs-18"></i> '.Lang::get('Logout').'</button>';
                     $htmls .= '</div>';
                 $htmls .= '</div>';
@@ -84,7 +93,7 @@ class App {
                             $htmls .= '<ul class="navbar-nav">';
                             if( Auth::check() ){
                                 $htmls .= '<li class="nav-item'.((isset($index['page'])&&$index['page']=='events') ? ' active':null).' dropdown">';
-                                    $htmls .= '<a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown"><span class="nav-name"><div class="m-box-top"><i class="uil uil-user-nurse"></i></div><div class="m-box"><i class="uil uil-user-nurse"></i></div>'.Lang::get('Officer').'</span></a>';
+                                    $htmls .= '<a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown"><span class="nav-name"><div class="m-box-top"><i class="uil uil-apps"></i></div><div class="m-box"><i class="uil uil-apps"></i></div>จัดการระบบ</span></a>';
                                     $htmls .= '<ul class="dropdown-menu mainsite-dropdown'.((isset($index['page'])&&$index['page']=='events') ? ' show':null).'">';
                                         $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='lists') ? ' active':null).'">';
                                             $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/events">';
@@ -98,28 +107,6 @@ class App {
                                         $htmls .= '</li>';
                                     $htmls .= '</ul>';
                                 $htmls .= '</li>';
-                                if( Auth::admin() ){
-                                    $htmls .= '<li class="nav-item'.((isset($index['page'])&&$index['page']=='admin') ? ' active':null).' dropdown">';
-                                        $htmls .= '<a class="nav-link dropdown-toggle" href="javascript:void(0);" data-bs-toggle="dropdown"><span class="nav-name"><div class="m-box-top"><i class="uil uil-user-md"></i></div><div class="m-box"><i class="uil uil-user-md"></i></div>'.Lang::get('Administrator').'</span></a>';
-                                        $htmls .= '<ul class="dropdown-menu mainsite-dropdown'.((isset($index['page'])&&$index['page']=='admin') ? ' show':null).'">';
-                                            $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='users') ? ' active':null).'">';
-                                                $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?users">';
-                                                    $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-users-alt"></i></div>จัดการบัญชีผู้ใช้</span>';
-                                                $htmls .= '</a>';
-                                            $htmls .= '</li>';
-                                            /*$htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='sessions') ? ' active':null).'">';
-                                                $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?sessions">';
-                                                    $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-transaction"></i></div>View Sessions</span>';
-                                                $htmls .= '</a>';
-                                            $htmls .= '</li>';*/
-                                            $htmls .= '<li class="nav-item'.((isset($index['view'])&&$index['view']=='logs') ? ' active':null).'">';
-                                                $htmls .= '<a class="dropdown-item" href="'.APP_HOME.'/admin/?logs">';
-                                                    $htmls .= '<span class="nav-name"><div class="m-box"><i class="uil uil-transaction"></i></div>ตรวจสอบ Logs</span>';
-                                                $htmls .= '</a>';
-                                            $htmls .= '</li>';
-                                        $htmls .= '</ul>';
-                                    $htmls .= '</li>';
-                                }
                             }
                             $htmls .= '</ul>';
                             $htmls .= '<div class="offcanvas-footer d-lg-none">';
@@ -139,8 +126,13 @@ class App {
                         $htmls .= '<ul class="navbar-nav flex-row align-items-center ms-auto">';
                         if( isset($_SESSION['login']) ){
                             $htmls .= '<li class="nav-item">';
+                                $htmls .= '<a class="nav-link" href="'.APP_HOME.'/scan">';
+                                    $htmls .= '<div class="nav-link-icon user-qrscan"><img src="'.THEME_IMG.'/qrscan.png" /></div>';
+                                $htmls .= '</a>';
+                            $htmls .= '</li>';
+                            $htmls .= '<li class="nav-item nav-item-icon">';
                                 $htmls .= '<a class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-info">';
-                                    $htmls .= '<div class="user-picture" style="width:48px;overflow:hidden;border-radius:50%;-moz-border-radius:50%;-webkit-border-radius:50%;"><img src="'.User::get('picture').'" onerror="this.onerror=null;this.src=\''.THEME_IMG.'/avatar.png\';" style="width:100%;" /></div>';
+                                    $htmls .= '<div class="nav-link-icon user-picture"><img src="'.User::get('picture').'" onerror="this.onerror=null;this.src=\''.THEME_IMG.'/avatar.png\';" /></div>';
                                 $htmls .= '</a>';
                             $htmls .= '</li>';
                             $htmls .= '<li class="nav-item d-lg-none">';
