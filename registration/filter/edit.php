@@ -12,104 +12,105 @@ $lists = DB::sql("SELECT * FROM events_lists WHERE events_id = :id ORDER BY date
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
-    .modal-manage .modal-content {
-        border-radius: 24px; border: none;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        background-color: #ffffff; overflow: hidden;
+    .modal-manage .modal-content { 
+        border-radius: 24px; border: none; 
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
+        background-color: #ffffff; overflow: hidden; 
     }
-    .modal-manage .modal-header-custom {
-        background: #fdfdff; padding: 25px 30px;
-        color: #1a1b1f; position: relative;
-        border-bottom: 1px solid #f0f0f5;
+    .modal-manage .modal-header-custom { 
+        background: #fdfdff; padding: 25px 30px; 
+        color: #1a1b1f; position: relative; 
+        border-bottom: 1px solid #f0f0f5; 
     }
-    .modal-manage .header-title {
-        color: #5d5fef; font-weight: 700;
-        font-size: 1.4rem;
-        margin-bottom: 5px;
+    .modal-manage .header-title { 
+        color: #5d5fef; font-weight: 700; 
+        font-size: 1.4rem; 
+        margin-bottom: 5px; 
     }
-    .search-group-wrapper {
-        padding: 20px 30px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 15px;
+    .search-group-wrapper { 
+        padding: 20px 30px; 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        gap: 15px; 
     }
-    .search-input-group {
-        display: flex;
-        flex: 1;
-        max-width: 350px;
-        background: #f5f6fa;
-        border-radius: 12px;
-        padding: 5px 15px;
-        border: 1px solid transparent;
+    .search-input-group { 
+        display: flex; 
+        flex: 1; 
+        max-width: 350px; 
+        background: #f5f6fa; 
+        border-radius: 12px; 
+        padding: 5px 15px; 
+        border: 1px solid transparent; 
     }
-    .search-input-group:focus-within {
+    .search-input-group:focus-within { 
         border-color: #5d5fef;
-        background: #fff;
-        box-shadow: 0 0 0 4px rgba(93, 95, 239, 0.1);
+        background: #fff; 
+        box-shadow: 0 0 0 4px rgba(93, 95, 239, 0.1); 
     }
-    .search-input-group .form-control {
+    .search-input-group .form-control { 
+        background: transparent; 
+        border: none; padding: 8px 10px; 
+        font-size: 0.95rem; 
+        box-shadow: none; 
+    }
+    .table-responsive-custom { 
+        padding: 0 20px 20px 20px; 
+        overflow-x: auto; 
+    }
+    .table-index-style { 
+        width: 100%; 
+        border-collapse: collapse; 
+        min-width: 800px; 
+    }
+    .table-index-style thead th { 
+        background-color: #fff; 
+        color: #a0a3bd; 
+        font-weight: 600; 
+        font-size: 0.85rem; 
+        padding: 15px; 
+        border-bottom: 1px solid #f0f0f5; 
+        text-align: center; 
+    }
+    .table-index-style td { 
+        padding: 18px 15px; 
+        vertical-align: middle; 
+        text-align: center; 
+        color: #4e4b66; 
+    }
+    .badge-status-index { 
+        display: inline-flex; 
+        align-items: center; 
+        padding: 6px 14px; 
+        border-radius: 8px; 
+        font-size: 0.8rem; 
+        font-weight: 600; 
+    }
+    .btn-delete-soft { 
+        color: #ed2e7e; 
         background: transparent;
-        border: none; padding: 8px 10px;
-        font-size: 0.95rem;
-        box-shadow: none;
+         border: 1px solid #ffe5f0; 
+         width: 38px; height: 38px; 
+         border-radius: 10px; 
+         cursor: pointer; 
+        }
+    .btn-delete-soft:hover { 
+        background: #ed2e7e; 
+        color: #fff; 
     }
-    .table-responsive-custom {
-        padding: 0 20px 20px 20px;
-        overflow-x: auto;
-    }
-    .table-index-style {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 800px;
-    }
-    .table-index-style thead th {
-        background-color: #fff;
-        color: #a0a3bd;
-        font-weight: 600;
-        font-size: 0.85rem;
-        padding: 15px;
-        border-bottom: 1px solid #f0f0f5;
-        text-align: center;
-    }
-    .table-index-style td {
-        padding: 18px 15px;
-        vertical-align: middle;
-        text-align: center;
-        color: #4e4b66;
-    }
-    .badge-status-index {
-        display: inline-flex;
-        align-items: center;
-        padding: 6px 14px;
-        border-radius: 8px;
-        font-size: 0.8rem;
-        font-weight: 600;
-    }
-    .btn-delete-soft {
-        color: #ed2e7e;
-        background: transparent;
-        border: 1px solid #ffe5f0;
-        width: 38px; height: 38px;
-        border-radius: 10px;
-        cursor: pointer;
-    }
-    .btn-delete-soft:hover {
-        background: #ed2e7e;
-        color: #fff;
-    }
-    .btn-close-custom {
-        position: absolute;
-        right: 25px; top: 25px;
-        background: #f5f6fa;
-        border: none;
-        border-radius: 50%;
-        width: 35px;
-        height: 35px;
-        color: #a0a3bd;
-        cursor: pointer;
+    .btn-close-custom { 
+        position: absolute; 
+        right: 25px; top: 25px; 
+        background: #f5f6fa; 
+        border: none; 
+        border-radius: 50%; 
+        width: 35px; 
+        height: 35px; 
+        color: #a0a3bd; 
+        cursor: pointer; 
         }
 </style>
+
 <div class="modal-dialog modal-xl modal-dialog-centered modal-manage">
     <div class="modal-content">
         <div class="modal-header-custom">
@@ -188,7 +189,7 @@ function cancelRegis(id, ev_id) {
         if (result.isConfirmed) {
             Swal.showLoading();
             $.ajax({
-                url: '/registration/script/delete.php',
+                url: '/scripts/delete.php',
                 type: 'POST',
                 data: { id: id, events_id: ev_id },
                 dataType: 'json',

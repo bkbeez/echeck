@@ -204,7 +204,7 @@
                         "background": '#FFFFFF'
         });
         if(typeof(EventSource) !== "undefined") {
-            var source = new EventSource("<?=APP_PATH?>/scripts/check/counting.php");
+            var source = new EventSource("<?=APP_PATH?>/registration/scripts/check/count.php?events_id=<?=$_GET['events_id']?>");
             source.onmessage = function(event) {
                 var result = JSON.parse(event.data);
                 var listHtml = '';

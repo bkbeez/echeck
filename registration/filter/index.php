@@ -218,9 +218,12 @@
     </form>
 </section>
 <div id="ManageDialog" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="false" aria-modal="true"></div>
+<style>
+
+</style>
 <script type="text/javascript">
 function manage_events(action, params){
-    if(action=='check'){
+    if(action=='register'){
         params['form_as']='<?=$form?>';
         $("#ManageDialog").load("<?=$form?>/check/scan.php", params, function(response, status, xhr){
                 if(status=="error"){

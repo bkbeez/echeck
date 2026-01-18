@@ -4,13 +4,14 @@
     header('Content-Type: text/event-stream');
     header('Cache-Control: no-cache');
     header('Connection: keep-alive');
-    function getStats() {
-        $total = DB::one("SELECT COUNT(*) as cnt FROM events_lists WHERE status = 1");
+    $events_id = ( (isset($_GET['events_id'])&&$_GET['events_id']) ? $_GET['events_id'] : null );
+    function getStats($events_id) {
+        $total = DB::one("SELECT COUNT(*) as cnt FROM events_lists WHERE status = 1 AND events_id=:events_id", array('events_id'=>$events_id));
         $lists = DB::sql("SELECT firstname, lastname, organization, date_checkin 
                             FROM events_lists 
-                            WHERE status = 1 
+                            WHERE status = 1 AND events_id=:events_id
                             ORDER BY date_checkin DESC 
-                            LIMIT 20");
+                            LIMIT 20", array('events_id'=>$events_id));
         $data_list = [];
         if($lists){
             foreach($lists as $row) {
@@ -27,7 +28,7 @@
         ];
     }
     while (true) {
-        $data = getStats();
+        $data = getStats($events_id);
         echo "data: " . json_encode($data) . "\n\n";
         ob_flush();
         flush();
