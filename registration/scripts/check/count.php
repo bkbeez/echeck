@@ -47,10 +47,7 @@
             echo "data: " . json_encode($data) . "\n\n";
             flush(); 
             $last_checksum = $current_checksum;
-        } else {
-            echo "data: keepalive\n\n";
-            flush(); 
-        }
+        } 
         usleep(500000);
     }
 ?>
