@@ -8,9 +8,6 @@ $events_id = $_POST['events_id'] ?? null;
 $event = DB::one("SELECT events_name FROM events WHERE events_id = :id", ['id' => $events_id]);
 $lists = DB::sql("SELECT * FROM events_lists WHERE events_id = :id ORDER BY date_create DESC", ['id' => $events_id]);
 ?>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <style>
     .modal-manage .modal-content { 
         border-radius: 24px; border: none; 
