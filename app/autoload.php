@@ -2,8 +2,8 @@
     ob_start();
     session_start();
     // Environment
-    if( file_exists(APP_ROOT.'/app/install/env.conf') ){
-        $config = explode("\n", file_get_contents(APP_ROOT.'/app/install/env.conf'));
+    if( file_exists($_SERVER["DOCUMENT_ROOT"].'/app/install/env.conf') ){
+        $config = explode("\n", file_get_contents($_SERVER["DOCUMENT_ROOT"].'/app/install/env.conf'));
         if( isset($config)&&count($config)>0 ){
             foreach($config as $env){
                 if( $env ){
