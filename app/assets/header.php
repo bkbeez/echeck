@@ -18,7 +18,7 @@
         <link rel="apple-touch-icon-precomposed" href="<?=APP_PATH?>/favicon.png" />
         <link rel="stylesheet" href="<?=THEME_CSS?>/plugins.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/style.css">
-        <link rel="stylesheet" href="<?=THEME_CSS?>/colors/grape.css">
+        <link rel="stylesheet" href="<?=THEME_CSS?>/grape.css">
         <link rel="stylesheet" href="<?=THEME_CSS?>/index.css?1.0.0">
         <link rel="stylesheet" href="<?=THEME_CSS?>/table.css">
         <link rel="stylesheet" href="<?=THEME_JS?>/sweetalert/sweetalert2.min.css" />
