@@ -281,7 +281,7 @@
             $("form[name='CheckForm'] .row-button>div").fadeIn(1000);
         });
         <?php }else{ ?>
-        $("form[name='CheckForm'] .row-button>button").fadeOut(2500,function(){
+        $("form[name='CheckForm'] .row-button>button").fadeOut(100,function(){
             $(this).click();
         });
         <?php } ?>

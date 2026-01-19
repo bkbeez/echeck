@@ -27,11 +27,12 @@
             'list'  => $data_list
         ];
     }
+    session_write_close();
     while (true) {
         $data = getStats($events_id);
         echo "data: " . json_encode($data) . "\n\n";
         ob_flush();
         flush();
-        sleep(2);
+        sleep(1);
     }
 ?>

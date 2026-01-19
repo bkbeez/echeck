@@ -1,4 +1,5 @@
 <?php include($_SERVER["DOCUMENT_ROOT"].'/app/autoload.php'); ?>
+<?php Auth::ajax(APP_PATH.'/registration'); ?>
 <?php 
     $total = DB::one("SELECT COUNT(*) as cnt FROM events_lists WHERE status = 1");
     $lists = DB::sql("SELECT firstname, lastname, organization, date_checkin 
